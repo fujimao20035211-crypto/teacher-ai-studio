@@ -1,461 +1,514 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Review Studio｜Teacher AI Studio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Studio | Teacher AI Studio</title>
   <style>
-    :root{
-      --bg:#f4f7fb;
-      --panel:#ffffff;
-      --ink:#243247;
-      --muted:#6d7a8c;
-      --line:#dce4ef;
-      --accent:#3d67b1;
-      --accent-soft:#eaf1ff;
-      --success:#2f7d5c;
-      --shadow:0 14px 36px rgba(30,48,78,.10);
+    :root {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #64748b;
+      --line: #d8e1ec;
+      --accent: #2563eb;
+      --accent-soft: #eaf2ff;
+      --success: #16803c;
+      --warning: #a65a00;
+      --danger: #b42318;
+      --shadow: 0 14px 36px rgba(15, 23, 42, .09);
+      --radius: 18px;
     }
 
-    *{box-sizing:border-box}
+    * { box-sizing: border-box; }
 
-    body{
-      margin:0;
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
       font-family:
-        -apple-system,BlinkMacSystemFont,"Segoe UI",
-        "Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
-      color:var(--ink);
-      background:var(--bg);
-      line-height:1.65;
+        -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Hiragino Kaku Gothic ProN", "Yu Gothic UI",
+        "Yu Gothic", Meiryo, sans-serif;
+      line-height: 1.65;
     }
 
-    button,input,select,textarea{font:inherit}
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
 
-    header{
-      padding:28px 20px 20px;
-      background:linear-gradient(135deg,#eef4ff,#f8fbff);
-      border-bottom:1px solid var(--line);
+    .app {
+      width: min(1380px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 48px;
     }
 
-    .header-inner{
-      width:min(1180px,calc(100% - 32px));
-      margin:auto;
-    }
-
-    h1{
-      margin:0;
-      font-size:clamp(28px,4vw,44px);
-      letter-spacing:.02em;
-    }
-
-    .lead{
-      margin:8px 0 0;
-      color:var(--muted);
-    }
-
-    main{
-      width:min(1180px,calc(100% - 32px));
-      margin:28px auto 60px;
-      display:grid;
-      grid-template-columns:minmax(0,1fr) minmax(420px,1fr);
-      gap:24px;
-      align-items:start;
-    }
-
-    .panel{
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:20px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    .panel-head{
-      padding:22px 24px 16px;
-      border-bottom:1px solid var(--line);
-    }
-
-    .panel-head h2{
-      margin:0;
-      font-size:21px;
-    }
-
-    .panel-head p{
-      margin:5px 0 0;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    .panel-body{padding:22px 24px 26px}
-
-    .step{
-      position:relative;
-      padding:0 0 24px 44px;
-    }
-
-    .step:last-child{padding-bottom:0}
-
-    .step::before{
-      content:attr(data-step);
-      position:absolute;
-      left:0;
-      top:1px;
-      width:30px;
-      height:30px;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      background:var(--accent);
-      color:#fff;
-      font-weight:800;
-      font-size:14px;
-    }
-
-    .step::after{
-      content:"";
-      position:absolute;
-      left:14px;
-      top:34px;
-      bottom:0;
-      width:2px;
-      background:var(--line);
-    }
-
-    .step:last-child::after{display:none}
-
-    .step h3{
-      margin:0 0 11px;
-      font-size:17px;
-    }
-
-    .hint{
-      margin:-5px 0 11px;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    label{
-      display:block;
-      font-weight:700;
-      margin-bottom:6px;
-    }
-
-    input[type="text"],select,textarea{
-      width:100%;
-      border:1px solid #cfd9e7;
-      border-radius:12px;
-      background:#fff;
-      color:var(--ink);
-      padding:12px 13px;
-      outline:none;
-      transition:.18s;
-    }
-
-    input:focus,select:focus,textarea:focus{
-      border-color:var(--accent);
-      box-shadow:0 0 0 4px rgba(61,103,177,.12);
-    }
-
-    textarea{
-      min-height:96px;
-      resize:vertical;
-    }
-
-    ::placeholder{color:#a3adba}
-
-    .two-col{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .option-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:9px;
-    }
-
-    .check{
-      display:flex;
-      align-items:flex-start;
-      gap:8px;
-      min-height:44px;
-      padding:10px 11px;
-      border:1px solid var(--line);
-      border-radius:11px;
-      font-weight:600;
-      cursor:pointer;
-      background:#fff;
-    }
-
-    .check:hover{background:#f8fbff}
-    .check input{margin-top:4px}
-
-    .inline-add{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:8px;
-      margin-top:10px;
-    }
-
-    .items{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:12px;
-    }
-
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:7px;
-      border:1px solid #cbd8eb;
-      background:var(--accent-soft);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:14px;
-      font-weight:700;
-    }
-
-    .chip button{
-      border:0;
-      background:transparent;
-      color:#7a889b;
-      cursor:pointer;
-      font-size:17px;
-      line-height:1;
-      padding:0;
-    }
-
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:22px;
-    }
-
-    .btn{
-      border:0;
-      border-radius:12px;
-      padding:12px 17px;
-      font-weight:800;
-      cursor:pointer;
-    }
-
-    .btn-primary{
-      color:#fff;
-      background:var(--accent);
-    }
-
-    .btn-secondary{
-      color:var(--accent);
-      background:var(--accent-soft);
-    }
-
-    .btn-ghost{
-      color:var(--muted);
-      background:#f1f4f8;
-    }
-
-    .preview-wrap{
-      padding:20px;
-      background:#e9edf3;
-      overflow:auto;
-    }
-
-    .sheet{
-      width:1120px;
-      min-height:792px;
-      margin:auto;
-      padding:34px;
-      background:#fffdf8;
-      border:1px solid #d8d3c8;
-      box-shadow:0 12px 36px rgba(0,0,0,.16);
-      color:#253248;
-      transform-origin:top left;
-    }
-
-    .sheet-header{
-      display:grid;
-      grid-template-columns:1fr 360px;
-      gap:20px;
-      align-items:start;
-      margin-bottom:18px;
-    }
-
-    .sheet-kicker{
-      font-size:20px;
-      font-weight:800;
-      color:#365b98;
-    }
-
-    .sheet-title{
-      margin:2px 0 6px;
-      font-size:48px;
-      line-height:1.15;
-      font-weight:900;
-      letter-spacing:.02em;
-    }
-
-    .sheet-subtitle{
-      font-size:18px;
-      font-weight:700;
-    }
-
-    .basic-box{
-      border:3px solid #8fb0df;
-      border-radius:16px;
-      padding:14px 18px;
-      background:#f8fbff;
-    }
-
-    .basic-box h3{
-      margin:0 0 8px;
-      font-size:21px;
-      color:#31578f;
-    }
-
-    .basic-box ul{
-      margin:0;
-      padding-left:20px;
-      font-size:16px;
-      font-weight:600;
-    }
-
-    .sheet-grid{
-      display:grid;
-      grid-template-columns:1fr 1.65fr;
-      gap:16px;
-    }
-
-    .section-card{
-      border:3px solid var(--section-color,#9eb5d2);
-      border-radius:16px;
-      background:#fff;
-      overflow:hidden;
-    }
-
-    .section-title{
-      margin:0;
-      padding:7px 14px;
-      color:#fff;
-      background:var(--section-color,#6d8fbe);
-      text-align:center;
-      font-size:20px;
-      line-height:1.2;
-    }
-
-    .section-content{
-      padding:12px;
-    }
-
-    .card-row{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-    }
-
-    .visual-card{
-      text-align:center;
-      border-radius:10px;
-      background:#f6f8fb;
-      padding:8px;
-      min-height:170px;
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-start;
-    }
-
-    .visual-placeholder{
-      height:104px;
-      border-radius:8px;
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      margin-bottom: 22px;
+      border: 1px solid #cfe0ff;
+      border-radius: 26px;
       background:
-        linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,.05)),
-        #d9e3ef;
-      display:grid;
-      place-items:center;
-      color:#68798d;
-      font-size:13px;
-      font-weight:800;
-      padding:8px;
+        radial-gradient(circle at top right, rgba(37,99,235,.15), transparent 32%),
+        linear-gradient(135deg, #eef5ff, #ffffff 60%);
+      box-shadow: var(--shadow);
     }
 
-    .visual-card strong{
-      margin-top:7px;
-      font-size:15px;
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      bottom: -80px;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(37,99,235,.08);
     }
 
-    .visual-card span{
-      font-size:12px;
-      color:#556579;
-      font-weight:600;
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 11px;
+      margin-bottom: 10px;
+      border: 1px solid #b9d3ff;
+      border-radius: 999px;
+      background: rgba(255,255,255,.86);
+      color: #1d4ed8;
+      font-size: .88rem;
+      font-weight: 800;
     }
 
-    .summary-box{
-      margin-top:16px;
-      border:3px solid #7293be;
-      border-radius:14px;
-      background:#f4f8ff;
-      padding:11px 18px;
-      font-size:17px;
-      font-weight:800;
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.15;
     }
 
-    .prompt-area{
-      padding:20px 24px 26px;
-      border-top:1px solid var(--line);
+    .hero p {
+      max-width: 760px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 1.02rem;
     }
 
-    .prompt-area textarea{
-      min-height:330px;
-      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      font-size:13px;
-      line-height:1.55;
-      white-space:pre-wrap;
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(390px, .95fr);
+      gap: 22px;
+      align-items: start;
     }
 
-    .status{
-      min-height:24px;
-      margin-top:8px;
-      color:var(--success);
-      font-size:14px;
-      font-weight:700;
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
     }
 
-    .hidden{display:none!important}
+    .panel-inner { padding: 22px; }
 
-    @media(max-width:980px){
-      main{grid-template-columns:1fr}
-      .preview-wrap{max-height:780px}
+    .panel h2 {
+      margin: 0 0 16px;
+      font-size: 1.28rem;
     }
 
-    @media(max-width:620px){
-      .two-col,.option-grid{grid-template-columns:1fr}
-      .step{padding-left:39px}
-      .panel-body{padding-left:18px;padding-right:18px}
+    .intro-note {
+      margin-bottom: 15px;
+      padding: 12px 14px;
+      border: 1px solid #fed7aa;
+      border-radius: 12px;
+      background: #fff7ed;
+      color: #9a3412;
+      font-size: .92rem;
+    }
+
+    .step {
+      margin-bottom: 14px;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #fff;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .step.locked {
+      opacity: .43;
+      pointer-events: none;
+    }
+
+    .step-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-weight: 900;
+    }
+
+    .step-number {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 800;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 12px;
+      color: var(--text);
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 11px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96,165,250,.2);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .help {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .category-pill {
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: #fff;
+      color: #334155;
+      font-weight: 800;
+    }
+
+    .category-pill.active {
+      border-color: #7fb0ff;
+      background: var(--accent-soft);
+      color: #1d4ed8;
+    }
+
+    .item-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      gap: 9px;
+      align-items: center;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fbfdff;
+    }
+
+    .item-row.dragging { opacity: .45; }
+
+    .drag-handle {
+      user-select: none;
+      color: #94a3b8;
+      font-size: 1.1rem;
+    }
+
+    .item-row input[type="text"] {
+      padding: 8px 10px;
+    }
+
+    .mini-btn {
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      padding: 7px 9px;
+      background: #fff;
+      color: #334155;
+      font-weight: 800;
+    }
+
+    .mini-btn.danger {
+      border-color: #fecaca;
+      color: var(--danger);
+      background: #fff7f7;
+    }
+
+    .add-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .add-row input { flex: 1; }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 15px;
+      font-weight: 900;
+    }
+
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-dark { background: #0f172a; color: #fff; }
+    .btn-soft { background: #eef2f7; color: #334155; }
+    .btn-success { background: var(--success); color: #fff; }
+    .span-2 { grid-column: 1 / -1; }
+
+    .status {
+      min-height: 24px;
+      margin-top: 9px;
+      color: var(--success);
+      font-weight: 800;
+      font-size: .91rem;
+    }
+
+    .sticky {
+      position: sticky;
+      top: 16px;
+    }
+
+    .summary {
+      margin-bottom: 13px;
+      padding: 12px 14px;
+      border: 1px dashed #87b6ff;
+      border-radius: 12px;
+      background: #eff6ff;
+      font-size: .92rem;
+    }
+
+    .summary strong { color: #1d4ed8; }
+
+    .prompt {
+      min-height: 570px;
+      max-height: 72vh;
+      overflow: auto;
+      padding: 18px;
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      background: #0f172a;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: .89rem;
+      line-height: 1.65;
+    }
+
+    .preview-panel {
+      margin-top: 22px;
+      padding: 22px;
+    }
+
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: end;
+      margin-bottom: 13px;
+    }
+
+    .sheet-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #e9eef5;
+      padding: 16px;
+    }
+
+    .sheet {
+      width: 1120px;
+      min-height: 792px;
+      margin: 0 auto;
+      padding: 28px;
+      background: #fff;
+      box-shadow: 0 10px 22px rgba(15,23,42,.12);
+    }
+
+    .sheet-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .sheet-title small {
+      display: block;
+      color: #64748b;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .sheet-title h3 {
+      margin: 2px 0 0;
+      font-size: 42px;
+      line-height: 1.15;
+    }
+
+    .sheet-meta {
+      max-width: 340px;
+      padding: 11px 14px;
+      border: 2px solid #bcd3f6;
+      border-radius: 14px;
+      background: #f4f8ff;
+      font-size: 14px;
+    }
+
+    .sheet-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .material-card {
+      overflow: hidden;
+      border: 2px solid #cbd5e1;
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .material-card h4 {
+      margin: 0;
+      padding: 10px 12px;
+      background: #eaf2ff;
+      color: #1e3a8a;
+      font-size: 18px;
+    }
+
+    .image-slot {
+      position: relative;
+      display: grid;
+      place-items: center;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: linear-gradient(135deg, #e2e8f0, #f8fafc);
+      color: #64748b;
+      font-weight: 900;
+    }
+
+    .image-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-slot input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .material-card p {
+      min-height: 60px;
+      margin: 0;
+      padding: 10px 12px;
+      font-size: 15px;
+    }
+
+    .sheet-summary {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 2px solid #93c5fd;
+      border-radius: 13px;
+      background: #eff6ff;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    @media (max-width: 980px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .sticky { position: static; }
+      .field-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .app { width: min(100% - 18px, 1380px); padding-top: 9px; }
+      .hero, .panel-inner, .preview-panel { padding: 16px; }
+      .actions { grid-template-columns: 1fr; }
+      .span-2 { grid-column: auto; }
+      .item-row { grid-template-columns: auto 1fr auto; }
+      .item-row .move-down { display: none; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .hero, .main-grid, .preview-header { display: none !important; }
+      .app { width: auto; margin: 0; padding: 0; }
+      .panel { border: 0; box-shadow: none; }
+      .preview-panel { margin: 0; padding: 0; }
+      .sheet-wrap { border: 0; padding: 0; background: #fff; overflow: visible; }
+      .sheet {
+        width: 297mm;
+        min-height: 210mm;
+        padding: 10mm;
+        box-shadow: none;
+      }
+      @page { size: A4 landscape; margin: 0; }
     }
   </style>
 </head>
 <body>
-<header>
-  <div class="header-inner">
-    <h1>Review Studio</h1>
-    <p class="lead">学習テーマを整理し、画像と短い言葉で伝わる復習教材のプロンプトを作成します。</p>
-  </div>
-</header>
+  <main class="app">
+    <section class="hero">
+      <div class="brand">Teacher AI Studio</div>
+      <h1>Review Studio</h1>
+      <p>
+        教材のテーマと学習内容を整理し、Microsoft Copilotで
+        「画像と短い言葉を組み合わせたA4横1枚の復習教材」を
+        一度に作るためのプロンプトを生成します。
+      </p>
+    </section>
 
-<main>
-  <section class="panel">
-    <div class="panel-head">
-      <h2>教材の設計</h2>
-      <p>例を固定せず、先生の考える順番に沿って入力します。</p>
-    </div>
+    <div class="main-grid">
+      <section class="panel">
+        <div class="panel-inner">
+          <h2>教材を設計する</h2>
+          <div class="intro-note">
+            入力欄の例は薄い文字だけで表示されます。特定の国名や単元名は最初から残りません。
+          </div>
 
-    <div class="panel-body">
-      <div class="step" data-step="1">
-        <h3>教科と教材の種類</h3>
-        <div class="two-col">
-          <div>
+          <div class="step">
+            <div class="step-title"><span class="step-number">1</span>教科を選ぶ</div>
             <label for="subject">教科</label>
             <select id="subject">
               <option value="">選択してください</option>
@@ -463,476 +516,677 @@
               <option>理科</option>
               <option>国語</option>
               <option>英語</option>
-              <option>生活</option>
-              <option>総合的な学習</option>
+              <option>数学</option>
+              <option>保健体育</option>
+              <option>家庭</option>
+              <option>職業</option>
               <option>その他</option>
             </select>
           </div>
-          <div>
-            <label for="genre">教材の種類</label>
-            <select id="genre">
-              <option value="">選択してください</option>
-              <option value="country">国・地域の紹介</option>
-              <option value="person">人物の紹介</option>
-              <option value="animal">生き物の紹介</option>
-              <option value="science">自然現象・科学のしくみ</option>
-              <option value="experiment">実験・観察の振り返り</option>
-              <option value="history">歴史上の出来事</option>
-              <option value="work">作品・物語の紹介</option>
-              <option value="custom">自由に構成する</option>
-            </select>
-          </div>
-        </div>
-      </div>
 
-      <div class="step" data-step="2">
-        <h3>学習テーマ</h3>
-        <p class="hint">入力欄には例を残しません。作りたい教材のテーマだけを入力してください。</p>
-        <input id="theme" type="text" placeholder="例：学習する国名、動物名、自然現象など" />
-        <div style="height:10px"></div>
-        <label for="purpose">この教材で理解してほしいこと</label>
-        <textarea id="purpose" placeholder="例：特徴を大きく捉え、写真と言葉を結び付けて振り返れるようにする"></textarea>
-      </div>
-
-      <div class="step" data-step="3">
-        <h3>掲載する内容</h3>
-        <p class="hint">教材の種類に応じた候補を表示します。不要なものは外し、必要な内容は追加できます。</p>
-        <div id="suggestions" class="option-grid"></div>
-
-        <div class="inline-add">
-          <input id="customItem" type="text" placeholder="追加したい項目" />
-          <button id="addItem" class="btn btn-secondary" type="button">追加</button>
-        </div>
-        <div id="selectedItems" class="items"></div>
-      </div>
-
-      <div class="step" data-step="4">
-        <h3>見せ方を決める</h3>
-        <div class="two-col">
-          <div>
-            <label for="layout">レイアウト</label>
-            <select id="layout">
-              <option value="guided">タイトルから順に視線が流れる構成</option>
-              <option value="grid">均等なカード構成</option>
-              <option value="comparison">比較しやすい左右構成</option>
-              <option value="timeline">順序や時間の流れを示す構成</option>
-            </select>
-          </div>
-          <div>
-            <label for="density">情報量</label>
-            <select id="density">
-              <option value="light">少なめ（画像中心）</option>
-              <option value="standard" selected>標準（画像＋短文）</option>
-              <option value="rich">やや多め（要点説明あり）</option>
-            </select>
-          </div>
-        </div>
-
-        <div style="height:12px"></div>
-
-        <div class="two-col">
-          <div>
-            <label for="audience">対象</label>
-            <select id="audience">
-              <option>中学部</option>
-              <option>高等部</option>
-              <option>小学部高学年</option>
-              <option>その他</option>
-            </select>
-          </div>
-          <div>
-            <label for="imageStyle">画像表現</label>
-            <select id="imageStyle">
-              <option>写真を中心にする</option>
-              <option>教育用イラストを中心にする</option>
-              <option>写真とイラストを使い分ける</option>
-              <option>シンプルな図解を中心にする</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="step" data-step="5">
-        <h3>AIに守らせる優先順位</h3>
-        <div class="option-grid">
-          <label class="check"><input type="checkbox" id="priorityTitle" checked>タイトルを最も大きくする</label>
-          <label class="check"><input type="checkbox" id="priorityBalance" checked>各項目の情報量を揃える</label>
-          <label class="check"><input type="checkbox" id="priorityImage" checked>画像を主役にする</label>
-          <label class="check"><input type="checkbox" id="priorityShort" checked>説明文を短くする</label>
-          <label class="check"><input type="checkbox" id="priorityFlow" checked>視線の流れを作る</label>
-          <label class="check"><input type="checkbox" id="priorityNoExtra" checked>不要な項目を増やさない</label>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button id="generate" class="btn btn-primary" type="button">プロンプトを作成</button>
-        <button id="copy" class="btn btn-secondary" type="button">コピー</button>
-        <button id="reset" class="btn btn-ghost" type="button">入力をリセット</button>
-      </div>
-      <div id="status" class="status"></div>
-    </div>
-  </section>
-
-  <section class="panel">
-    <div class="panel-head">
-      <h2>完成イメージ</h2>
-      <p>実際の画像ではなく、構成と情報量のバランスを確認するためのプレビューです。</p>
-    </div>
-
-    <div class="preview-wrap">
-      <article class="sheet" id="sheet">
-        <div class="sheet-header">
-          <div>
-            <div class="sheet-kicker" id="previewKicker">学習テーマを入力してください</div>
-            <h2 class="sheet-title" id="previewTitle">復習教材</h2>
-            <div class="sheet-subtitle" id="previewSubtitle">画像と短い言葉で、学習内容を分かりやすく整理します。</div>
+          <div class="step locked" id="categoryStep">
+            <div class="step-title"><span class="step-number">2</span>教材の種類を選ぶ</div>
+            <div class="category-pills" id="categoryPills"></div>
+            <p class="help">教科だけでなく、「国」「実験」「人物」など教材の種類に合わせて構成を変えます。</p>
           </div>
 
-          <div class="basic-box">
-            <h3>基本情報</h3>
-            <ul id="basicList">
-              <li>大切な特徴を3〜4点に整理</li>
-              <li>一文を短くする</li>
-              <li>画像と説明を対応させる</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="sheet-grid">
-          <section class="section-card" style="--section-color:#4c86b9">
-            <h3 class="section-title" id="leftTitle">最初に知ること</h3>
-            <div class="section-content">
-              <div class="card-row" id="leftCards"></div>
-            </div>
-          </section>
-
-          <section class="section-card" style="--section-color:#d96f82">
-            <h3 class="section-title" id="rightTitle">詳しく見てみよう</h3>
-            <div class="section-content">
-              <div class="card-row" id="rightCards"></div>
-            </div>
-          </section>
-        </div>
-
-        <div class="sheet-grid" style="margin-top:16px;grid-template-columns:1.15fr 1fr">
-          <section class="section-card" style="--section-color:#68a259">
-            <h3 class="section-title">特徴を整理しよう</h3>
-            <div class="section-content">
-              <div class="card-row" id="bottomCards"></div>
-            </div>
-          </section>
-
-          <section class="section-card" style="--section-color:#8d69b6">
-            <h3 class="section-title">覚えておきたいこと</h3>
-            <div class="section-content">
-              <div class="card-row">
-                <div class="visual-card">
-                  <div class="visual-placeholder">画像または図解</div>
-                  <strong>大切な言葉</strong>
-                  <span>短い説明文</span>
-                </div>
-                <div class="visual-card">
-                  <div class="visual-placeholder">比較・関係図</div>
-                  <strong>つながり</strong>
-                  <span>短い説明文</span>
-                </div>
-                <div class="visual-card">
-                  <div class="visual-placeholder">振り返りの絵</div>
-                  <strong>確認</strong>
-                  <span>短い説明文</span>
-                </div>
+          <div class="step locked" id="themeStep">
+            <div class="step-title"><span class="step-number">3</span>テーマと対象を決める</div>
+            <label for="theme">教材のテーマ</label>
+            <input id="theme" type="text" placeholder="例：学習した国名、植物の成長、歴史上の人物">
+            <div class="field-grid" style="margin-top:12px">
+              <div>
+                <label for="grade">対象</label>
+                <select id="grade">
+                  <option>中学部</option>
+                  <option>高等部</option>
+                  <option>小学部高学年</option>
+                  <option>その他</option>
+                </select>
+              </div>
+              <div>
+                <label for="difficulty">文章の難しさ</label>
+                <select id="difficulty">
+                  <option>やさしい</option>
+                  <option>標準</option>
+                  <option>やや詳しい</option>
+                </select>
               </div>
             </div>
-          </section>
-        </div>
+          </div>
 
-        <div class="summary-box" id="summaryBox">
-          まとめ：画像を見ながら、テーマの大切な特徴を言葉で振り返ろう。
+          <div class="step locked" id="purposeStep">
+            <div class="step-title"><span class="step-number">4</span>教材のねらいを確認する</div>
+            <label for="purpose">授業で振り返らせたいこと</label>
+            <textarea id="purpose" placeholder="例：画像を見て学習内容を思い出し、自分の言葉で説明できるようにする"></textarea>
+          </div>
+
+          <div class="step locked" id="itemsStep">
+            <div class="step-title"><span class="step-number">5</span>掲載項目を整える</div>
+            <div class="item-list" id="itemList"></div>
+            <div class="add-row">
+              <input id="newItem" type="text" placeholder="項目を追加">
+              <button class="mini-btn" id="addItem" type="button">追加</button>
+            </div>
+            <p class="help">6項目前後がA4横1枚で見やすくまとまりやすい目安です。順番も変更できます。</p>
+          </div>
+
+          <div class="step locked" id="designStep">
+            <div class="step-title"><span class="step-number">6</span>見せ方を決める</div>
+            <div class="field-grid">
+              <div>
+                <label for="imageStyle">画像表現</label>
+                <select id="imageStyle">
+                  <option>写真と教育用イラストを内容に応じて使い分ける</option>
+                  <option>写真中心</option>
+                  <option>教育用イラスト中心</option>
+                  <option>図解・アイコン中心</option>
+                </select>
+              </div>
+              <div>
+                <label for="layout">基本レイアウト</label>
+                <select id="layout">
+                  <option>内容の重要度に合わせて最適化</option>
+                  <option>3列×2段を基本にする</option>
+                  <option>2列×3段を基本にする</option>
+                  <option>中心項目を大きく配置する</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-grid" style="margin-top:12px">
+              <div>
+                <label for="textLength">説明文の長さ</label>
+                <select id="textLength">
+                  <option>20〜35文字程度</option>
+                  <option>15〜25文字程度</option>
+                  <option>30〜50文字程度</option>
+                </select>
+              </div>
+              <div>
+                <label for="titleStyle">タイトル表現</label>
+                <select id="titleStyle">
+                  <option>「〜を知ろう！」</option>
+                  <option>「〜を振り返ろう！」</option>
+                  <option>テーマ名のみ</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-primary span-2" id="generatePrompt" type="button">完成プロンプトを作成</button>
+            <button class="btn btn-dark" id="copyPrompt" type="button">プロンプトをコピー</button>
+            <button class="btn btn-success" id="downloadPrompt" type="button">テキスト保存</button>
+            <button class="btn btn-soft" id="printPreview" type="button">教材プレビューを印刷</button>
+            <button class="btn btn-soft" id="resetAll" type="button">入力をリセット</button>
+          </div>
+          <div class="status" id="status" aria-live="polite"></div>
         </div>
-      </article>
+      </section>
+
+      <aside class="panel sticky">
+        <div class="panel-inner">
+          <h2>Copilotに貼り付けるプロンプト</h2>
+          <div class="summary" id="summary">
+            <strong>設計内容：</strong>教科を選ぶと概要が表示されます。
+          </div>
+          <div class="prompt" id="promptOutput">左側を入力して「完成プロンプトを作成」を押してください。</div>
+        </div>
+      </aside>
     </div>
 
-    <div class="prompt-area">
-      <label for="promptOutput">Copilotへ渡すプロンプト</label>
-      <textarea id="promptOutput" readonly></textarea>
-    </div>
-  </section>
-</main>
+    <section class="panel preview-panel">
+      <div class="preview-header">
+        <div>
+          <h2 style="margin:0">教材プレビュー</h2>
+          <p class="help">画像枠をクリックすると、手元の画像を仮配置できます。</p>
+        </div>
+      </div>
 
-<script>
-  const templates = {
-    country: ["場所・地図","基本情報","有名な場所","食べ物","文化・くらし","言葉・あいさつ","まとめ"],
-    person: ["人物の基本情報","生きた時代","主な功績","代表的な出来事","考え方・人柄","私たちとのつながり","まとめ"],
-    animal: ["すんでいる場所","体の特徴","食べ物","行動・くらし","成長・子育て","人との関わり","まとめ"],
-    science: ["現象の概要","起こるしくみ","特徴","身近な例","変化の様子","安全・注意","まとめ"],
-    experiment: ["目的","使ったもの","手順","観察したこと","結果","分かったこと","まとめ"],
-    history: ["いつ起きたか","どこで起きたか","関係する人物","出来事の流れ","原因","その後の変化","まとめ"],
-    work: ["作品の基本情報","登場人物","場所・時代","あらすじ","心に残る場面","作品のテーマ","まとめ"],
-    custom: []
-  };
+      <div class="sheet-wrap">
+        <div class="sheet" id="sheet">
+          <div class="sheet-title">
+            <div>
+              <small id="previewKicker">学習内容を振り返ろう</small>
+              <h3 id="previewTitle">教材のテーマ</h3>
+            </div>
+            <div class="sheet-meta" id="previewMeta">
+              教科・対象・教材のねらい
+            </div>
+          </div>
 
-  const genreNames = {
-    country:"国・地域の紹介",
-    person:"人物の紹介",
-    animal:"生き物の紹介",
-    science:"自然現象・科学のしくみ",
-    experiment:"実験・観察の振り返り",
-    history:"歴史上の出来事",
-    work:"作品・物語の紹介",
-    custom:"自由構成"
-  };
+          <div class="sheet-grid" id="previewGrid"></div>
 
-  const selected = new Set();
+          <div class="sheet-summary" id="previewSummary">
+            まとめ：画像と短い言葉を手がかりに、学習したことを思い出そう。
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-  const $ = id => document.getElementById(id);
+  <script>
+    (() => {
+      const TEMPLATES = {
+        "社会": {
+          "国・地域": ["基本情報", "位置・地図", "有名な場所", "食べ物", "文化・くらし", "言葉・あいさつ", "まとめ"],
+          "歴史上の人物": ["人物の基本情報", "生きた時代", "主な出来事", "人物の功績", "関係する場所", "今とのつながり", "まとめ"],
+          "歴史的な出来事": ["いつ・どこで", "出来事の背景", "主な人物", "何が起きたか", "その後の変化", "現在との関係", "まとめ"],
+          "産業・仕事": ["仕事の内容", "使う道具", "働く場所", "作られるもの", "仕事の工夫", "社会とのつながり", "まとめ"]
+        },
+        "理科": {
+          "生き物": ["基本情報", "体のつくり", "すむ場所", "食べ物", "成長・一生", "特徴・工夫", "まとめ"],
+          "植物": ["植物の名前", "芽・葉・茎", "成長の順序", "必要なもの", "花・実・種", "観察のポイント", "まとめ"],
+          "実験": ["実験の目的", "用意するもの", "手順", "観察したこと", "結果", "分かったこと", "まとめ"],
+          "自然現象": ["現象とは", "起こる仕組み", "主な種類", "見られる場所", "生活への影響", "安全のポイント", "まとめ"],
+          "人体": ["体の部分", "主な働き", "仕組み", "健康との関係", "生活で気をつけること", "まとめ"]
+        },
+        "国語": {
+          "物語": ["登場人物", "場所・時", "出来事の順序", "人物の気持ち", "心に残る場面", "作品の主題", "まとめ"],
+          "説明文": ["話題", "大切な言葉", "段落の役割", "具体例", "筆者の考え", "分かったこと", "まとめ"],
+          "漢字・言葉": ["読み方", "意味", "使い方", "似た言葉", "反対の言葉", "例文", "まとめ"]
+        },
+        "英語": {
+          "単語・表現": ["英単語", "意味", "発音のヒント", "絵・写真", "使う場面", "例文", "まとめ"],
+          "会話": ["場面", "相手", "使う表現", "意味", "会話例", "発音のポイント", "まとめ"],
+          "文化": ["基本情報", "場所", "食べ物", "学校生活", "行事", "日本との違い", "まとめ"]
+        },
+        "数学": {
+          "計算": ["学習する計算", "考え方", "手順", "例題", "よくある間違い", "生活で使う場面", "まとめ"],
+          "図形": ["図形の名前", "形の特徴", "辺・角", "比べ方", "身近な例", "作図・測定", "まとめ"],
+          "数量・グラフ": ["何を表すか", "単位", "読み取り方", "比べ方", "例題", "生活での活用", "まとめ"]
+        },
+        "保健体育": {
+          "体の健康": ["テーマの基本", "体の変化", "原因", "予防", "生活でできること", "相談先", "まとめ"],
+          "運動": ["運動の名前", "基本動作", "手順", "上達のポイント", "安全の注意", "振り返り", "まとめ"]
+        },
+        "家庭": {
+          "調理": ["料理名", "材料", "道具", "手順", "安全・衛生", "盛り付け", "まとめ"],
+          "生活": ["テーマの基本", "必要な物", "手順", "工夫", "安全", "生活での活用", "まとめ"]
+        },
+        "職業": {
+          "作業学習": ["作業名", "目的", "使う道具", "手順", "安全の注意", "上手に行うポイント", "まとめ"],
+          "仕事調べ": ["仕事の名前", "仕事内容", "働く場所", "必要な力", "使う道具", "社会とのつながり", "まとめ"]
+        },
+        "その他": {
+          "自由設定": ["基本情報", "大切なポイント", "具体例", "手順・流れ", "注意点", "生活とのつながり", "まとめ"]
+        }
+      };
 
-  function renderSuggestions(){
-    const genre = $("genre").value;
-    const box = $("suggestions");
-    box.innerHTML = "";
+      const state = {
+        subject: "",
+        category: "",
+        items: []
+      };
 
-    (templates[genre] || []).forEach(item=>{
-      const label = document.createElement("label");
-      label.className = "check";
-      label.innerHTML = `<input type="checkbox" value="${escapeHtml(item)}"> ${escapeHtml(item)}`;
-      const input = label.querySelector("input");
-      input.addEventListener("change",()=>{
-        if(input.checked) selected.add(item);
-        else selected.delete(item);
-        renderSelected();
-        updatePreview();
-      });
-      box.appendChild(label);
-    });
+      const $ = (id) => document.getElementById(id);
 
-    selected.clear();
-    (templates[genre] || []).slice(0,6).forEach(item=>selected.add(item));
-    [...box.querySelectorAll("input")].forEach(input=>{
-      input.checked = selected.has(input.value);
-    });
-    renderSelected();
-    updatePreview();
-  }
+      const subject = $("subject");
+      const categoryStep = $("categoryStep");
+      const categoryPills = $("categoryPills");
+      const themeStep = $("themeStep");
+      const purposeStep = $("purposeStep");
+      const itemsStep = $("itemsStep");
+      const designStep = $("designStep");
+      const theme = $("theme");
+      const purpose = $("purpose");
+      const itemList = $("itemList");
+      const status = $("status");
+      const promptOutput = $("promptOutput");
+      const summary = $("summary");
 
-  function renderSelected(){
-    const area = $("selectedItems");
-    area.innerHTML = "";
-    selected.forEach(item=>{
-      const chip = document.createElement("span");
-      chip.className = "chip";
-      chip.innerHTML = `${escapeHtml(item)} <button type="button" aria-label="${escapeHtml(item)}を削除">×</button>`;
-      chip.querySelector("button").addEventListener("click",()=>{
-        selected.delete(item);
-        [...$("suggestions").querySelectorAll("input")].forEach(input=>{
-          if(input.value===item) input.checked=false;
+      function lock(element, shouldLock) {
+        element.classList.toggle("locked", shouldLock);
+      }
+
+      function esc(text) {
+        return String(text).replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        }[char]));
+      }
+
+      function updateSummary() {
+        const parts = [];
+        if (state.subject) parts.push(state.subject);
+        if (state.category) parts.push(state.category);
+        if (theme.value.trim()) parts.push(theme.value.trim());
+        const count = state.items.filter(Boolean).length;
+
+        summary.innerHTML =
+          "<strong>設計内容：</strong>" +
+          (parts.length ? esc(parts.join(" ／ ")) : "未設定") +
+          (count ? " ／ " + count + "項目" : "");
+      }
+
+      function renderCategories() {
+        categoryPills.innerHTML = "";
+        state.category = "";
+        state.items = [];
+        renderItems();
+        lock(themeStep, true);
+        lock(purposeStep, true);
+        lock(itemsStep, true);
+        lock(designStep, true);
+
+        if (!state.subject || !TEMPLATES[state.subject]) {
+          lock(categoryStep, true);
+          return;
+        }
+
+        lock(categoryStep, false);
+
+        Object.keys(TEMPLATES[state.subject]).forEach((category) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "category-pill";
+          button.textContent = category;
+          button.addEventListener("click", () => {
+            [...categoryPills.children].forEach((child) =>
+              child.classList.remove("active")
+            );
+            button.classList.add("active");
+
+            state.category = category;
+            state.items = [...TEMPLATES[state.subject][category]];
+            renderItems();
+
+            lock(themeStep, false);
+            lock(purposeStep, false);
+            lock(itemsStep, false);
+            lock(designStep, false);
+
+            updateSummary();
+            updatePreview();
+          });
+          categoryPills.appendChild(button);
         });
-        renderSelected();
-        updatePreview();
-      });
-      area.appendChild(chip);
-    });
-  }
+      }
 
-  function addCustomItem(){
-    const value = $("customItem").value.trim();
-    if(!value) return;
-    selected.add(value);
-    $("customItem").value = "";
-    renderSelected();
-    updatePreview();
-  }
+      function renderItems() {
+        itemList.innerHTML = "";
 
-  function createCard(label){
-    const div = document.createElement("div");
-    div.className = "visual-card";
-    div.innerHTML = `
-      <div class="visual-placeholder">${escapeHtml(label)}に合う画像</div>
-      <strong>${escapeHtml(label)}</strong>
-      <span>短く分かりやすい説明</span>
-    `;
-    return div;
-  }
+        state.items.forEach((item, index) => {
+          const row = document.createElement("div");
+          row.className = "item-row";
+          row.draggable = true;
+          row.dataset.index = index;
 
-  function fillCards(target, items){
-    const root = $(target);
-    root.innerHTML = "";
-    const safeItems = items.length ? items : ["項目1","項目2","項目3"];
-    safeItems.slice(0,3).forEach(item=>root.appendChild(createCard(item)));
-    while(root.children.length<3){
-      root.appendChild(createCard("追加項目"));
-    }
-  }
+          row.innerHTML = `
+            <span class="drag-handle" title="ドラッグして並べ替え">⋮⋮</span>
+            <input type="text" value="${esc(item)}" aria-label="掲載項目">
+            <button type="button" class="mini-btn move-down" title="下へ移動">↓</button>
+            <button type="button" class="mini-btn danger" title="削除">削除</button>
+          `;
 
-  function updatePreview(){
-    const theme = $("theme").value.trim();
-    const subject = $("subject").value;
-    const genre = $("genre").value;
-    const purpose = $("purpose").value.trim();
-    const items = [...selected];
+          const input = row.querySelector("input");
+          input.addEventListener("input", () => {
+            state.items[index] = input.value;
+            updateSummary();
+            updatePreview();
+          });
 
-    $("previewKicker").textContent =
-      [subject, genreNames[genre]].filter(Boolean).join("｜") || "学習テーマを入力してください";
-    $("previewTitle").textContent = theme ? `${theme}を知ろう！` : "復習教材";
-    $("previewSubtitle").textContent =
-      purpose || "画像と短い言葉で、学習内容を分かりやすく整理します。";
+          row.querySelector(".move-down").addEventListener("click", () => {
+            if (index >= state.items.length - 1) return;
+            [state.items[index], state.items[index + 1]] =
+              [state.items[index + 1], state.items[index]];
+            renderItems();
+            updatePreview();
+          });
 
-    const first = items.slice(0,3);
-    const second = items.slice(3,6);
-    const third = items.slice(6,9);
+          row.querySelector(".danger").addEventListener("click", () => {
+            state.items.splice(index, 1);
+            renderItems();
+            updateSummary();
+            updatePreview();
+          });
 
-    fillCards("leftCards", first);
-    fillCards("rightCards", second.length ? second : first);
-    fillCards("bottomCards", third.length ? third : items.slice(0,3));
+          row.addEventListener("dragstart", () => {
+            row.classList.add("dragging");
+            row.dataset.dragging = "true";
+          });
 
-    $("leftTitle").textContent = genre==="experiment" ? "実験の流れ" : "最初に知ること";
-    $("rightTitle").textContent = genre==="history" ? "出来事の流れ" : "詳しく見てみよう";
+          row.addEventListener("dragend", () => {
+            row.classList.remove("dragging");
+            delete row.dataset.dragging;
+          });
 
-    $("basicList").innerHTML = "";
-    const basics = [
-      theme ? `${theme}の大切な特徴を整理する` : "テーマの大切な特徴を整理する",
-      "一つの項目につき画像・名称・短文を対応させる",
-      "情報量を均等にして見やすくする"
-    ];
-    basics.forEach(text=>{
-      const li = document.createElement("li");
-      li.textContent = text;
-      $("basicList").appendChild(li);
-    });
+          row.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            const dragging = itemList.querySelector("[data-dragging='true']");
+            if (!dragging || dragging === row) return;
 
-    $("summaryBox").textContent =
-      `まとめ：${theme || "学習テーマ"}の大切な特徴を、画像を見ながら自分の言葉で振り返ろう。`;
-  }
+            const from = Number(dragging.dataset.index);
+            const to = Number(row.dataset.index);
+            const moved = state.items.splice(from, 1)[0];
+            state.items.splice(to, 0, moved);
+            renderItems();
+            updatePreview();
+          });
 
-  function buildPrompt(){
-    const theme = $("theme").value.trim();
-    const subject = $("subject").value;
-    const genre = $("genre").value;
-    const purpose = $("purpose").value.trim();
-    const items = [...selected];
+          itemList.appendChild(row);
+        });
+      }
 
-    if(!subject || !genre || !theme){
-      $("status").textContent = "教科・教材の種類・学習テーマを入力してください。";
-      return "";
-    }
+      function titleText() {
+        const value = theme.value.trim() || "教材のテーマ";
+        const style = $("titleStyle").value;
+        if (style === "「〜を振り返ろう！」") return value + "を振り返ろう！";
+        if (style === "テーマ名のみ") return value;
+        return value + "を知ろう！";
+      }
 
-    const priorities = [];
-    if($("priorityTitle").checked) priorities.push("タイトルを最も大きく、最初に目に入る位置へ置く");
-    if($("priorityBalance").checked) priorities.push("各項目の情報量とカードサイズを揃える");
-    if($("priorityImage").checked) priorities.push("文章よりも画像を主役にする");
-    if($("priorityShort").checked) priorities.push("説明文は一項目につき一文、20〜30文字程度にする");
-    if($("priorityFlow").checked) priorities.push("左上から右下へ自然に視線が流れる配置にする");
-    if($("priorityNoExtra").checked) priorities.push("指定されていない内容を勝手に増やさない");
+      function updatePreview() {
+        const value = theme.value.trim() || "教材のテーマ";
+        $("previewTitle").textContent = titleText();
+        $("previewKicker").textContent =
+          state.category ? state.category + "の学習を振り返ろう" : "学習内容を振り返ろう";
 
-    const prompt = `あなたは、特別支援教育で使用する復習教材を設計する教材デザイナーです。
-以下の条件に従い、A4横1枚に収まる完成教材を一度で作成してください。
+        const metaParts = [
+          state.subject || "教科",
+          $("grade").value,
+          purpose.value.trim() || "教材のねらい"
+        ];
+        $("previewMeta").textContent = metaParts.join(" ／ ");
 
-【最重要】
-これは説明文の提案ではなく、画像・見出し・短文を配置した「完成した1枚の教材」を作る依頼です。
-複数の画像を一枚ずつ別々に生成せず、最初から一つの教材紙面としてまとめてください。
+        const grid = $("previewGrid");
+        grid.innerHTML = "";
+
+        const visibleItems = state.items
+          .map((x) => x.trim())
+          .filter((x) => x && x !== "まとめ")
+          .slice(0, 6);
+
+        const fallback = [
+          "基本情報",
+          "大切なポイント",
+          "具体例",
+          "特徴",
+          "生活との関係",
+          "振り返り"
+        ];
+
+        (visibleItems.length ? visibleItems : fallback).forEach((item, index) => {
+          const card = document.createElement("article");
+          card.className = "material-card";
+          card.innerHTML = `
+            <h4>${esc(item)}</h4>
+            <div class="image-slot">
+              <span>クリックして画像を仮配置</span>
+              <input type="file" accept="image/*" aria-label="${esc(item)}の画像">
+            </div>
+            <p>画像の名称と、短く分かりやすい説明文を配置します。</p>
+          `;
+
+          const fileInput = card.querySelector('input[type="file"]');
+          const slot = card.querySelector(".image-slot");
+
+          fileInput.addEventListener("change", () => {
+            const file = fileInput.files && fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              slot.innerHTML = `<img src="${event.target.result}" alt="${esc(item)}">`;
+            };
+            reader.readAsDataURL(file);
+          });
+
+          grid.appendChild(card);
+        });
+
+        $("previewSummary").textContent =
+          "まとめ：" + value + "について、画像と短い言葉を手がかりに学習内容を思い出そう。";
+
+        updateSummary();
+      }
+
+      function buildPrompt() {
+        const selectedSubject = state.subject;
+        const selectedCategory = state.category;
+        const selectedTheme = theme.value.trim();
+        const selectedPurpose =
+          purpose.value.trim() ||
+          "画像を手がかりに学習内容を思い出し、短い言葉で確認できるようにする。";
+
+        const items = state.items.map((x) => x.trim()).filter(Boolean);
+
+        if (!selectedSubject || !selectedCategory || !selectedTheme) {
+          setStatus("教科・教材の種類・テーマを入力してください。", "danger");
+          return;
+        }
+
+        if (items.length < 3) {
+          setStatus("掲載項目を3つ以上設定してください。", "danger");
+          return;
+        }
+
+        const numberedItems = items
+          .map((item, index) => `${index + 1}. ${item}`)
+          .join("\n");
+
+        const prompt = `あなたは、特別支援教育で使用する復習教材を設計する教材デザイナーです。
+以下の条件に基づき、A4横1枚の「完成した復習教材」を、一度の画像生成で作成してください。
+
+【最重要の目的】
+${selectedPurpose}
 
 【教材の基本情報】
-・教科：${subject}
-・対象：${$("audience").value}
-・教材の種類：${genreNames[genre]}
-・学習テーマ：${theme}
-・教材の目的：${purpose || "画像と短い言葉を結び付け、学習した内容を振り返る"}
-・画像表現：${$("imageStyle").value}
-・情報量：${$("density").selectedOptions[0].text}
-・レイアウト：${$("layout").selectedOptions[0].text}
+・教科：${selectedSubject}
+・教材の種類：${selectedCategory}
+・テーマ：${selectedTheme}
+・対象：${$("grade").value}
+・文章の難しさ：${$("difficulty").value}
+・タイトル表現：${$("titleStyle").value}
 
 【掲載する内容】
-${items.length ? items.map((v,i)=>`${i+1}. ${v}`).join("\n") : "テーマに合う主要項目を6項目以内で整理する"}
+${numberedItems}
 
-【作成手順】
-1. まず、教材全体で最も伝えたい学習内容を一つ決める。
-2. 次に、上記の掲載項目を学習しやすい順番に並べる。
-3. A4横1枚の中に、タイトル、基本情報、複数の内容ブロック、まとめを配置する。
-4. 各項目を「画像」「名称」「短い説明文」の組み合わせで統一する。
-5. 最後に、文字量・画像サイズ・余白を調整し、全体を一枚の完成教材として仕上げる。
+【最優先で守ること】
+1. 作成手順の説明だけで終わらず、完成した教材画像を生成する。
+2. 複数の画像を別々に生成せず、すべてをA4横1枚にまとめる。
+3. 選択した掲載項目を意味のまとまりとして整理し、見出し・画像・短い説明文を対応させる。
+4. 文字よりも画像を主役にしながら、学習内容が正確に伝わるようにする。
+5. 日本語の文字化け、不自然な言葉、誤った表記を避ける。
 
-【優先順位】
-${priorities.map((v,i)=>`${i+1}. ${v}`).join("\n")}
+【AIが内部で行う作成順序】
+次の順番で考え、順番を入れ替えないでください。
 
-【紙面構成】
-・上部：大きなタイトルと短い導入文
-・上部または右上：基本情報を3〜4点
-・中央：内容を2〜4つのまとまりに分類
-・各まとまり：色付き見出し、画像、名称、短い説明
-・下部：一文または二文のまとめ
-・全体：画像と文字が対応し、どこを見ればよいか迷わない構成
+Step 1
+教材の目的、対象、テーマを確認する。
+
+Step 2
+掲載項目の重要度と関係を整理する。
+同じ意味の内容は重複させず、各項目の役割を明確にする。
+
+Step 3
+タイトルを最も目立つ位置に配置する。
+
+Step 4
+「タイトル → 基本情報 → 各内容 → まとめ」と視線が自然に流れるA4横レイアウトを決める。
+
+Step 5
+各項目に適した写真、教育用イラスト、図解の種類を決める。
+
+Step 6
+各画像の名称と短い説明文を作る。
+
+Step 7
+完成前に、情報量、余白、文字の大きさ、画像と文章の対応、日本語表記を確認する。
+
+【レイアウト条件】
+・用紙はA4横向き、1ページ。
+・基本レイアウトは「${$("layout").value}」。
+・タイトル、教材の基本情報、複数の内容ブロック、最後のまとめを配置する。
+・すべてを同じ大きさに機械的に分割するのではなく、重要度に応じて大きさを調整する。
+・ただし、1項目だけが極端に大きくならないようにする。
+・各ブロックの情報量をできるだけ均等にする。
+・項目数が多い場合も、文字を極端に小さくせず、不要な説明を削って整理する。
+・余白を確保し、詰め込みすぎない。
+・見出し色を使い分けてもよいが、全体の統一感を保つ。
+
+【画像条件】
+・画像表現は「${$("imageStyle").value}」。
+・実物理解に向く内容は写真、仕組みや流れの理解に向く内容は教育用イラストや図解を使う。
+・画像は装飾ではなく、学習内容を思い出す手がかりとして使用する。
+・画像同士の画風、明るさ、解像感をできるだけ統一する。
+・人物やキャラクターは、教材内容を邪魔しない補助的な使用にとどめる。
+
+【文章条件】
+・説明文は${$("textLength").value}を目安とする。
+・見出しは短くする。
+・画像の名称を明記する。
+・各項目の説明は1〜2文にする。
+・対象が${$("grade").value}であることを踏まえ、幼すぎず、難しすぎない表現にする。
+・難しい言葉には、必要に応じて簡単な言い換えを添える。
+・同じ説明を繰り返さない。
 
 【禁止事項】
-・長い文章を載せない
-・画像だけを一枚ずつ別々に出力しない
-・すべてを同じ重要度で配置しない
-・テーマと関係のない装飾や情報を追加しない
-・小さすぎる文字を使わない
-・日本語の文字化けや誤字を残さない
+・「まず1枚目を作ります」などと分割しない。
+・画像を1枚ずつ生成しない。
+・文章だけの回答にしない。
+・空の画像枠や未完成の下書きを出さない。
+・特定の作成例の国名や内容を残さない。
+・今回のテーマ「${selectedTheme}」に合わせて、すべての内容を置き換える。
+・不要な装飾、過剰な背景、教材内容と無関係なキャラクターを入れない。
+・誤字、文字化け、不自然な日本語を入れない。
 
-完成後は、追加質問をせず、そのまま一枚の教材として提示してください。`;
+【最終確認】
+完成前に、次の内容を内部で確認してください。
+・選択した掲載項目がすべて入っている。
+・画像と見出しと説明文が正しく対応している。
+・重要な情報が見つけやすい。
+・子どもの視線が自然に流れる。
+・A4横1枚に収まっている。
+・授業でそのまま提示できる完成形になっている。
+・テーマ以外の作成例が残っていない。
 
-    $("promptOutput").value = prompt;
-    $("status").textContent = "プロンプトを作成しました。";
-    return prompt;
-  }
+確認後、作業手順や補足説明は表示せず、完成した教材画像のみを生成してください。`;
 
-  async function copyPrompt(){
-    const text = $("promptOutput").value || buildPrompt();
-    if(!text) return;
-    try{
-      await navigator.clipboard.writeText(text);
-      $("status").textContent = "プロンプトをコピーしました。";
-    }catch{
-      $("promptOutput").focus();
-      $("promptOutput").select();
-      document.execCommand("copy");
-      $("status").textContent = "プロンプトをコピーしました。";
-    }
-  }
+        promptOutput.textContent = prompt;
+        setStatus("完成プロンプトを作成しました。", "success");
+      }
 
-  function resetAll(){
-    $("subject").value = "";
-    $("genre").value = "";
-    $("theme").value = "";
-    $("purpose").value = "";
-    $("layout").value = "guided";
-    $("density").value = "standard";
-    $("audience").selectedIndex = 0;
-    $("imageStyle").selectedIndex = 0;
-    $("promptOutput").value = "";
-    $("suggestions").innerHTML = "";
-    selected.clear();
-    renderSelected();
-    updatePreview();
-    $("status").textContent = "入力内容をリセットしました。";
-  }
+      function setStatus(message, type = "success") {
+        status.textContent = message;
+        status.style.color =
+          type === "danger" ? "var(--danger)" :
+          type === "warning" ? "var(--warning)" :
+          "var(--success)";
+      }
 
-  function escapeHtml(value){
-    return String(value)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
+      subject.addEventListener("change", () => {
+        state.subject = subject.value;
+        renderCategories();
+        updateSummary();
+        updatePreview();
+      });
 
-  $("genre").addEventListener("change", renderSuggestions);
-  $("subject").addEventListener("change", updatePreview);
-  $("theme").addEventListener("input", updatePreview);
-  $("purpose").addEventListener("input", updatePreview);
-  $("addItem").addEventListener("click", addCustomItem);
-  $("customItem").addEventListener("keydown",e=>{
-    if(e.key==="Enter"){
-      e.preventDefault();
-      addCustomItem();
-    }
-  });
-  $("generate").addEventListener("click", buildPrompt);
-  $("copy").addEventListener("click", copyPrompt);
-  $("reset").addEventListener("click", resetAll);
+      theme.addEventListener("input", updatePreview);
+      purpose.addEventListener("input", updatePreview);
+      $("grade").addEventListener("change", updatePreview);
+      $("titleStyle").addEventListener("change", updatePreview);
 
-  renderSuggestions();
-  updatePreview();
-</script>
+      $("addItem").addEventListener("click", () => {
+        const value = $("newItem").value.trim();
+        if (!value) return;
+        state.items.push(value);
+        $("newItem").value = "";
+        renderItems();
+        updateSummary();
+        updatePreview();
+      });
+
+      $("newItem").addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          $("addItem").click();
+        }
+      });
+
+      $("generatePrompt").addEventListener("click", buildPrompt);
+
+      $("copyPrompt").addEventListener("click", async () => {
+        const text = promptOutput.textContent;
+        if (!text || text.startsWith("左側を入力")) {
+          setStatus("先に完成プロンプトを作成してください。", "danger");
+          return;
+        }
+
+        try {
+          await navigator.clipboard.writeText(text);
+          setStatus("プロンプトをコピーしました。");
+        } catch {
+          const range = document.createRange();
+          range.selectNodeContents(promptOutput);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          setStatus("自動コピーできなかったため、文章を選択しました。", "warning");
+        }
+      });
+
+      $("downloadPrompt").addEventListener("click", () => {
+        const text = promptOutput.textContent;
+        if (!text || text.startsWith("左側を入力")) {
+          setStatus("先に完成プロンプトを作成してください。", "danger");
+          return;
+        }
+
+        const safeTheme = (theme.value.trim() || "review")
+          .replace(/[\\/:*?"<>|]/g, "_");
+
+        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${safeTheme}_復習教材プロンプト.txt`;
+        link.click();
+        URL.revokeObjectURL(url);
+
+        setStatus("プロンプトをテキスト保存しました。");
+      });
+
+      $("printPreview").addEventListener("click", () => {
+        window.print();
+      });
+
+      $("resetAll").addEventListener("click", () => {
+        state.subject = "";
+        state.category = "";
+        state.items = [];
+
+        subject.value = "";
+        theme.value = "";
+        purpose.value = "";
+        $("grade").value = "中学部";
+        $("difficulty").value = "やさしい";
+        $("imageStyle").selectedIndex = 0;
+        $("layout").selectedIndex = 0;
+        $("textLength").selectedIndex = 0;
+        $("titleStyle").selectedIndex = 0;
+
+        categoryPills.innerHTML = "";
+        itemList.innerHTML = "";
+        promptOutput.textContent =
+          "左側を入力して「完成プロンプトを作成」を押してください。";
+
+        lock(categoryStep, true);
+        lock(themeStep, true);
+        lock(purposeStep, true);
+        lock(itemsStep, true);
+        lock(designStep, true);
+
+        setStatus("入力をリセットしました。");
+        updateSummary();
+        updatePreview();
+      });
+
+      updatePreview();
+    })();
+  </script>
 </body>
-</html> 
+</html>

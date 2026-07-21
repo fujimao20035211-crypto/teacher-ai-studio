@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Teacher AI Studio Review</title>
+
+  <!-- PNG・JPEG保存用 -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        "Meiryo",
+        sans-serif;
+      background: #f4f7fb;
+      color: #243142;
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(135deg, #275dad, #4b8bd8);
+      color: white;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      font-size: 15px;
+    }
+
+    .page-layout {
+      width: min(1400px, 96%);
+      margin: 24px auto 60px;
+      display: grid;
+      grid-template-columns: minmax(330px, 430px) minmax(500px, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 5px 20px rgba(20, 50, 90, 0.1);
+    }
+
+    .panel h2 {
+      margin-top: 0;
+      margin-bottom: 18px;
+      font-size: 21px;
+      color: #275dad;
+      border-bottom: 2px solid #dbe8f8;
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group > label,
+    .form-title {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      border: 2px solid #d8e1ec;
+      border-radius: 10px;
+      padding: 11px 12px;
+      font: inherit;
+      background: white;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #4b8bd8;
+      box-shadow: 0 0 0 3px rgba(75, 139, 216, 0.15);
+    }
+
+    .radio-list,
+    .checkbox-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .radio-list.two-columns,
+    .checkbox-list.two-columns {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .choice-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border: 1px solid #d8e1ec;
+      border-radius: 9px;
+      cursor: pointer;
+      background: #fbfdff;
+    }
+
+    .choice-label:hover {
+      background: #eef6ff;
+    }
+
+    .choice-label input {
+      flex: 0 0 auto;
+    }
+
+    .small-note {
+      font-size: 13px;
+      color: #5c6d80;
+      margin-top: 6px;
+    }
+
+    .warning-box {
+      background: #fff8df;
+      border-left: 5px solid #e8b934;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 17px;
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(0.97);
+    }
+
+    .primary-button {
+      background: #275dad;
+      color: white;
+    }
+
+    .secondary-button {
+      background: #e7f0fb;
+      color: #275dad;
+    }
+
+    .download-button {
+      background: #267a54;
+      color: white;
+    }
+
+    .jpeg-button {
+      background: #8a5a27;
+      color: white;
+    }
+
+    .print-button {
+      background: #6a4ca3;
+      color: white;
+    }
+
+    .clear-button {
+      background: #eef0f3;
+      color: #4b5563;
+    }
+
+    .preview-wrapper {
+      overflow: auto;
+      background: #e9eef5;
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    /*
+      A4横比率に近い表示。
+      保存時もこの範囲がPNG・JPEGになる。
+    */
+    #reviewSheet {
+      width: 1120px;
+      min-height: 792px;
+      margin: 0 auto;
+      background: white;
+      padding: 34px;
+      position: relative;
+    }
+
+    .sheet-header {
+      border-bottom: 5px solid #275dad;
+      padding-bottom: 14px;
+      margin-bottom: 22px;
+    }
+
+    .sheet-title {
+      margin: 0;
+      text-align: center;
+      font-size: 34px;
+      color: #1f4c89;
+      letter-spacing: 0.04em;
+    }
+
+    .sheet-subtitle {
+      margin: 6px 0 0;
+      text-align: center;
+      font-size: 18px;
+      color: #5c6d80;
+    }
+
+    .card-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .review-card {
+      min-height: 270px;
+      border: 3px solid #bed3ed;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #fbfdff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-heading {
+      padding: 10px 12px;
+      background: #dcecff;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      color: #1f4c89;
+    }
+
+    .card-image-area {
+      flex: 1;
+      min-height: 155px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      background:
+        linear-gradient(45deg, #f8fbff 25%, transparent 25%),
+        linear-gradient(-45deg, #f8fbff 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #f8fbff 75%),
+        linear-gradient(-45deg, transparent 75%, #f8fbff 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+    }
+
+    .card-image-area img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    .image-placeholder {
+      font-size: 64px;
+      text-align: center;
+    }
+
+    .card-description {
+      min-height: 58px;
+      margin: 0;
+      padding: 10px 12px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      background: white;
+      border-top: 2px solid #dce7f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sheet-footer {
+      margin-top: 20px;
+      padding-top: 12px;
+      border-top: 2px dashed #b8c7d9;
+      text-align: center;
+      color: #536477;
+      font-size: 15px;
+    }
+
+    .prompt-output {
+      width: 100%;
+      min-height: 320px;
+      margin-top: 12px;
+      white-space: pre-wrap;
+      font-family: inherit;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .image-input-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .image-input-row {
+      padding: 12px;
+      border-radius: 10px;
+      background: #f4f8fd;
+      border: 1px solid #dbe5f1;
+    }
+
+    .image-input-row strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .image-input-row input[type="file"] {
+      width: 100%;
+    }
+
+    @media (max-width: 1000px) {
+      .page-layout {
+        grid-template-columns: 1fr;
+      }
+
+      #reviewSheet {
+        transform-origin: top left;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      header,
+      .settings-panel,
+      .action-area,
+      .prompt-panel,
+      .preview-title {
+        display: none !important;
+      }
+
+      .page-layout,
+      .panel,
+      .preview-wrapper {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        background: white;
+      }
+
+      #reviewSheet {
+        width: 100%;
+        min-height: auto;
+        margin: 0;
+        padding: 10mm;
+      }
+
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Teacher AI Studio Review</h1>
+    <p>中学部・高等部向け　画像中心の復習教材プロンプト作成ツール</p>
+  </header>
+
+  <main class="page-layout">
+
+    <!-- 左側：設定 -->
+    <section class="panel settings-panel">
+
+      <h2>教材の内容を設定</h2>
+
+      <div class="warning-box">
+        児童生徒名、顔写真、学校名などの個人情報は入力しないでください。
+      </div>
+
+      <div class="form-group">
+        <label for="subject">教科</label>
+        <select id="subject">
+          <option value="social">社会</option>
+          <option value="science">理科</option>
+          <option value="health">保健</option>
+          <option value="career">職業</option>
+          <option value="homeEconomics">家庭</option>
+          <option value="other">その他</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="category">学習内容の種類</label>
+        <select id="category"></select>
+      </div>
+
+      <div class="form-group">
+        <label for="theme">学習テーマ</label>
+        <input
+          id="theme"
+          type="text"
+          value="フランス"
+          placeholder="例：フランス、江戸時代、昆虫、食品衛生"
+        >
+      </div>
+
+      <div class="form-group">
+        <span class="form-title">教材のねらい</span>
+        <div class="radio-list">
+          <label class="choice-label">
+            <input type="radio" name="purpose" value="学習内容を見て思い出す" checked>
+            学習内容を見て思い出す
+          </label>
+
+          <label class="choice-label">
+            <input type="radio" name="purpose" value="大切な語句を覚える">
+            大切な語句を覚える
+          </label>
+
+          <label class="choice-label">
+            <input type="radio" name="purpose" value="複数の内容を比べる">
+            複数の内容を比べる
+          </label>
+
+          <label class="choice-label">
+            <input type="radio" name="purpose" value="問題に答えて理解を確かめる">
+            問題に答えて理解を確かめる
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <span class="form-title">掲載する内容</span>
+        <div id="contentOptions" class="checkbox-list two-columns"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="customItem">追加したい内容</label>
+        <input
+          id="customItem"
+          type="text"
+          placeholder="例：音楽、祭り、働く人"
+        >
+        <div class="small-note">
+          複数ある場合は「、」で区切ってください。
+        </div>
+      </div>
+
+      <div class="form-group">
+        <span class="form-title">画像と文字の割合</span>
+        <div class="radio-list">
+          <label class="choice-label">
+            <input type="radio" name="visualRatio" value="画像90％・文字10％">
+            画像90％・文字10％
+          </label>
+
+          <label class="choice-label">
+            <input type="radio" name="visualRatio" value="画像80％・文字20％" checked>
+            画像80％・文字20％
+          </label>
+
+          <label class="choice-label">
+            <input type="radio" name="visualRatio" value="画像70％・文字30％">
+            画像70％・文字30％
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="textLength">一つの説明文の長さ</label>
+        <select id="textLength">
+          <option value="10文字程度">10文字程度</option>
+          <option value="20文字程度" selected>20文字程度</option>
+          <option value="30文字程度">30文字程度</option>
+          <option value="40文字程度">40文字程度</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <span class="form-title">画像の種類</span>
+        <div class="radio-list">
+          <label class="choice-label">
+            <input type="radio" name="imageStyle" value="分かりやすいイラスト" checked>
+            分かりやすいイラスト
+          </label>
+
+          <label class="choice-label">
+            <input type="radio" name="imageStyle" value="実物に近い写実的な画像">
+            実物に近い画像
+          </label>
+
+          <label class="choice-label">
+            <input type="radio" name="imageStyle" value="写真とイラストを組み合わせる">
+            写真とイラストを組み合わせる
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="layoutType">教材の型</label>
+        <select id="layoutType">
+          <option value="A4横1枚に6個のカードを配置する">A4横・6カード</option>
+          <option value="A4横1枚に4個の大きなカードを配置する">A4横・4カード</option>
+          <option value="A4縦1枚に4個のカードを配置する">A4縦・4カード</option>
+          <option value="表と裏で使う復習カード">個別の復習カード</option>
+          <option value="画像と語句を線で結ぶマッチング教材">マッチング教材</option>
+          <option value="画像を見て答える三択問題">三択問題</option>
+          <option value="画像を見て答える○×問題">○×問題</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <span class="form-title">文字への配慮</span>
+
+        <div class="checkbox-list">
+          <label class="choice-label">
+            <input type="checkbox" id="useRuby">
+            漢字にふりがなを付ける
+          </label>
+
+          <label class="choice-label">
+            <input type="checkbox" id="easyWords" checked>
+            難しい言葉を避ける
+          </label>
+
+          <label class="choice-label">
+            <input type="checkbox" id="largeText" checked>
+            大きく読みやすい文字にする
+          </label>
+
+          <label class="choice-label">
+            <input type="checkbox" id="lowStimulus">
+            背景や装飾を控えめにする
+          </label>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button class="primary-button" type="button" onclick="generatePromptAndPreview()">
+          プロンプトを作成
+        </button>
+
+        <button class="clear-button" type="button" onclick="resetForm()">
+          入力をリセット
+        </button>
+      </div>
+
+    </section>
+
+    <!-- 右側 -->
+    <section>
+
+      <div class="panel">
+
+        <h2 class="preview-title">教材プレビュー</h2>
+
+        <div class="preview-wrapper">
+
+          <article id="reviewSheet">
+
+            <div class="sheet-header">
+              <h1 id="previewTitle" class="sheet-title">
+                フランスをふりかえろう
+              </h1>
+
+              <p id="previewSubtitle" class="sheet-subtitle">
+                画像を見ながら、学習したことを思い出そう
+              </p>
+            </div>
+
+            <div id="previewCards" class="card-grid"></div>
+
+            <div class="sheet-footer">
+              Teacher AI Studio Review
+            </div>
+
+          </article>
+
+        </div>
+
+        <div class="action-area">
+
+          <div class="button-row">
+            <button
+              class="download-button"
+              type="button"
+              onclick="downloadImage('png')"
+            >
+              PNGで保存
+            </button>
+
+            <button
+              class="jpeg-button"
+              type="button"
+              onclick="downloadImage('jpeg')"
+            >
+              JPEGで保存
+            </button>
+
+            <button
+              class="print-button"
+              type="button"
+              onclick="window.print()"
+            >
+              印刷・PDF保存
+            </button>
+          </div>
+
+          <div class="small-note">
+            PNGは文字や線が鮮明です。JPEGは容量を小さくしやすい形式です。
+            PDFは「印刷・PDF保存」を押し、印刷画面でPDF保存を選択してください。
+          </div>
+
+        </div>
+
+      </div>
+
+      <section class="panel prompt-panel" style="margin-top: 24px;">
+
+        <h2>Copilot用プロンプト</h2>
+
+        <textarea
+          id="promptOutput"
+          class="prompt-output"
+          readonly
+        ></textarea>
+
+        <div class="button-row">
+
+          <button
+            class="primary-button"
+            type="button"
+            onclick="copyPrompt()"
+          >
+            プロンプトをコピー
+          </button>
+
+        </div>
+
+      </section>
+
+      <section class="panel" style="margin-top: 24px;">
+
+        <h2>完成画像の差し替え</h2>
+
+        <p class="small-note">
+          Copilotなどで作成した画像を選ぶと、プレビュー内の画像を差し替えられます。
+          選択した画像は外部へ送信されず、この画面内だけで使用されます。
+        </p>
+
+        <div id="imageInputList" class="image-input-list"></div>
+
+      </section>
+
+    </section>
+
+  </main>
+
+  <script>
+    "use strict";
+
+    /*
+      教科ごとのカテゴリーと掲載項目。
+      新しい教科や内容を追加するときは、ここを編集する。
+    */
+    const subjectTemplates = {
+      social: {
+        categories: {
+          country: {
+            label: "国・地域",
+            items: [
+              ["国旗", "🇫🇷"],
+              ["世界地図上の位置", "🗺️"],
+              ["食べ物", "🥖"],
+              ["有名な建物", "🗼"],
+              ["服装", "👕"],
+              ["住宅", "🏠"],
+              ["言葉", "💬"],
+              ["スポーツ", "⚽"],
+              ["産業", "🏭"],
+              ["有名な人物", "👤"]
+            ]
+          },
+
+          prefecture: {
+            label: "都道府県",
+            items: [
+              ["場所", "🗾"],
+              ["県庁所在地", "🏢"],
+              ["食べ物", "🍚"],
+              ["有名な場所", "📍"],
+              ["祭り・文化", "🎎"],
+              ["産業", "🏭"],
+              ["自然", "⛰️"],
+              ["交通", "🚆"]
+            ]
+          },
+
+          history: {
+            label: "歴史・時代",
+            items: [
+              ["時代", "⌛"],
+              ["主な人物", "👤"],
+              ["起きた出来事", "📜"],
+              ["場所", "🏯"],
+              ["道具", "⚔️"],
+              ["服装", "👘"],
+              ["人々の暮らし", "🏠"],
+              ["大切な言葉", "🔑"]
+            ]
+          },
+
+          person: {
+            label: "歴史上の人物",
+            items: [
+              ["人物の顔", "👤"],
+              ["生きた時代", "⌛"],
+              ["したこと", "⭐"],
+              ["関係する場所", "📍"],
+              ["関係する出来事", "📜"],
+              ["使った道具", "🧰"],
+              ["大切な言葉", "🔑"]
+            ]
+          },
+
+          industry: {
+            label: "産業・仕事",
+            items: [
+              ["作っている物", "📦"],
+              ["働く人", "👷"],
+              ["使う道具", "🧰"],
+              ["作業の流れ", "➡️"],
+              ["行われている場所", "🏭"],
+              ["運び方", "🚚"],
+              ["私たちの生活との関係", "🏠"]
+            ]
+          }
+        }
+      },
+
+      science: {
+        categories: {
+          animal: {
+            label: "動物",
+            items: [
+              ["名前", "🐾"],
+              ["体のつくり", "🦴"],
+              ["食べ物", "🍃"],
+              ["住んでいる場所", "🌳"],
+              ["動き方", "🏃"],
+              ["成長", "🐣"],
+              ["特徴", "⭐"]
+            ]
+          },
+
+          plant: {
+            label: "植物",
+            items: [
+              ["名前", "🌱"],
+              ["花", "🌸"],
+              ["葉", "🍃"],
+              ["実・種", "🌰"],
+              ["根", "🌿"],
+              ["育つ場所", "🏞️"],
+              ["成長の順番", "➡️"]
+            ]
+          },
+
+          weather: {
+            label: "天気",
+            items: [
+              ["天気の種類", "☀️"],
+              ["雲", "☁️"],
+              ["気温", "🌡️"],
+              ["雨", "🌧️"],
+              ["風", "🌬️"],
+              ["季節", "🍂"],
+              ["生活との関係", "🏠"]
+            ]
+          },
+
+          experiment: {
+            label: "実験",
+            items: [
+              ["使う物", "🧪"],
+              ["実験の手順", "➡️"],
+              ["実験前の予想", "💭"],
+              ["起きた変化", "✨"],
+              ["結果", "✅"],
+              ["分かったこと", "💡"],
+              ["安全上の注意", "⚠️"]
+            ]
+          },
+
+          body: {
+            label: "人の体",
+            items: [
+              ["体の部分", "🧍"],
+              ["名前", "🔤"],
+              ["働き", "⚙️"],
+              ["場所", "📍"],
+              ["健康との関係", "❤️"],
+              ["守る方法", "🛡️"]
+            ]
+          }
+        }
+      },
+
+      health: {
+        categories: {
+          hygiene: {
+            label: "清潔・衛生",
+            items: [
+              ["手洗い", "🧼"],
+              ["うがい", "🥛"],
+              ["歯みがき", "🪥"],
+              ["入浴", "🛁"],
+              ["清潔な服", "👕"],
+              ["正しい手順", "➡️"],
+              ["気を付けること", "⚠️"]
+            ]
+          },
+
+          food: {
+            label: "食事・栄養",
+            items: [
+              ["食べ物", "🍽️"],
+              ["栄養の働き", "💪"],
+              ["体との関係", "🧍"],
+              ["食事の組み合わせ", "🥗"],
+              ["食べる量", "⚖️"],
+              ["気を付けること", "⚠️"]
+            ]
+          },
+
+          sleep: {
+            label: "睡眠・生活習慣",
+            items: [
+              ["寝る時間", "🕘"],
+              ["起きる時間", "⏰"],
+              ["睡眠の働き", "😴"],
+              ["生活の流れ", "➡️"],
+              ["朝の準備", "🌅"],
+              ["気を付けること", "⚠️"]
+            ]
+          },
+
+          safety: {
+            label: "安全",
+            items: [
+              ["危険な場面", "⚠️"],
+              ["安全な行動", "✅"],
+              ["使う道具", "🦺"],
+              ["助けを求める方法", "📢"],
+              ["避難の手順", "➡️"],
+              ["大切な言葉", "🔑"]
+            ]
+          }
+        }
+      },
+
+      career: {
+        categories: {
+          occupation: {
+            label: "仕事・職業",
+            items: [
+              ["仕事の名前", "💼"],
+              ["働く場所", "🏢"],
+              ["仕事の内容", "📝"],
+              ["使う道具", "🧰"],
+              ["服装", "👔"],
+              ["大切な態度", "🤝"],
+              ["一日の流れ", "➡️"]
+            ]
+          },
+
+          workplace: {
+            label: "職場での行動",
+            items: [
+              ["あいさつ", "🙇"],
+              ["報告", "📢"],
+              ["連絡", "☎️"],
+              ["相談", "💬"],
+              ["時間を守る", "⏰"],
+              ["服装", "👕"],
+              ["安全", "⚠️"]
+            ]
+          },
+
+          tools: {
+            label: "道具・機械",
+            items: [
+              ["道具の名前", "🧰"],
+              ["使う場面", "🏭"],
+              ["持ち方", "✋"],
+              ["使い方", "➡️"],
+              ["片付け方", "📦"],
+              ["安全上の注意", "⚠️"]
+            ]
+          },
+
+          procedure: {
+            label: "作業手順",
+            items: [
+              ["準備", "📦"],
+              ["最初の作業", "1️⃣"],
+              ["次の作業", "2️⃣"],
+              ["確認", "✅"],
+              ["片付け", "🧹"],
+              ["安全上の注意", "⚠️"]
+            ]
+          }
+        }
+      },
+
+      homeEconomics: {
+        categories: {
+          cooking: {
+            label: "調理",
+            items: [
+              ["材料", "🥕"],
+              ["使う道具", "🍳"],
+              ["準備", "📦"],
+              ["調理の手順", "➡️"],
+              ["加熱", "🔥"],
+              ["盛り付け", "🍽️"],
+              ["安全・衛生", "⚠️"]
+            ]
+          },
+
+          clothing: {
+            label: "衣服",
+            items: [
+              ["服の種類", "👕"],
+              ["着る場面", "🏠"],
+              ["季節", "☀️"],
+              ["素材", "🧵"],
+              ["洗濯表示", "🏷️"],
+              ["洗い方", "🫧"],
+              ["たたみ方", "📦"]
+            ]
+          },
+
+          cleaning: {
+            label: "掃除",
+            items: [
+              ["掃除する場所", "🏠"],
+              ["使う道具", "🧹"],
+              ["準備", "📦"],
+              ["掃除の手順", "➡️"],
+              ["確認", "✅"],
+              ["片付け", "📦"],
+              ["安全上の注意", "⚠️"]
+            ]
+          },
+
+          shopping: {
+            label: "買い物",
+            items: [
+              ["買う物", "🛒"],
+              ["値段", "💴"],
+              ["必要な金額", "🪙"],
+              ["売り場", "🏬"],
+              ["支払い方", "💳"],
+              ["レシート", "🧾"],
+              ["気を付けること", "⚠️"]
+            ]
+          }
+        }
+      },
+
+      other: {
+        categories: {
+          free: {
+            label: "自由設定",
+            items: [
+              ["名前", "🔤"],
+              ["場所", "📍"],
+              ["特徴", "⭐"],
+              ["使う物", "🧰"],
+              ["手順", "➡️"],
+              ["大切な言葉", "🔑"],
+              ["気を付けること", "⚠️"]
+            ]
+          }
+        }
+      }
+    };
+
+    const subjectElement = document.getElementById("subject");
+    const categoryElement = document.getElementById("category");
+    const contentOptionsElement = document.getElementById("contentOptions");
+    const previewCardsElement = document.getElementById("previewCards");
+    const imageInputListElement = document.getElementById("imageInputList");
+
+    /*
+      教科を変更したときにカテゴリーを更新する。
+    */
+    function updateCategories() {
+      const subjectValue = subjectElement.value;
+      const categories = subjectTemplates[subjectValue].categories;
+
+      categoryElement.innerHTML = "";
+
+      Object.entries(categories).forEach(([key, category]) => {
+        const option = document.createElement("option");
+        option.value = key;
+        option.textContent = category.label;
+        categoryElement.appendChild(option);
+      });
+
+      updateContentOptions();
+    }
+
+    /*
+      カテゴリーに合わせて掲載項目を表示する。
+    */
+    function updateContentOptions() {
+      const subjectValue = subjectElement.value;
+      const categoryValue = categoryElement.value;
+
+      const template =
+        subjectTemplates[subjectValue].categories[categoryValue];
+
+      contentOptionsElement.innerHTML = "";
+
+      template.items.forEach(([label, emoji], index) => {
+        const wrapper = document.createElement("label");
+        wrapper.className = "choice-label";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = "contentItem";
+        checkbox.value = label;
+        checkbox.dataset.emoji = emoji;
+
+        /*
+          最初の6項目を初期選択。
+        */
+        checkbox.checked = index < 6;
+
+        const text = document.createElement("span");
+        text.textContent = `${emoji} ${label}`;
+
+        wrapper.appendChild(checkbox);
+        wrapper.appendChild(text);
+
+        contentOptionsElement.appendChild(wrapper);
+      });
+
+      generatePromptAndPreview();
+    }
+
+    /*
+      ラジオボタンの選択値を取得する。
+    */
+    function getRadioValue(name) {
+      const selected =
+        document.querySelector(`input[name="${name}"]:checked`);
+
+      return selected ? selected.value : "";
+    }
+
+    /*
+      選択された掲載項目を取得する。
+    */
+    function getSelectedItems() {
+      const selectedCheckboxes =
+        document.querySelectorAll(
+          'input[name="contentItem"]:checked'
+        );
+
+      const items = Array.from(selectedCheckboxes).map((checkbox) => ({
+        label: checkbox.value,
+        emoji: checkbox.dataset.emoji || "🖼️"
+      }));
+
+      const customText =
+        document.getElementById("customItem").value.trim();
+
+      if (customText) {
+        const customItems =
+          customText
+            .split(/[、,]/)
+            .map((item) => item.trim())
+            .filter(Boolean);
+
+        customItems.forEach((item) => {
+          items.push({
+            label: item,
+            emoji: "🖼️"
+          });
+        });
+      }
+
+      return items;
+    }
+
+    /*
+      プレビューとプロンプトをまとめて更新する。
+    */
+    function generatePromptAndPreview() {
+      const theme =
+        document.getElementById("theme").value.trim() || "学習内容";
+
+      const subjectText =
+        subjectElement.options[subjectElement.selectedIndex].text;
+
+      const categoryText =
+        categoryElement.options[categoryElement.selectedIndex].text;
+
+      const purpose = getRadioValue("purpose");
+      const visualRatio = getRadioValue("visualRatio");
+      const imageStyle = getRadioValue("imageStyle");
+
+      const textLength =
+        document.getElementById("textLength").value;
+
+      const layoutType =
+        document.getElementById("layoutType").value;
+
+      const useRuby =
+        document.getElementById("useRuby").checked;
+
+      const easyWords =
+        document.getElementById("easyWords").checked;
+
+      const largeText =
+        document.getElementById("largeText").checked;
+
+      const lowStimulus =
+        document.getElementById("lowStimulus").checked;
+
+      let items = getSelectedItems();
+
+      if (items.length === 0) {
+        items = [
+          {
+            label: "学習内容",
+            emoji: "🖼️"
+          }
+        ];
+      }
+
+      updatePreview(theme, purpose, items);
+      updatePrompt(
+        theme,
+        subjectText,
+        categoryText,
+        purpose,
+        visualRatio,
+        imageStyle,
+        textLength,
+        layoutType,
+        useRuby,
+        easyWords,
+        largeText,
+        lowStimulus,
+        items
+      );
+
+      createImageInputs(items);
+    }
+
+    /*
+      教材プレビューを作成する。
+    */
+    function updatePreview(theme, purpose, items) {
+      document.getElementById("previewTitle").textContent =
+        `${theme}をふりかえろう`;
+
+      document.getElementById("previewSubtitle").textContent =
+        purpose;
+
+      previewCardsElement.innerHTML = "";
+
+      const layoutValue =
+        document.getElementById("layoutType").value;
+
+      let maximumCards = 6;
+      let columns = 3;
+
+      if (layoutValue.includes("4個")) {
+        maximumCards = 4;
+        columns = 2;
+      }
+
+      if (
+        layoutValue.includes("三択") ||
+        layoutValue.includes("○×") ||
+        layoutValue.includes("マッチング")
+      ) {
+        maximumCards = 6;
+        columns = 3;
+      }
+
+      previewCardsElement.style.gridTemplateColumns =
+        `repeat(${columns}, 1fr)`;
+
+      items.slice(0, maximumCards).forEach((item, index) => {
+        const card = document.createElement("section");
+        card.className = "review-card";
+        card.dataset.cardIndex = String(index);
+
+        const heading = document.createElement("div");
+        heading.className = "card-heading";
+        heading.textContent = item.label;
+
+        const imageArea = document.createElement("div");
+        imageArea.className = "card-image-area";
+
+        const placeholder = document.createElement("div");
+        placeholder.className = "image-placeholder";
+        placeholder.textContent = item.emoji;
+
+        imageArea.appendChild(placeholder);
+
+        const description = document.createElement("p");
+        description.className = "card-description";
+        description.textContent =
+          `${item.label}を見て思い出そう`;
+
+        card.appendChild(heading);
+        card.appendChild(imageArea);
+        card.appendChild(description);
+
+        previewCardsElement.appendChild(card);
+      });
+    }
+
+    /*
+      Copilotへ渡すプロンプトを作成する。
+    */
+    function updatePrompt(
+      theme,
+      subjectText,
+      categoryText,
+      purpose,
+      visualRatio,
+      imageStyle,
+      textLength,
+      layoutType,
+      useRuby,
+      easyWords,
+      largeText,
+      lowStimulus,
+      items
+    ) {
+      const itemText =
+        items
+          .map((item, index) => `${index + 1}. ${item.label}`)
+          .join("\n");
+
+      const prompt = `
+あなたは、特別支援学校の中学部・高等部向け教材を作成する教育デザイナーです。
+
+次の条件に基づいて、授業後に使用する「画像中心の復習教材」を作成してください。
+
+【基本情報】
+教科：${subjectText}
+学習内容の種類：${categoryText}
+学習テーマ：${theme}
+教材の目的：${purpose}
+
+【掲載する内容】
+${itemText}
+
+【教材の基本方針】
+・教科書のように長い説明文を掲載しないでください。
+・画像を主役にしてください。
+・画像と短い言葉を見て、授業内容を思い出せる教材にしてください。
+・一つの項目につき、原則として「見出し・大きな画像・短い説明」の3つで構成してください。
+・説明文は一項目につき${textLength}にしてください。
+・画像と文字の割合は「${visualRatio}」を目安にしてください。
+・使用する画像は「${imageStyle}」にしてください。
+・教材全体は「${layoutType}」で構成してください。
+
+【文字と表現】
+${useRuby ? "・漢字には、必要に応じてふりがなを付けてください。" : "・ふりがなは付けなくて構いません。"}
+${easyWords ? "・難しい言葉や長い言い回しを避け、分かりやすい言葉を使ってください。" : ""}
+${largeText ? "・見出しと説明文は、大きく読みやすい文字にしてください。" : ""}
+${lowStimulus ? "・背景や装飾を控えめにし、情報量を少なくしてください。" : "・楽しく見やすいデザインにしつつ、装飾が学習内容を邪魔しないようにしてください。"}
+
+【レイアウト上の条件】
+・各項目を明確に分けてください。
+・画像同士、文章同士が重ならないようにしてください。
+・十分な余白を確保してください。
+・重要な情報だけを残し、不要な装飾は減らしてください。
+・日本語の文字を正確に表示してください。
+・誤字や文字化けを起こさないでください。
+・印刷して使用できる高解像度の教材にしてください。
+
+【出力してほしい内容】
+1. 教材全体の完成案
+2. 各項目に掲載する短い説明文
+3. 各項目に使用する画像の具体的な指示
+4. 画像や文字の配置が分かるレイアウト指示
+
+画像内の日本語が正しく生成できない場合は、画像と文章を別々に作成し、PowerPoint、Word、HTMLなどで正確に配置できる形式を提案してください。
+      `.trim();
+
+      document.getElementById("promptOutput").value = prompt;
+    }
+
+    /*
+      各カードの画像差し替え欄を作る。
+    */
+    function createImageInputs(items) {
+      imageInputListElement.innerHTML = "";
+
+      const visibleCards =
+        previewCardsElement.querySelectorAll(".review-card");
+
+      items.slice(0, visibleCards.length).forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "image-input-row";
+
+        const label = document.createElement("strong");
+        label.textContent =
+          `${index + 1}. ${item.label}`;
+
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = "image/png,image/jpeg,image/webp";
+
+        fileInput.addEventListener("change", (event) => {
+          const file = event.target.files[0];
+
+          if (!file) {
+            return;
+          }
+
+          if (!file.type.startsWith("image/")) {
+            alert("画像ファイルを選択してください。");
+            fileInput.value = "";
+            return;
+          }
+
+          const reader = new FileReader();
+
+          reader.onload = () => {
+            replaceCardImage(index, reader.result);
+          };
+
+          reader.onerror = () => {
+            alert("画像の読み込みに失敗しました。");
+          };
+
+          reader.readAsDataURL(file);
+        });
+
+        row.appendChild(label);
+        row.appendChild(fileInput);
+
+        imageInputListElement.appendChild(row);
+      });
+    }
+
+    /*
+      指定したカードの画像を置き換える。
+    */
+    function replaceCardImage(index, imageSource) {
+      const card =
+        previewCardsElement.querySelector(
+          `[data-card-index="${index}"]`
+        );
+
+      if (!card) {
+        return;
+      }
+
+      const imageArea =
+        card.querySelector(".card-image-area");
+
+      imageArea.innerHTML = "";
+
+      const image = document.createElement("img");
+      image.src = imageSource;
+      image.alt = "教材画像";
+
+      imageArea.appendChild(image);
+    }
+
+    /*
+      プロンプトをクリップボードへコピーする。
+    */
+    async function copyPrompt() {
+      const prompt =
+        document.getElementById("promptOutput").value;
+
+      if (!prompt.trim()) {
+        alert("先にプロンプトを作成してください。");
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(prompt);
+        alert("プロンプトをコピーしました。");
+      } catch (error) {
+        const output =
+          document.getElementById("promptOutput");
+
+        output.select();
+        document.execCommand("copy");
+
+        alert("プロンプトをコピーしました。");
+      }
+    }
+
+    /*
+      教材部分をPNGまたはJPEGで保存する。
+    */
+    async function downloadImage(format) {
+      const sheet =
+        document.getElementById("reviewSheet");
+
+      const theme =
+        document.getElementById("theme").value.trim() ||
+        "review-material";
+
+      if (typeof html2canvas !== "function") {
+        alert(
+          "保存機能を読み込めませんでした。インターネット接続を確認してください。"
+        );
+        return;
+      }
+
+      try {
+        const canvas = await html2canvas(sheet, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          logging: false
+        });
+
+        const link = document.createElement("a");
+
+        if (format === "jpeg") {
+          link.download = `${sanitizeFileName(theme)}-review.jpg`;
+          link.href = canvas.toDataURL("image/jpeg", 0.82);
+        } else {
+          link.download = `${sanitizeFileName(theme)}-review.png`;
+          link.href = canvas.toDataURL("image/png");
+        }
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+      } catch (error) {
+        console.error(error);
+
+        alert(
+          "画像保存に失敗しました。画像の読み込み状態を確認してください。"
+        );
+      }
+    }
+
+    /*
+      ファイル名に使用できない文字を取り除く。
+    */
+    function sanitizeFileName(fileName) {
+      return fileName
+        .replace(/[\\/:*?"<>|]/g, "")
+        .replace(/\s+/g, "-")
+        .slice(0, 50);
+    }
+
+    /*
+      入力内容を初期状態へ戻す。
+    */
+    function resetForm() {
+      const confirmed =
+        window.confirm("入力内容を初期状態に戻しますか？");
+
+      if (!confirmed) {
+        return;
+      }
+
+      subjectElement.value = "social";
+      document.getElementById("theme").value = "フランス";
+      document.getElementById("customItem").value = "";
+      document.getElementById("textLength").value =
+        "20文字程度";
+      document.getElementById("layoutType").selectedIndex = 0;
+
+      document.querySelector(
+        'input[name="purpose"][value="学習内容を見て思い出す"]'
+      ).checked = true;
+
+      document.querySelector(
+        'input[name="visualRatio"][value="画像80％・文字20％"]'
+      ).checked = true;
+
+      document.querySelector(
+        'input[name="imageStyle"][value="分かりやすいイラスト"]'
+      ).checked = true;
+
+      document.getElementById("useRuby").checked = false;
+      document.getElementById("easyWords").checked = true;
+      document.getElementById("largeText").checked = true;
+      document.getElementById("lowStimulus").checked = false;
+
+      updateCategories();
+    }
+
+    /*
+      入力内容が変わったらプレビューとプロンプトを更新する。
+    */
+    subjectElement.addEventListener(
+      "change",
+      updateCategories
+    );
+
+    categoryElement.addEventListener(
+      "change",
+      updateContentOptions
+    );
+
+    document
+      .querySelector(".settings-panel")
+      .addEventListener("change", (event) => {
+        if (
+          event.target.id !== "subject" &&
+          event.target.id !== "category"
+        ) {
+          generatePromptAndPreview();
+        }
+      });
+
+    document
+      .getElementById("theme")
+      .addEventListener("input", generatePromptAndPreview);
+
+    document
+      .getElementById("customItem")
+      .addEventListener("input", generatePromptAndPreview);
+
+    /*
+      初期表示。
+    */
+    updateCategories();
+  </script>
+
+</body>
+</html>

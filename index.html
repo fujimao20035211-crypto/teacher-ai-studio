@@ -1,249 +1,342 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>教材イメージ翻訳ツール</title>
-<style>
-body{
-  margin:0;
-  font-family:"Yu Gothic","Hiragino Sans",sans-serif;
-  background:#f7f3ea;
-  color:#333;
-}
-header{
-  background:#4f7f7b;
-  color:white;
-  padding:24px;
-  text-align:center;
-}
-main{
-  max-width:900px;
-  margin:auto;
-  padding:20px;
-}
-section{
-  background:white;
-  border-radius:14px;
-  padding:18px;
-  margin-bottom:16px;
-  box-shadow:0 3px 10px rgba(0,0,0,.08);
-}
-h2{
-  color:#4f7f7b;
-  border-left:8px solid #f2b56b;
-  padding-left:10px;
-}
-label{
-  display:block;
-  font-weight:bold;
-  margin-top:12px;
-}
-input,textarea,select{
-  width:100%;
-  padding:10px;
-  margin-top:6px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:16px;
-}
-textarea{
-  min-height:80px;
-}
-button{
-  padding:14px 24px;
-  border:none;
-  border-radius:999px;
-  background:#4f7f7b;
-  color:white;
-  font-weight:bold;
-  font-size:16px;
-  margin:8px 6px 8px 0;
-  cursor:pointer;
-}
-button.copy{
-  background:#f2b56b;
-  color:#333;
-}
-#output{
-  min-height:260px;
-  border:2px solid #4f7f7b;
-}
-.note{
-  background:#fff8e5;
-  border:2px solid #f2d38b;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher AI Studio</title>
+  <style>
+    :root{
+      --green:#2f6f4e;
+      --green-dark:#24583d;
+      --green-soft:#edf6f1;
+      --blue:#315f8c;
+      --blue-soft:#eef4fa;
+      --orange:#a96328;
+      --orange-soft:#fbf3ea;
+      --text:#203029;
+      --muted:#66756e;
+      --line:#d6e1db;
+      --bg:#f3f7f5;
+      --white:#ffffff;
+      --shadow:0 12px 32px rgba(35,68,52,.10);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(47,111,78,.10), transparent 30%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.7;
+    }
+
+    .page{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
+      padding:24px 0 48px;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:32px;
+      padding:44px 46px;
+      color:#fff;
+      background:linear-gradient(135deg,var(--green-dark),var(--green));
+      box-shadow:var(--shadow);
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      width:360px;
+      height:360px;
+      right:-120px;
+      top:-150px;
+      border-radius:50%;
+      background:rgba(255,255,255,.09);
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 13px;
+      border-radius:999px;
+      background:rgba(255,255,255,.16);
+      font-weight:800;
+      font-size:.88rem;
+      letter-spacing:.04em;
+    }
+
+    h1{
+      margin:18px 0 8px;
+      font-size:clamp(2rem,5vw,3.45rem);
+      line-height:1.2;
+      letter-spacing:.01em;
+    }
+
+    .hero p{
+      max-width:820px;
+      margin:0;
+      font-size:clamp(1rem,2vw,1.22rem);
+      font-weight:650;
+    }
+
+    .principle{
+      margin-top:24px;
+      padding:14px 18px;
+      border-radius:16px;
+      background:rgba(255,255,255,.14);
+      font-size:.96rem;
+    }
+
+    .section-heading{
+      margin:38px 4px 18px;
+    }
+
+    .section-heading h2{
+      margin:0;
+      font-size:clamp(1.5rem,3vw,2rem);
+    }
+
+    .section-heading p{
+      margin:4px 0 0;
+      color:var(--muted);
+    }
+
+    .tools{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
+    }
+
+    .tool-card{
+      min-height:410px;
+      display:flex;
+      flex-direction:column;
+      background:var(--white);
+      border:1px solid var(--line);
+      border-radius:25px;
+      padding:26px;
+      box-shadow:var(--shadow);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+
+    .tool-card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 18px 38px rgba(35,68,52,.15);
+    }
+
+    .icon{
+      width:68px;
+      height:68px;
+      border-radius:20px;
+      display:grid;
+      place-items:center;
+      font-size:2rem;
+      margin-bottom:18px;
+    }
+
+    .lesson .icon{background:var(--green-soft)}
+    .review .icon{background:var(--blue-soft)}
+    .image .icon{background:var(--orange-soft)}
+
+    .tool-number{
+      font-weight:900;
+      font-size:.82rem;
+      letter-spacing:.08em;
+      color:var(--muted);
+    }
+
+    .tool-card h3{
+      margin:6px 0 8px;
+      font-size:1.55rem;
+      line-height:1.35;
+    }
+
+    .tool-card p{
+      margin:0 0 15px;
+      color:var(--muted);
+    }
+
+    .features{
+      list-style:none;
+      padding:0;
+      margin:4px 0 24px;
+    }
+
+    .features li{
+      position:relative;
+      padding-left:25px;
+      margin:8px 0;
+      font-size:.95rem;
+    }
+
+    .features li::before{
+      content:"✓";
+      position:absolute;
+      left:0;
+      font-weight:900;
+      color:var(--green);
+    }
+
+    .launch{
+      margin-top:auto;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      width:100%;
+      min-height:54px;
+      border-radius:15px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:900;
+      font-size:1rem;
+      transition:filter .18s ease, transform .18s ease;
+    }
+
+    .launch:hover{
+      filter:brightness(1.07);
+      transform:translateY(-1px);
+    }
+
+    .lesson .launch{background:var(--green)}
+    .review .launch{background:var(--blue)}
+    .image .launch{background:var(--orange)}
+
+    .flow{
+      margin-top:24px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:26px;
+      box-shadow:var(--shadow);
+    }
+
+    .flow h2{
+      margin:0 0 14px;
+      font-size:1.35rem;
+    }
+
+    .flow-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    .flow-step{
+      border-radius:15px;
+      background:#f7faf8;
+      border:1px solid var(--line);
+      padding:14px;
+      text-align:center;
+      font-weight:800;
+    }
+
+    footer{
+      text-align:center;
+      margin-top:28px;
+      color:var(--muted);
+      font-size:.86rem;
+    }
+
+    @media(max-width:900px){
+      .tools{grid-template-columns:1fr}
+      .tool-card{min-height:auto}
+      .flow-grid{grid-template-columns:1fr 1fr}
+    }
+
+    @media(max-width:560px){
+      .page{width:min(100% - 18px,1180px);padding-top:10px}
+      .hero{padding:30px 23px;border-radius:24px}
+      .tools{gap:14px}
+      .tool-card{padding:22px;border-radius:21px}
+      .flow-grid{grid-template-columns:1fr}
+    }
+  </style>
 </head>
-
 <body>
-<header>
-  <h1>教材イメージ翻訳ツール</h1>
-  <p>先生のアイデアを、画像生成AIに伝わりやすい言葉へ変換します。</p>
-</header>
+  <main class="page">
+    <section class="hero">
+      <span class="eyebrow">TEACHER AI STUDIO</span>
+      <h1>先生が創る。<br>AIは、考える時間を支える。</h1>
+      <p>
+        普段の授業づくりを大切にしながら、指導案・復習教材・授業イメージの作成を支援する、先生のためのスタジオです。
+      </p>
+      <div class="principle">
+        AIが授業を代わりに作るのではありません。先生自身の意図と判断を中心に、必要な場面だけAIを活用します。
+      </div>
+    </section>
 
-<main>
+    <section class="section-heading">
+      <h2>3つのツール</h2>
+      <p>作りたい内容に合わせて、ツールを選んでください。</p>
+    </section>
 
-<section class="note">
-  <p>児童生徒名、学校名、写真、個人情報は入力しないでください。</p>
-</section>
+    <section class="tools">
+      <article class="tool-card lesson">
+        <div class="icon" aria-hidden="true">📄</div>
+        <div class="tool-number">TOOL 01</div>
+        <h3>指導案作成ツール</h3>
+        <p>
+          学校で普段使用している形式に沿って指導案を作成し、Word・PDFとして保存できます。
+        </p>
+        <ul class="features">
+          <li>A4縦の指導案様式</li>
+          <li>必要なときだけAIに相談</li>
+          <li>教師の意図共有シートへ接続</li>
+        </ul>
+        <a class="launch" href="lesson.html">指導案作成ツールを開く</a>
+      </article>
 
-<section>
-  <h2>1. 先生のアイデア</h2>
-  <label>教材画像のテーマ</label>
-  <input id="theme" placeholder="例：宇宙のアイスクリーム屋さん">
+      <article class="tool-card review">
+        <div class="icon" aria-hidden="true">📚</div>
+        <div class="tool-number">TOOL 02</div>
+        <h3>復習教材作成ツール</h3>
+        <p>
+          教えたい内容と子どもの実態を整理し、復習教材づくりに使うプロンプトを作成します。
+        </p>
+        <ul class="features">
+          <li>教材内容と構成を整理</li>
+          <li>教師が情報を選択・調整</li>
+          <li>Copilotでの教材作成を支援</li>
+        </ul>
+        <a class="launch" href="review.html">復習教材作成ツールを開く</a>
+      </article>
 
-  <label>どんな場面にしたいですか？</label>
-  <textarea id="scene" placeholder="例：宇宙空間にかわいいアイスクリーム屋さんがあり、子どもたちがわくわくしている"></textarea>
-</section>
+      <article class="tool-card image">
+        <div class="icon" aria-hidden="true">🖼️</div>
+        <div class="tool-number">TOOL 03</div>
+        <h3>授業イメージ作成ツール</h3>
+        <p>
+          授業の場面や教材のイメージを整理し、画像生成AIへ伝えるためのプロンプトを作成します。
+        </p>
+        <ul class="features">
+          <li>授業場面を視覚化</li>
+          <li>教材・教具のイメージを共有</li>
+          <li>チームでの共通理解を支援</li>
+        </ul>
+        <a class="launch" href="image.html">授業イメージ作成ツールを開く</a>
+      </article>
+    </section>
 
-<section>
-  <h2>2. 画像の使い道</h2>
-  <label>用途</label>
-  <select id="purpose">
-    <option value="">選んでください</option>
-    <option>教材の背景</option>
-    <option>導入スライド</option>
-    <option>カード画像</option>
-    <option>選択肢の画像</option>
-    <option>ボタン画像</option>
-    <option>ごほうび画面</option>
-  </select>
+    <section class="flow">
+      <h2>Teacher AI Studioの考え方</h2>
+      <div class="flow-grid">
+        <div class="flow-step">1．先生が考える</div>
+        <div class="flow-step">2．ツールで整理する</div>
+        <div class="flow-step">3．必要ならAIに相談する</div>
+        <div class="flow-step">4．先生が決定・作成する</div>
+      </div>
+    </section>
 
-  <label>その他の用途</label>
-  <input id="purposeOther" placeholder="例：朝の会で見せる画像">
-</section>
-
-<section>
-  <h2>3. 雰囲気</h2>
-  <select id="mood">
-    <option value="">選んでください</option>
-    <option>わくわく</option>
-    <option>やさしい</option>
-    <option>楽しい</option>
-    <option>落ち着いた</option>
-    <option>少しドキドキ</option>
-    <option>達成感がある</option>
-  </select>
-
-  <label>その他の雰囲気</label>
-  <input id="moodOther" placeholder="例：不思議、夢の中、冒険感">
-</section>
-
-<section>
-  <h2>4. 絵柄</h2>
-  <select id="style">
-    <option value="">選んでください</option>
-    <option>かわいいアニメ調</option>
-    <option>絵本風</option>
-    <option>教材イラスト風</option>
-    <option>やわらかいデフォルメ調</option>
-    <option>小学生向けアニメ風</option>
-  </select>
-
-  <label>その他の絵柄</label>
-  <input id="styleOther" placeholder="例：絵本とアニメの中間、探検隊風">
-</section>
-
-<section>
-  <h2>5. 色合い</h2>
-  <select id="color">
-    <option value="">選んでください</option>
-    <option>淡い水色</option>
-    <option>クリーム色</option>
-    <option>夕焼けオレンジ</option>
-    <option>森の緑</option>
-    <option>やさしいピンク</option>
-    <option>少しコントラスト強め</option>
-  </select>
-
-  <label>その他の色合い</label>
-  <input id="colorOther" placeholder="例：夜空だけど暗すぎない青紫">
-</section>
-
-<section>
-  <h2>6. キャラクター・表情</h2>
-  <select id="face">
-    <option value="">選んでください</option>
-    <option>丸い顔、大きな目、笑顔</option>
-    <option>表情が分かりやすい</option>
-    <option>わくわくした表情</option>
-    <option>親しみやすい表情</option>
-    <option>少しアニメ化した顔</option>
-  </select>
-
-  <label>その他の表情</label>
-  <input id="faceOther" placeholder="例：リアルすぎない、目を大きく">
-</section>
-
-<section>
-  <h2>7. 入れてほしい物・避けたい物</h2>
-  <label>入れてほしい物</label>
-  <textarea id="include" placeholder="例：星、宇宙船、アイスクリーム屋台"></textarea>
-
-  <label>入れてほしくない物</label>
-  <textarea id="exclude" placeholder="例：文字、看板、ロゴ、暗すぎる背景"></textarea>
-</section>
-
-<button onclick="makePrompt()">プロンプトを作成</button>
-<button class="copy" onclick="copyPrompt()">コピー</button>
-
-<section>
-  <h2>完成したプロンプト</h2>
-  <textarea id="output" placeholder="ここに完成したプロンプトが表示されます。"></textarea>
-</section>
-
-</main>
-
-<script>
-function v(id){
-  return document.getElementById(id).value.trim();
-}
-
-function makePrompt(){
-  const theme = v("theme") || "先生が考えた教材テーマ";
-  const scene = v("scene");
-  const purpose = [v("purpose"), v("purposeOther")].filter(Boolean).join("、");
-  const mood = [v("mood"), v("moodOther")].filter(Boolean).join("、");
-  const style = [v("style"), v("styleOther")].filter(Boolean).join("、");
-  const color = [v("color"), v("colorOther")].filter(Boolean).join("、");
-  const face = [v("face"), v("faceOther")].filter(Boolean).join("、");
-  const include = v("include");
-  const exclude = v("exclude");
-
-  let prompt = "";
-
-  prompt += "特別支援学校の教材で使う、子ども向けの明るく親しみやすいイラストを作成してください。\\n\\n";
-  prompt += "テーマは「" + theme + "」です。\\n";
-
-  if(scene) prompt += "場面は「" + scene + "」です。\\n";
-  if(purpose) prompt += "画像の使い道は「" + purpose + "」です。\\n";
-  if(mood) prompt += "全体の雰囲気は「" + mood + "」にしてください。\\n";
-  if(style) prompt += "絵柄は「" + style + "」にしてください。\\n";
-  if(color) prompt += "背景色や色合いは「" + color + "」を意識してください。\\n";
-  if(face) prompt += "キャラクターの顔や表情は「" + face + "」を意識してください。\\n";
-  if(include) prompt += "入れてほしい物は「" + include + "」です。\\n";
-  if(exclude) prompt += "入れてほしくない物は「" + exclude + "」です。\\n";
-
-  prompt += "\\n教材として使いやすいように、以下の条件を守ってください。\\n";
-  prompt += "・文字、看板、ロゴ、説明文は入れない。\\n";
-  prompt += "・刺激の強い原色は避ける。\\n";
-  prompt += "・細かすぎる装飾は避ける。\\n";
-  prompt += "・主役が一目で分かる構図にする。\\n";
-  prompt += "・授業で使いやすいように少し余白を残す。\\n";
-  prompt += "・背景は淡すぎず、主役が埋もれないようにする。\\n";
-  prompt += "・過度にリアルにせず、やさしく楽しい印象にする。\\n";
-
-  document.getElementById("output").value = prompt;
-}
-
-function copyPrompt(){
-  const output = document.getElementById("output");
-  output.select();
-  document.execCommand("copy");
-  alert("コピーしました");
-}
-</script>
-
+    <footer>
+      Teacher AI Studio｜入力内容はツール内に保存されません。
+    </footer>
+  </main>
 </body>
 </html>

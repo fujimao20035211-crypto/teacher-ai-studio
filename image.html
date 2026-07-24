@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teacher AI Studio｜教材イメージ翻訳ツール</title>
+<title>Teacher AI Studio｜連続画像作成ツール</title>
 <style>
 :root{
   --bg:#f7f3ea;
@@ -15,38 +15,26 @@
   --green-dark:#24583e;
   --green-soft:#edf6f0;
   --teal:#4f7f7b;
+  --teal-soft:#edf7f6;
   --orange:#f2b56b;
   --orange-dark:#c9792e;
+  --danger:#a84646;
   --shadow:0 4px 16px rgba(39,72,54,.09);
 }
-
-*{
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
   margin:0;
   font-family:"Yu Gothic","Hiragino Sans","Noto Sans JP",sans-serif;
   background:var(--bg);
   color:var(--text);
 }
-
-button,
-input,
-textarea,
-select{
-  font:inherit;
-}
-
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
 .app{
-  width:min(1120px,calc(100% - 24px));
+  width:min(1380px,calc(100% - 24px));
   margin:12px auto 36px;
 }
-
 .toolbar{
   position:sticky;
   top:0;
@@ -63,7 +51,6 @@ select{
   box-shadow:var(--shadow);
   backdrop-filter:blur(10px);
 }
-
 .toolbar-title{
   display:flex;
   align-items:center;
@@ -72,13 +59,11 @@ select{
   font-weight:900;
   color:var(--green-dark);
 }
-
 .tool-name{
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
 }
-
 .version{
   flex:none;
   padding:4px 9px;
@@ -87,7 +72,6 @@ select{
   color:var(--green);
   font-size:.78rem;
 }
-
 .toolbar-actions{
   display:flex;
   align-items:center;
@@ -95,7 +79,6 @@ select{
   flex-wrap:wrap;
   justify-content:flex-end;
 }
-
 .toolbar-btn{
   display:inline-flex;
   align-items:center;
@@ -108,28 +91,23 @@ select{
   color:var(--text);
   text-decoration:none;
   font-weight:900;
-  cursor:pointer;
   transition:.18s;
 }
-
 .toolbar-btn:hover{
   transform:translateY(-1px);
   background:#f7faf8;
   border-color:#aebfb4;
 }
-
 .toolbar-btn.primary{
   background:var(--green);
   border-color:var(--green);
   color:#fff;
 }
-
 .toolbar-btn.orange{
   background:var(--orange-dark);
   border-color:var(--orange-dark);
   color:#fff;
 }
-
 .notice{
   margin:12px 0;
   padding:11px 14px;
@@ -139,143 +117,239 @@ select{
   color:var(--muted);
   font-size:.92rem;
 }
-
 .hero{
   margin-bottom:16px;
   padding:22px;
   text-align:center;
-  background:var(--teal);
+  background:linear-gradient(135deg,var(--teal),#699793);
   color:white;
   border-radius:16px;
   box-shadow:var(--shadow);
 }
-
 .hero h1{
   margin:0 0 8px;
-  font-size:clamp(1.45rem,2.8vw,2rem);
+  font-size:clamp(1.5rem,3vw,2.15rem);
 }
-
-.hero p{
-  margin:0;
-  line-height:1.75;
+.hero p{margin:0;line-height:1.75}
+.note{
+  margin-bottom:16px;
+  padding:14px 17px;
+  background:#fff8e5;
+  border:2px solid #f2d38b;
+  border-radius:14px;
 }
-
-main{
-  max-width:900px;
-  margin:auto;
+.note p{margin:0;font-weight:700;line-height:1.7}
+.workspace{
+  display:grid;
+  grid-template-columns:minmax(430px,.9fr) minmax(500px,1.1fr);
+  gap:18px;
+  align-items:start;
 }
-
-section{
+.panel{
   background:var(--panel);
   border:1px solid var(--line);
-  border-radius:14px;
-  padding:20px;
-  margin-bottom:16px;
+  border-radius:16px;
   box-shadow:var(--shadow);
+  overflow:hidden;
+  margin-bottom:16px;
 }
-
-h2{
-  margin:0 0 14px;
+.panel.sticky{
+  position:sticky;
+  top:76px;
+  max-height:calc(100vh - 90px);
+  display:flex;
+  flex-direction:column;
+}
+.panel-head{
+  padding:16px 18px;
+  background:#fbfcfb;
+  border-bottom:1px solid var(--line);
+}
+.panel-head h2{
+  margin:0;
   color:var(--teal);
-  border-left:8px solid var(--orange);
-  padding-left:10px;
-  font-size:1.25rem;
+  font-size:1.2rem;
 }
-
+.panel-head p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:.88rem;
+}
+.panel-body{padding:17px}
+.scroll-body{overflow:auto}
+.section{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:14px;
+}
+.section h3{
+  margin:0 0 12px;
+  color:var(--green-dark);
+  font-size:1.05rem;
+}
+.grid-2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
 label{
   display:block;
   font-weight:900;
-  margin-top:14px;
+  margin-top:12px;
 }
-
-input,
-textarea,
-select{
+label:first-child{margin-top:0}
+input,textarea,select{
   width:100%;
-  padding:12px;
-  margin-top:7px;
+  padding:11px 12px;
+  margin-top:6px;
   border-radius:9px;
   border:1px solid #bdc9c2;
   background:#fff;
   color:var(--text);
   font-size:16px;
 }
-
-input:focus,
-textarea:focus,
-select:focus{
+input:focus,textarea:focus,select:focus{
   outline:3px solid rgba(79,127,123,.16);
   border-color:var(--teal);
 }
-
-textarea{
-  min-height:92px;
-  resize:vertical;
+textarea{min-height:88px;resize:vertical}
+.help{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:.83rem;
 }
-
-.actions{
-  position:sticky;
-  bottom:10px;
-  z-index:50;
+.inline-actions{
   display:flex;
-  gap:10px;
+  gap:8px;
   flex-wrap:wrap;
+  margin-top:13px;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
   justify-content:center;
-  margin:20px 0;
-  padding:12px;
-  background:rgba(247,243,234,.94);
+  gap:6px;
+  min-height:40px;
+  padding:9px 14px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  color:var(--text);
+  font-weight:900;
+}
+.btn:hover{filter:brightness(.98);transform:translateY(-1px)}
+.btn.primary{background:var(--green);border-color:var(--green);color:#fff}
+.btn.teal{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn.orange{background:var(--orange);border-color:var(--orange);color:#332a1f}
+.btn.danger{background:#fff4f4;border-color:#e4b8b8;color:var(--danger)}
+.btn.small{min-height:34px;padding:7px 10px;font-size:.86rem}
+.image-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.image-card{
   border:1px solid var(--line);
   border-radius:14px;
-  backdrop-filter:blur(8px);
+  background:#fff;
+  overflow:hidden;
 }
-
-.action-btn{
-  min-width:180px;
-  padding:13px 22px;
-  border:none;
-  border-radius:999px;
-  background:var(--teal);
-  color:white;
+.image-card.done{
+  border-color:#8ab7a0;
+  box-shadow:0 0 0 3px rgba(47,111,78,.08);
+}
+.image-card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 14px;
+  background:var(--teal-soft);
+  border-bottom:1px solid var(--line);
+}
+.image-card-title{
+  display:flex;
+  align-items:center;
+  gap:9px;
   font-weight:900;
-  font-size:16px;
-  cursor:pointer;
-  box-shadow:0 3px 10px rgba(0,0,0,.08);
+  color:var(--teal);
 }
-
-.action-btn.copy{
-  background:var(--orange);
-  color:#333;
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--muted);
+  font-size:.76rem;
 }
-
-.action-btn:hover{
-  filter:brightness(.98);
-  transform:translateY(-1px);
+.image-card.done .status-pill{
+  background:var(--green-soft);
+  color:var(--green);
+  border-color:#b9d4c4;
 }
-
-.note{
-  background:#fff8e5;
-  border:2px solid #f2d38b;
+.image-card-body{padding:14px}
+.card-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
 }
-
-.note p{
+.prompt-card{
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  margin-bottom:14px;
+}
+.prompt-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:11px 13px;
+  background:#f7faf8;
+  border-bottom:1px solid var(--line);
+}
+.prompt-head strong{color:var(--green-dark)}
+.prompt-output{
+  width:100%;
+  min-height:310px;
   margin:0;
-  font-weight:700;
-  line-height:1.7;
-}
-
-#output{
-  min-height:300px;
-  border:2px solid var(--teal);
+  border:0;
+  border-radius:0;
   background:#fbfdfc;
+  font-family:Consolas,"SFMono-Regular",monospace;
+  font-size:.88rem;
+  line-height:1.65;
 }
-
+.empty{
+  padding:34px 20px;
+  text-align:center;
+  color:var(--muted);
+  border:1px dashed #bdc9c2;
+  border-radius:14px;
+  background:#fbfcfb;
+}
+.copilot-note{
+  padding:12px 14px;
+  margin-bottom:14px;
+  border-radius:12px;
+  background:#eef5fb;
+  border:1px solid #bfd3e3;
+  color:#315b73;
+  font-size:.88rem;
+  line-height:1.65;
+}
 .footer-note{
   text-align:center;
   color:var(--muted);
   font-size:.85rem;
   line-height:1.7;
+  margin-top:18px;
 }
-
 .toast{
   position:fixed;
   right:20px;
@@ -291,293 +365,484 @@ textarea{
   pointer-events:none;
   transition:.2s;
 }
-
-.toast.show{
-  opacity:1;
-  transform:translateY(0);
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:980px){
+  .workspace{grid-template-columns:1fr}
+  .panel.sticky{position:relative;top:auto;max-height:none}
 }
-
 @media(max-width:760px){
-  .app{
-    width:min(100% - 12px,1120px);
-    margin-top:6px;
-  }
-
-  .toolbar{
-    position:relative;
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .toolbar-actions{
-    width:100%;
-    justify-content:flex-start;
-  }
-
-  .tool-name{
-    white-space:normal;
-  }
-
-  .toolbar-btn{
-    flex:1 1 130px;
-  }
-
-  .hero{
-    padding:18px 14px;
-  }
-
-  section{
-    padding:16px;
-  }
-
-  .actions{
-    position:static;
-  }
-
-  .action-btn{
-    width:100%;
-  }
+  .app{width:min(100% - 12px,1380px);margin-top:6px}
+  .toolbar{position:relative;align-items:flex-start;flex-direction:column}
+  .toolbar-actions{width:100%;justify-content:flex-start}
+  .tool-name{white-space:normal}
+  .toolbar-btn{flex:1 1 130px}
+  .grid-2{grid-template-columns:1fr}
+  .panel-body{padding:13px}
 }
 </style>
 </head>
-
 <body>
 <div class="app">
 
 <header class="toolbar">
   <div class="toolbar-title">
-    <span class="tool-name">Teacher AI Studio｜教材イメージ翻訳ツール</span>
-    <span class="version">Ver.1.1</span>
+    <span class="tool-name">Teacher AI Studio｜連続画像作成ツール</span>
+    <span class="version">Ver.2.0</span>
   </div>
-
   <nav class="toolbar-actions" aria-label="主要操作">
     <a class="toolbar-btn" href="index.html">🏠 Home</a>
-    <button class="toolbar-btn primary" type="button" onclick="makePrompt()">✨ プロンプト作成</button>
-    <button class="toolbar-btn orange" type="button" onclick="copyPrompt()">📋 コピー</button>
+    <button class="toolbar-btn primary" type="button" id="topBuild">✨ 全プロンプト作成</button>
+    <button class="toolbar-btn orange" type="button" id="topCopyCurrent">📋 表示中をコピー</button>
   </nav>
 </header>
 
 <p class="notice">
-  入力内容は保存されません。作成したプロンプトは、作業終了前にコピーして手元へ保存してください。
+  入力内容は保存されません。この画面を閉じたり再読み込みしたりすると、入力内容は消えます。
 </p>
 
 <section class="hero">
-  <h1>教材イメージ翻訳ツール</h1>
-  <p>先生のアイデアを、画像生成AIに伝わりやすい言葉へ変換します。</p>
+  <h1>連続画像作成ツール</h1>
+  <p>作品全体の共通設定を一度だけ決め、画像ごとの場面を追加します。Copilotでは、1枚ずつ独立した画像として生成します。</p>
 </section>
-
-<main>
 
 <section class="note">
-  <p>⚠️ 児童生徒名、学校名、写真、個人情報は入力しないでください。</p>
+  <p>⚠️ 児童生徒名、学校名、写真、個人情報は入力しないでください。人物は一般化した特徴で表してください。</p>
 </section>
+
+<div class="workspace">
 
 <section>
-  <h2>1. 先生のアイデア</h2>
+  <div class="panel">
+    <div class="panel-head">
+      <h2>1．作品全体の設定</h2>
+      <p>すべての画像に共通する条件です。各画像のプロンプトへ自動で引き継ぎます。</p>
+    </div>
+    <div class="panel-body">
 
-  <label for="theme">教材画像のテーマ</label>
-  <input id="theme" placeholder="例：宇宙のアイスクリーム屋さん">
+      <div class="section">
+        <h3>作品の基本情報</h3>
+        <label for="projectTitle">作品名</label>
+        <input id="projectTitle" placeholder="例：なつまつりの説明スライド">
 
-  <label for="scene">どんな場面にしたいですか？</label>
-  <textarea id="scene" placeholder="例：宇宙空間にかわいいアイスクリーム屋さんがあり、子どもたちがわくわくしている"></textarea>
+        <div class="grid-2">
+          <div>
+            <label for="purpose">用途</label>
+            <select id="purpose">
+              <option value="">選んでください</option>
+              <option>PowerPointのスライド画像</option>
+              <option>教材の背景</option>
+              <option>絵本・紙芝居</option>
+              <option>手順カード</option>
+              <option>選択肢カード</option>
+              <option>導入画像</option>
+              <option>ごほうび画面</option>
+            </select>
+          </div>
+          <div>
+            <label for="purposeOther">その他の用途</label>
+            <input id="purposeOther" placeholder="例：朝の会で見せる連続画像">
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>見た目の共通設定</h3>
+        <div class="grid-2">
+          <div>
+            <label for="mood">全体の雰囲気</label>
+            <select id="mood">
+              <option value="">選んでください</option>
+              <option>わくわく</option>
+              <option>やさしい</option>
+              <option>楽しい</option>
+              <option>落ち着いた</option>
+              <option>少しドキドキ</option>
+              <option>達成感がある</option>
+            </select>
+          </div>
+          <div>
+            <label for="moodOther">その他の雰囲気</label>
+            <input id="moodOther" placeholder="例：夕方の温かい雰囲気">
+          </div>
+          <div>
+            <label for="style">絵柄</label>
+            <select id="style">
+              <option value="">選んでください</option>
+              <option>かわいいアニメ調</option>
+              <option>絵本風</option>
+              <option>教材イラスト風</option>
+              <option>やわらかいデフォルメ調</option>
+              <option>小学生向けアニメ風</option>
+              <option>写真に近い表現</option>
+            </select>
+          </div>
+          <div>
+            <label for="styleOther">その他の絵柄</label>
+            <input id="styleOther" placeholder="例：絵本とアニメの中間">
+          </div>
+          <div>
+            <label for="color">色合い</label>
+            <select id="color">
+              <option value="">選んでください</option>
+              <option>淡い水色</option>
+              <option>クリーム色</option>
+              <option>夕焼けオレンジ</option>
+              <option>森の緑</option>
+              <option>やさしいピンク</option>
+              <option>少しコントラスト強め</option>
+            </select>
+          </div>
+          <div>
+            <label for="colorOther">その他の色合い</label>
+            <input id="colorOther" placeholder="例：夜空だが暗すぎない青紫">
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>人物・キャラクターの共通設定</h3>
+        <label for="character">同じ人物・キャラクターの特徴</label>
+        <textarea id="character" placeholder="例：主人公は赤い帽子、黄色い上着、青いズボン。丸い顔と大きな目で、親しみやすい表情。"></textarea>
+        <p class="help">画像同士の統一感を高めるため、この内容を毎回同じ文章でプロンプトへ入れます。</p>
+
+        <label for="face">表情の基本</label>
+        <input id="face" placeholder="例：表情が分かりやすく、過度にリアルにしない">
+      </div>
+
+      <div class="section">
+        <h3>教材としての共通条件</h3>
+        <div class="grid-2">
+          <div>
+            <label for="include">全画像に入れてほしい物</label>
+            <textarea id="include" placeholder="例：同じ主人公、同じ服装、共通の背景モチーフ"></textarea>
+          </div>
+          <div>
+            <label for="exclude">全画像に入れてほしくない物</label>
+            <textarea id="exclude" placeholder="例：文字、看板、ロゴ、過剰な装飾"></textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>2．画像ごとの場面</h2>
+      <p>必要な枚数だけ追加します。各カードには、その画像だけで変わる内容を書きます。</p>
+    </div>
+    <div class="panel-body">
+      <div id="imageList" class="image-list"></div>
+      <div class="inline-actions">
+        <button class="btn primary" id="addImage" type="button">＋ 画像を追加</button>
+        <button class="btn teal" id="buildAll" type="button">✨ 全プロンプトを作成</button>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section>
-  <h2>2. 画像の使い道</h2>
+<aside class="panel sticky">
+  <div class="panel-head">
+    <h2>3．Copilotへ送るプロンプト</h2>
+    <p>各画像を1枚ずつコピーして生成してください。</p>
+  </div>
+  <div class="panel-body scroll-body">
+    <div class="copilot-note">
+      画像2枚目以降では、前に生成した画像をCopilotへ添付できる場合は添付し、
+      「この画像と同じ人物・絵柄を維持してください」と伝えると統一しやすくなります。
+    </div>
+    <div id="promptList">
+      <div class="empty">画像の内容を入力して「全プロンプトを作成」を押してください。</div>
+    </div>
+  </div>
+</aside>
 
-  <label for="purpose">用途</label>
-  <select id="purpose">
-    <option value="">選んでください</option>
-    <option>教材の背景</option>
-    <option>導入スライド</option>
-    <option>カード画像</option>
-    <option>選択肢の画像</option>
-    <option>ボタン画像</option>
-    <option>ごほうび画面</option>
-  </select>
-
-  <label for="purposeOther">その他の用途</label>
-  <input id="purposeOther" placeholder="例：朝の会で見せる画像">
-</section>
-
-<section>
-  <h2>3. 雰囲気</h2>
-
-  <label for="mood">全体の雰囲気</label>
-  <select id="mood">
-    <option value="">選んでください</option>
-    <option>わくわく</option>
-    <option>やさしい</option>
-    <option>楽しい</option>
-    <option>落ち着いた</option>
-    <option>少しドキドキ</option>
-    <option>達成感がある</option>
-  </select>
-
-  <label for="moodOther">その他の雰囲気</label>
-  <input id="moodOther" placeholder="例：不思議、夢の中、冒険感">
-</section>
-
-<section>
-  <h2>4. 絵柄</h2>
-
-  <label for="style">絵柄</label>
-  <select id="style">
-    <option value="">選んでください</option>
-    <option>かわいいアニメ調</option>
-    <option>絵本風</option>
-    <option>教材イラスト風</option>
-    <option>やわらかいデフォルメ調</option>
-    <option>小学生向けアニメ風</option>
-  </select>
-
-  <label for="styleOther">その他の絵柄</label>
-  <input id="styleOther" placeholder="例：絵本とアニメの中間、探検隊風">
-</section>
-
-<section>
-  <h2>5. 色合い</h2>
-
-  <label for="color">色合い</label>
-  <select id="color">
-    <option value="">選んでください</option>
-    <option>淡い水色</option>
-    <option>クリーム色</option>
-    <option>夕焼けオレンジ</option>
-    <option>森の緑</option>
-    <option>やさしいピンク</option>
-    <option>少しコントラスト強め</option>
-  </select>
-
-  <label for="colorOther">その他の色合い</label>
-  <input id="colorOther" placeholder="例：夜空だけど暗すぎない青紫">
-</section>
-
-<section>
-  <h2>6. キャラクター・表情</h2>
-
-  <label for="face">顔や表情</label>
-  <select id="face">
-    <option value="">選んでください</option>
-    <option>丸い顔、大きな目、笑顔</option>
-    <option>表情が分かりやすい</option>
-    <option>わくわくした表情</option>
-    <option>親しみやすい表情</option>
-    <option>少しアニメ化した顔</option>
-  </select>
-
-  <label for="faceOther">その他の表情</label>
-  <input id="faceOther" placeholder="例：リアルすぎない、目を大きく">
-</section>
-
-<section>
-  <h2>7. 入れてほしい物・避けたい物</h2>
-
-  <label for="include">入れてほしい物</label>
-  <textarea id="include" placeholder="例：星、宇宙船、アイスクリーム屋台"></textarea>
-
-  <label for="exclude">入れてほしくない物</label>
-  <textarea id="exclude" placeholder="例：文字、看板、ロゴ、暗すぎる背景"></textarea>
-</section>
-
-<div class="actions">
-  <button class="action-btn" type="button" onclick="makePrompt()">✨ プロンプトを作成</button>
-  <button class="action-btn copy" type="button" onclick="copyPrompt()">📋 コピー</button>
 </div>
-
-<section id="resultSection">
-  <h2>完成したプロンプト</h2>
-  <textarea id="output" placeholder="ここに完成したプロンプトが表示されます。"></textarea>
-</section>
 
 <p class="footer-note">
-  Teacher AI Studioは、先生の考えを整理し、AIへ伝えるための補助ツールです。<br>
-  教材の内容や授業での使用方法は、先生自身が確認して決定してください。
+  Teacher AI Studioは、先生が考えた作品構成を整理し、AIへ伝えるための補助ツールです。<br>
+  画像生成AIは人物や細部を完全には一致させられない場合があります。生成後は先生自身が確認してください。
 </p>
 
-</main>
 </div>
-
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script>
-function v(id){
-  return document.getElementById(id).value.trim();
-}
+(() => {
+  const $ = id => document.getElementById(id);
+  let imageCounter = 0;
+  let currentPromptIndex = 0;
 
-function showToast(message){
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.classList.add("show");
+  function esc(value){
+    return String(value ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;");
+  }
 
-  clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 1800);
-}
+  function val(id){
+    return $(id).value.trim();
+  }
 
-function makePrompt(){
-  const theme = v("theme") || "先生が考えた教材テーマ";
-  const scene = v("scene");
-  const purpose = [v("purpose"), v("purposeOther")].filter(Boolean).join("、");
-  const mood = [v("mood"), v("moodOther")].filter(Boolean).join("、");
-  const style = [v("style"), v("styleOther")].filter(Boolean).join("、");
-  const color = [v("color"), v("colorOther")].filter(Boolean).join("、");
-  const face = [v("face"), v("faceOther")].filter(Boolean).join("、");
-  const include = v("include");
-  const exclude = v("exclude");
+  function combined(...ids){
+    return ids.map(val).filter(Boolean).join("、");
+  }
 
-  let prompt = "";
+  function showToast(message){
+    const toast = $("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => toast.classList.remove("show"), 1800);
+  }
 
-  prompt += "特別支援学校の教材で使う、子ども向けの明るく親しみやすいイラストを作成してください。\\n\\n";
-  prompt += "テーマは「" + theme + "」です。\\n";
+  function renumberCards(){
+    [...document.querySelectorAll(".image-card")].forEach((card,index) => {
+      card.dataset.order = index + 1;
+      card.querySelector(".image-number").textContent = `画像${index + 1}`;
+      card.querySelector(".image-title-label").textContent = `画像${index + 1}の短い名前`;
+      card.querySelector(".remove-image").disabled =
+        document.querySelectorAll(".image-card").length === 1;
+    });
+  }
 
-  if(scene) prompt += "場面は「" + scene + "」です。\\n";
-  if(purpose) prompt += "画像の使い道は「" + purpose + "」です。\\n";
-  if(mood) prompt += "全体の雰囲気は「" + mood + "」にしてください。\\n";
-  if(style) prompt += "絵柄は「" + style + "」にしてください。\\n";
-  if(color) prompt += "背景色や色合いは「" + color + "」を意識してください。\\n";
-  if(face) prompt += "キャラクターの顔や表情は「" + face + "」を意識してください。\\n";
-  if(include) prompt += "入れてほしい物は「" + include + "」です。\\n";
-  if(exclude) prompt += "入れてほしくない物は「" + exclude + "」です。\\n";
+  function addImage(data = {}){
+    imageCounter++;
+    const card = document.createElement("article");
+    card.className = "image-card";
+    card.dataset.id = imageCounter;
+    card.innerHTML = `
+      <div class="image-card-head">
+        <div class="image-card-title">
+          <span class="image-number">画像</span>
+          <span class="status-pill">○ 未作成</span>
+        </div>
+        <button class="btn danger small remove-image" type="button">削除</button>
+      </div>
+      <div class="image-card-body">
+        <label class="image-title-label">画像の短い名前</label>
+        <input class="scene-title" placeholder="例：夏祭り会場に到着" value="${esc(data.title || "")}">
 
-  prompt += "\\n教材として使いやすいように、以下の条件を守ってください。\\n";
-  prompt += "・文字、看板、ロゴ、説明文は入れない。\\n";
-  prompt += "・刺激の強い原色は避ける。\\n";
-  prompt += "・細かすぎる装飾は避ける。\\n";
-  prompt += "・主役が一目で分かる構図にする。\\n";
-  prompt += "・授業で使いやすいように少し余白を残す。\\n";
-  prompt += "・背景は淡すぎず、主役が埋もれないようにする。\\n";
-  prompt += "・過度にリアルにせず、やさしく楽しい印象にする。\\n";
+        <label>この画像だけの場面</label>
+        <textarea class="scene-detail" placeholder="例：主人公が夏祭り会場の入口に立ち、屋台を見てわくわくしている">${esc(data.detail || "")}</textarea>
 
-  document.getElementById("output").value = prompt;
-  document.getElementById("resultSection").scrollIntoView({
-    behavior:"smooth",
-    block:"start"
+        <div class="grid-2">
+          <div>
+            <label>人物の動き・表情</label>
+            <textarea class="scene-action" placeholder="例：入口を指差し、目を輝かせている">${esc(data.action || "")}</textarea>
+          </div>
+          <div>
+            <label>背景・入れてほしい物</label>
+            <textarea class="scene-background" placeholder="例：提灯、輪投げ屋台、夕方の空">${esc(data.background || "")}</textarea>
+          </div>
+        </div>
+
+        <label>この画像だけで避けたい物</label>
+        <input class="scene-exclude" placeholder="例：花火、文字、人混み" value="${esc(data.exclude || "")}">
+
+        <div class="card-actions">
+          <button class="btn teal small make-one" type="button">この画像のプロンプト作成</button>
+          <button class="btn orange small copy-one" type="button">この画像をコピー</button>
+          <label style="display:inline-flex;align-items:center;gap:7px;margin:0;padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:#fff">
+            <input class="done-check" type="checkbox" style="width:auto;margin:0">
+            作成済みにする
+          </label>
+        </div>
+      </div>`;
+
+    card.querySelector(".remove-image").addEventListener("click", () => {
+      if(document.querySelectorAll(".image-card").length <= 1) return;
+      card.remove();
+      renumberCards();
+      buildAllPrompts(false);
+    });
+
+    card.querySelector(".done-check").addEventListener("change", e => {
+      const done = e.target.checked;
+      card.classList.toggle("done", done);
+      card.querySelector(".status-pill").textContent = done ? "✓ 作成済み" : "○ 未作成";
+    });
+
+    card.querySelector(".make-one").addEventListener("click", () => {
+      const index = [...document.querySelectorAll(".image-card")].indexOf(card);
+      buildAllPrompts(false);
+      const prompt = document.querySelector(`.prompt-card[data-index="${index}"]`);
+      if(prompt){
+        prompt.scrollIntoView({behavior:"smooth",block:"start"});
+        currentPromptIndex = index;
+      }
+      showToast(`画像${index + 1}のプロンプトを作成しました`);
+    });
+
+    card.querySelector(".copy-one").addEventListener("click", async () => {
+      const index = [...document.querySelectorAll(".image-card")].indexOf(card);
+      buildAllPrompts(false);
+      await copyPromptAt(index);
+    });
+
+    $("imageList").appendChild(card);
+    renumberCards();
+  }
+
+  function getCommon(){
+    return {
+      title: val("projectTitle") || "名称未入力の作品",
+      purpose: combined("purpose","purposeOther"),
+      mood: combined("mood","moodOther"),
+      style: combined("style","styleOther"),
+      color: combined("color","colorOther"),
+      character: val("character"),
+      face: val("face"),
+      include: val("include"),
+      exclude: val("exclude")
+    };
+  }
+
+  function getScenes(){
+    return [...document.querySelectorAll(".image-card")].map((card,index) => ({
+      index:index + 1,
+      title:card.querySelector(".scene-title").value.trim() || `画像${index + 1}`,
+      detail:card.querySelector(".scene-detail").value.trim(),
+      action:card.querySelector(".scene-action").value.trim(),
+      background:card.querySelector(".scene-background").value.trim(),
+      exclude:card.querySelector(".scene-exclude").value.trim()
+    }));
+  }
+
+  function makePrompt(common, scene, total){
+    let prompt = "";
+    prompt += `特別支援教育の教材で使用する連続画像作品「${common.title}」の画像を作成してください。\n\n`;
+    prompt += `これは全${total}枚で構成する作品のうち、${scene.index}枚目です。\n`;
+    prompt += `今回生成するのは、分割やコラージュではない、独立した1枚の画像です。\n`;
+    prompt += `他の画像を同時に並べたり、複数場面を1枚に詰め込んだりしないでください。\n\n`;
+
+    prompt += "【作品全体で共通する設定】\n";
+    if(common.purpose) prompt += `・用途：${common.purpose}\n`;
+    if(common.mood) prompt += `・雰囲気：${common.mood}\n`;
+    if(common.style) prompt += `・絵柄：${common.style}\n`;
+    if(common.color) prompt += `・色合い：${common.color}\n`;
+    if(common.character) prompt += `・人物・キャラクター：${common.character}\n`;
+    if(common.face) prompt += `・表情の基本：${common.face}\n`;
+    if(common.include) prompt += `・全画像に入れてほしい物：${common.include}\n`;
+    if(common.exclude) prompt += `・全画像に入れてほしくない物：${common.exclude}\n`;
+
+    prompt += "\n【画像同士の統一条件】\n";
+    prompt += "・全画像で、同じ人物デザイン、服装、髪型、顔立ち、絵柄、線の太さ、色味、明るさをできるだけ維持する。\n";
+    prompt += "・前に生成した画像が添付されている場合は、その画像を参考にして人物と画風を一致させる。\n";
+    prompt += "・前の画像が添付されていない場合も、上記の共通設定を厳密に維持する。\n\n";
+
+    prompt += `【今回作成する画像${scene.index}】\n`;
+    prompt += `・画像の短い名前：${scene.title}\n`;
+    prompt += `・場面：${scene.detail || "入力された作品テーマに沿った場面"}\n`;
+    if(scene.action) prompt += `・人物の動き・表情：${scene.action}\n`;
+    if(scene.background) prompt += `・背景・入れてほしい物：${scene.background}\n`;
+    if(scene.exclude) prompt += `・この画像だけで避けたい物：${scene.exclude}\n`;
+
+    prompt += "\n【教材画像として守る条件】\n";
+    prompt += "・文字、番号、看板、ロゴ、説明文は入れない。\n";
+    prompt += "・刺激の強い原色や、情報量の多すぎる背景は避ける。\n";
+    prompt += "・主役と場面が一目で分かる構図にする。\n";
+    prompt += "・教材として使いやすい余白を適度に残す。\n";
+    prompt += "・過度にリアル、恐怖的、刺激的な表現は避ける。\n";
+    prompt += "・今回指定した場面だけを、完成した1枚の画像として生成する。\n";
+    prompt += "・作業手順や文章の説明は表示せず、画像のみを生成する。";
+    return prompt;
+  }
+
+  function buildAllPrompts(scroll = true){
+    const common = getCommon();
+    const scenes = getScenes();
+    const container = $("promptList");
+    container.innerHTML = "";
+
+    scenes.forEach((scene,index) => {
+      const text = makePrompt(common,scene,scenes.length);
+      const card = document.createElement("article");
+      card.className = "prompt-card";
+      card.dataset.index = index;
+      card.innerHTML = `
+        <div class="prompt-head">
+          <strong>画像${index + 1}｜${esc(scene.title)}</strong>
+          <button class="btn orange small prompt-copy" type="button">📋 コピー</button>
+        </div>
+        <textarea class="prompt-output">${esc(text)}</textarea>`;
+      card.querySelector(".prompt-copy").addEventListener("click", async () => {
+        currentPromptIndex = index;
+        await copyPromptAt(index);
+      });
+      card.querySelector(".prompt-output").addEventListener("focus", () => {
+        currentPromptIndex = index;
+      });
+      container.appendChild(card);
+    });
+
+    if(scroll){
+      container.scrollIntoView({behavior:"smooth",block:"start"});
+      showToast("全画像のプロンプトを作成しました");
+    }
+  }
+
+  async function copyText(text){
+    try{
+      await navigator.clipboard.writeText(text);
+    }catch(error){
+      const area = document.createElement("textarea");
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      area.remove();
+    }
+  }
+
+  async function copyPromptAt(index){
+    const outputs = [...document.querySelectorAll(".prompt-output")];
+    if(!outputs.length){
+      buildAllPrompts(false);
+    }
+    const current = [...document.querySelectorAll(".prompt-output")][index];
+    if(!current){
+      showToast("プロンプトを作成してください");
+      return;
+    }
+    await copyText(current.value);
+    currentPromptIndex = index;
+    showToast(`画像${index + 1}のプロンプトをコピーしました`);
+  }
+
+  $("addImage").addEventListener("click", () => addImage());
+  $("buildAll").addEventListener("click", () => buildAllPrompts(true));
+  $("topBuild").addEventListener("click", () => buildAllPrompts(true));
+  $("topCopyCurrent").addEventListener("click", async () => {
+    if(!document.querySelectorAll(".prompt-output").length){
+      buildAllPrompts(false);
+    }
+    await copyPromptAt(currentPromptIndex);
   });
-  showToast("プロンプトを作成しました");
-}
 
-async function copyPrompt(){
-  const output = document.getElementById("output");
-  const text = output.value.trim();
-
-  if(!text){
-    showToast("先にプロンプトを作成してください");
-    return;
-  }
-
-  try{
-    await navigator.clipboard.writeText(text);
-    showToast("コピーしました");
-  }catch(error){
-    output.focus();
-    output.select();
-    document.execCommand("copy");
-    showToast("コピーしました");
-  }
-}
+  addImage({
+    title:"画像1",
+    detail:"",
+    action:"",
+    background:"",
+    exclude:""
+  });
+  addImage({
+    title:"画像2",
+    detail:"",
+    action:"",
+    background:"",
+    exclude:""
+  });
+  addImage({
+    title:"画像3",
+    detail:"",
+    action:"",
+    background:"",
+    exclude:""
+  });
+})();
 </script>
-
 </body>
 </html>

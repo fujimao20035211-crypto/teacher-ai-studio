@@ -3,58 +3,206 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Teacher AI Studio｜指導案作成ツール Ver.4.3</title>
+<title>Teacher AI Studio｜指導案作成ツール Ver.4.4</title>
 <style>
 :root{--g:#2f6f4e;--gd:#24583d;--gs:#edf6f1;--b:#3f6f9b;--bs:#eef5fb;--p:#76528e;--ps:#f5eff9;--o:#b96a2f;--os:#fff4e8;--line:#d5ded9;--text:#25322c;--muted:#68766f;--bg:#f3f7f5;--danger:#a74343;--shadow:0 8px 24px rgba(36,64,50,.09)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;padding:16px;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;line-height:1.6}button,input,textarea,select{font:inherit}button:disabled{opacity:.45;cursor:not-allowed;transform:none!important}.app{max-width:1800px;margin:auto}.hero{background:linear-gradient(135deg,var(--g),#4f8f6c);color:#fff;border-radius:22px;padding:22px 26px;box-shadow:var(--shadow);margin-bottom:15px}.hero-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}.hero h1{margin:0 0 6px;font-size:clamp(1.5rem,2.7vw,2.2rem)}.hero p{margin:0}.version{background:rgba(255,255,255,.18);padding:7px 11px;border-radius:999px;font-weight:800}.hero-note{margin-top:12px;background:rgba(255,255,255,.14);border-radius:13px;padding:10px 13px;font-size:.9rem}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px}.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px;box-shadow:var(--shadow)}.step strong{display:block;color:var(--g)}.workspace{display:grid;grid-template-columns:minmax(430px,.9fr) minmax(640px,1.1fr);gap:16px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:19px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}.panel.sticky{position:sticky;top:12px;max-height:calc(100vh - 24px);display:flex;flex-direction:column}.panel-header{padding:16px 18px;border-bottom:1px solid var(--line);background:#fbfcfb}.panel-header h2{margin:0;font-size:1.16rem}.panel-header p{margin:5px 0 0;color:var(--muted);font-size:.87rem}.panel-body{padding:17px}.section{border:1px solid var(--line);border-radius:15px;padding:14px;margin-bottom:13px}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}.section-title h3{margin:0;font-size:1rem}.badge{border-radius:999px;padding:4px 9px;font-size:.75rem;font-weight:800;background:var(--gs);color:var(--g)}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:11px}.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}.field{margin-bottom:11px}.field:last-child{margin-bottom:0}label{display:block;margin-bottom:5px;font-weight:750;font-size:.9rem}.hint{margin:5px 0 0;color:var(--muted);font-size:.79rem}input[type=text],input[type=date],textarea{width:100%;border:1.5px solid #cdd7d1;border-radius:10px;padding:9px 10px;color:var(--text);background:#fff;outline:none}textarea{min-height:82px;resize:vertical;line-height:1.55}input:focus,textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(47,111,78,.1)}.goal-input-table{width:100%;border-collapse:collapse;table-layout:fixed}.goal-input-table th,.goal-input-table td{border:1px solid #cdd7d1}.goal-input-table th{width:25%;padding:11px 8px;background:#f3f7f5;text-align:center;font-size:.87rem}.goal-input-table td{padding:6px}.goal-input-table textarea{border:0;border-radius:6px;min-height:86px}.flow-card{border:1.5px solid #d6e0da;border-radius:15px;padding:13px;margin-bottom:11px;background:#fcfdfc}.flow-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.flow-head strong{color:var(--g)}.btn{appearance:none;border:none;border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer;transition:.2s}.btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--g);color:#fff}.btn-blue{background:var(--b);color:#fff}.btn-purple{background:var(--p);color:#fff}.btn-orange{background:var(--o);color:#fff}.btn-secondary{background:#edf2ef;color:var(--text)}.btn-danger{background:#fff0f0;color:var(--danger);border:1px solid #ebcaca;padding:6px 9px}.btn-large{width:100%;padding:13px 16px}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}.notice{padding:11px 13px;border-radius:12px;background:#fff8e8;border:1px solid #ecd6a8;color:#705725;font-size:.84rem}.consult-box{border:1.5px solid #d7c8e1;background:#faf7fc;border-radius:15px;padding:14px;margin-bottom:13px}.consult-box h3{margin:0 0 5px;color:#5e3f72}.consult-box p{margin:0 0 10px;color:#665a6c;font-size:.84rem}.preview-scroll{overflow:auto;padding:16px;flex:1}.status{margin:0 0 11px;padding:10px 12px;border-radius:11px;background:var(--bs);color:#315b7e;font-size:.83rem}.status.edited{background:var(--os);color:#815020}.paper-wrap{display:flex;justify-content:center;min-width:820px}.paper{width:210mm;min-height:297mm;background:#fff;border:1px solid #aeb9b3;box-shadow:0 4px 18px rgba(36,64,50,.1);padding:12mm 12mm 14mm;color:#111}.paper-title{text-align:center;font-weight:800;font-size:16pt;margin-bottom:5mm}.meta-table,.goal-table,.flow-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:10.5pt}.meta-table th,.meta-table td,.goal-table th,.goal-table td,.flow-table th,.flow-table td{border:1px solid #222;padding:6px;vertical-align:top}.meta-table th,.goal-table th,.flow-table th{background:#f1f1f1;font-weight:800}.meta-table th{width:15%}.goal-table .goal-main{width:11%;text-align:center;vertical-align:middle;letter-spacing:.15em}.goal-table .goal-category{width:24%;text-align:center;vertical-align:middle}.goal-table .goal-content{width:65%}.flow-table th:nth-child(1){width:31%}.flow-table th:nth-child(2){width:42%}.flow-table th:nth-child(3){width:27%}.edit-cell{min-height:64px;outline:none;white-space:pre-wrap;line-height:1.55;padding:3px;border-radius:3px}.single-line{min-height:25px}.edit-cell:focus{background:#fffbe8;box-shadow:inset 0 0 0 2px #d8b84b}.flow-number{font-size:.78rem;font-weight:800;color:var(--g);margin-bottom:3px}.row-tools{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-top:5px}.row-btn{border:1px solid #cbd5cf;background:#fff;border-radius:7px;padding:4px 7px;cursor:pointer;font-size:.75rem}.preview-actions{padding:12px 16px;border-top:1px solid var(--line);background:#fbfcfb;display:flex;flex-wrap:wrap;gap:8px}.save-group{display:flex;flex-wrap:wrap;gap:8px;padding:12px;border:1px solid #cfe2d7;background:var(--gs);border-radius:13px;width:100%}.save-group strong{width:100%;color:var(--g)}.completion-note{width:100%;padding:10px 12px;background:#f7faf8;border-radius:11px;color:#52625a;font-size:.83rem}.optional-actions{width:100%;display:flex;flex-wrap:wrap;gap:8px}.hidden{display:none!important}.modal-backdrop{position:fixed;inset:0;background:rgba(25,35,30,.58);display:grid;place-items:center;padding:16px;z-index:1200}.modal-card{width:min(880px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 24px 70px rgba(0,0,0,.28)}.modal-head{position:sticky;top:0;background:#fff;z-index:2;display:flex;justify-content:space-between;gap:12px;padding:17px 19px;border-bottom:1px solid var(--line)}.modal-head h2{margin:0}.modal-head p{margin:4px 0 0;color:var(--muted);font-size:.84rem}.modal-close{border:0;background:#edf2ef;border-radius:9px;padding:7px 10px;cursor:pointer;font-weight:800}.modal-body{padding:17px 19px 21px}.summary-box{background:var(--gs);border:1px solid #cfe2d7;border-radius:13px;padding:11px;margin-bottom:13px}.summary-box dl{margin:0;display:grid;grid-template-columns:120px 1fr;gap:6px 9px;font-size:.84rem}.summary-box dt{font-weight:800;color:var(--g)}.summary-box dd{margin:0;white-space:pre-wrap}.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.choice{display:flex;gap:7px;align-items:flex-start;border:1px solid #ded7e3;background:#fff;border-radius:11px;padding:9px;cursor:pointer}.choice input{margin-top:3px}.prompt-details{margin-top:13px;border:1px solid var(--line);border-radius:12px;overflow:hidden}.prompt-details summary{cursor:pointer;padding:11px 13px;background:#f7f9f8;font-weight:800}.prompt-details textarea{border:0;border-top:1px solid var(--line);border-radius:0;min-height:340px;font-family:Consolas,monospace;font-size:.82rem}.modal-note{margin-top:11px;padding:10px 12px;background:#fff8e8;border:1px solid #ecd5a7;border-radius:11px;color:#73582a;font-size:.82rem}.curriculum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.toast{position:fixed;right:20px;bottom:20px;background:#24392f;color:#fff;padding:10px 14px;border-radius:10px;opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s;z-index:1400}.toast.show{opacity:1;transform:translateY(0)}
 @media(max-width:1180px){.workspace{grid-template-columns:1fr}.panel.sticky{position:relative;top:auto;max-height:none}.steps{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){body{padding:8px}.steps,.grid-2,.grid-3,.choice-grid,.curriculum-grid{grid-template-columns:1fr}.panel-body,.preview-scroll{padding:12px}.summary-box dl{grid-template-columns:1fr}}
-@media print{body{background:#fff;padding:0}.hero,.steps,.workspace>section:first-child,.panel-header,.preview-actions,#previewStatus,.row-tools{display:none!important}.workspace{display:block}.panel,.panel.sticky{border:0;box-shadow:none;max-height:none;margin:0;overflow:visible}.preview-scroll{padding:0;overflow:visible}.paper-wrap{min-width:0}.paper{width:210mm;min-height:297mm;border:0;box-shadow:none;padding:12mm 12mm 14mm}@page{size:A4 portrait;margin:0}}
+@media print{body{background:#fff;padding:0}.toolbar,.compact-info,.hero,.steps,.workspace>section:first-child,.panel-header,.preview-actions,#previewStatus,.row-tools{display:none!important}.workspace{display:block}.panel,.panel.sticky{border:0;box-shadow:none;max-height:none;margin:0;overflow:visible}.preview-scroll{padding:0;overflow:visible}.paper-wrap{min-width:0}.paper-scale-shell{width:auto!important;height:auto!important}.paper{width:210mm;min-height:297mm;border:0;box-shadow:none;padding:12mm 12mm 14mm;transform:none!important}@page{size:A4 portrait;margin:0}}
 
-/* ===== Ver.4.3 compact app layout ===== */
-body{padding:0;background:#eef3f0;overflow-x:hidden}
-.app{max-width:none;margin:0}
-.top-toolbar{position:sticky;top:0;z-index:1000;min-height:52px;padding:7px 16px;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 3px 12px rgba(36,64,50,.08);display:flex;align-items:center;justify-content:space-between;gap:12px}
-.toolbar-brand{display:flex;align-items:baseline;gap:8px;min-width:0;font-weight:900;color:var(--gd);white-space:nowrap}.toolbar-brand .tool-name{font-size:1rem}.toolbar-brand .tool-version{font-size:.76rem;color:var(--muted);font-weight:800}
-.toolbar-actions{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-wrap:wrap}.tool-btn{display:inline-flex;align-items:center;gap:5px;border:1px solid #d4ddd8;background:#fff;color:var(--text);border-radius:9px;padding:6px 9px;font-size:.82rem;font-weight:800;text-decoration:none;cursor:pointer;line-height:1.25}.tool-btn:hover{background:var(--gs);border-color:#b8cfc1}.tool-btn.primary{background:var(--p);border-color:var(--p);color:#fff}.tool-separator{color:#bac5bf;font-size:.8rem}
-.toolbar-notice{padding:6px 16px;background:#fff9ea;border-bottom:1px solid #ead9ad;color:#6d5728;font-size:.76rem;text-align:center}
-.workspace{padding:12px;grid-template-columns:minmax(390px,.92fr) minmax(520px,1.08fr);gap:12px;align-items:start}
-.panel{border-radius:14px;margin-bottom:12px}.panel-header{padding:11px 14px}.panel-header h2{font-size:1rem}.panel-header p{font-size:.78rem;margin-top:2px}.panel-body{padding:13px}.section{padding:12px;margin-bottom:10px}.field{margin-bottom:9px}.consult-box{padding:12px;margin-bottom:10px}
-.panel.sticky{top:65px;max-height:calc(100vh - 77px)}
-.preview-panel>.panel-header{display:none}.preview-scroll{padding:10px;overflow:auto;display:flex;flex-direction:column;align-items:center}.status{width:100%;margin:0 0 8px;padding:7px 10px;font-size:.75rem}.paper-wrap{min-width:0;flex:0 0 auto;position:relative;margin:0 auto}.paper{position:absolute;left:0;top:0;transform-origin:top left}
-.preview-actions{padding:8px 10px;gap:6px}.preview-actions .save-group{display:none}.preview-actions>.completion-note{display:none}.preview-actions>.optional-actions{display:none}.preview-actions>#addDraftRow{font-size:.78rem;padding:6px 9px}
-.live-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:999px;background:var(--gs);color:var(--g);font-size:.72rem;font-weight:900}.live-dot{width:7px;height:7px;border-radius:50%;background:#2c9b62;box-shadow:0 0 0 3px rgba(44,155,98,.12)}
-#syncPreview{display:none!important}
-.form-note{padding:8px 10px;border-radius:10px;background:var(--bs);color:#315b7e;font-size:.78rem;margin:0 0 10px}
-@media(max-width:1180px){.workspace{padding:10px;grid-template-columns:1fr}.panel.sticky{position:relative;top:auto;max-height:none}.preview-panel>.panel-header{display:block}.preview-scroll{min-height:620px}.paper{position:absolute}}
-@media(max-width:700px){.top-toolbar{padding:7px 9px;align-items:flex-start}.toolbar-brand{flex-direction:column;gap:0}.toolbar-brand .tool-name{font-size:.9rem}.toolbar-actions{gap:3px}.tool-btn{padding:6px 7px;font-size:.76rem}.tool-btn .label{display:none}.tool-separator{display:none}.toolbar-notice{padding:5px 8px}.workspace{padding:7px}.preview-scroll{min-height:520px}}
-@media print{.top-toolbar,.toolbar-notice{display:none!important}.workspace{padding:0}.preview-panel>.panel-header{display:none!important}.paper{position:static!important;transform:none!important}.paper-wrap{width:auto!important;height:auto!important}}
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:900;
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:8px 14px;
+  margin-bottom:12px;
+  background:rgba(255,255,255,.96);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(10px);
+}
+.toolbar-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  font-weight:900;
+  color:var(--gd);
+  white-space:nowrap;
+}
+.toolbar-title .tool-name{
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.toolbar-title .toolbar-version{
+  flex:none;
+  padding:3px 8px;
+  border-radius:999px;
+  background:var(--gs);
+  color:var(--g);
+  font-size:.76rem;
+}
+.toolbar-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.toolbar-btn{
+  appearance:none;
+  border:1px solid #d2ddd7;
+  background:#fff;
+  color:var(--text);
+  border-radius:9px;
+  padding:7px 10px;
+  min-height:36px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.toolbar-btn:hover{
+  transform:translateY(-1px);
+  border-color:#aebeb5;
+  background:#f8fbf9;
+}
+.toolbar-btn.primary{background:var(--g);border-color:var(--g);color:#fff}
+.toolbar-btn.blue{background:var(--b);border-color:var(--b);color:#fff}
+.toolbar-btn.purple{background:var(--p);border-color:var(--p);color:#fff}
+.toolbar-btn.orange{background:var(--o);border-color:var(--o);color:#fff}
+.toolbar-separator{width:1px;height:28px;background:var(--line);margin:0 2px}
+.zoom-controls{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  padding:3px;
+  border:1px solid #d2ddd7;
+  border-radius:10px;
+  background:#f8faf9;
+}
+.zoom-btn{
+  width:32px;
+  height:30px;
+  border:0;
+  border-radius:7px;
+  background:#fff;
+  color:var(--text);
+  font-weight:900;
+  cursor:pointer;
+}
+.zoom-btn:hover{background:#edf3ef}
+.zoom-label{
+  min-width:52px;
+  text-align:center;
+  font-weight:900;
+  font-size:.84rem;
+  color:var(--gd);
+}
+.fit-btn{
+  border:0;
+  border-radius:7px;
+  padding:6px 9px;
+  background:#edf3ef;
+  color:var(--gd);
+  font-weight:850;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.compact-info{
+  margin:0 0 12px;
+  padding:9px 12px;
+  border:1px solid #dbe4df;
+  border-radius:11px;
+  background:#fbfcfb;
+  color:var(--muted);
+  font-size:.82rem;
+}
+.workspace{
+  grid-template-columns:minmax(420px,.9fr) minmax(620px,1.1fr);
+}
+.preview-scroll{
+  position:relative;
+  overflow:auto;
+  padding:12px;
+}
+.paper-wrap{
+  min-width:0;
+  align-items:flex-start;
+  padding:6px 0 24px;
+}
+.paper-scale-shell{
+  position:relative;
+  margin:0 auto;
+}
+.paper{
+  transform-origin:top left;
+  will-change:transform;
+}
+.preview-actions{
+  display:none;
+}
+.panel.sticky{
+  top:66px;
+  max-height:calc(100vh - 78px);
+}
+@media(max-width:1180px){
+  .toolbar{position:relative;top:auto;align-items:flex-start}
+  .toolbar-title{white-space:normal}
+  .panel.sticky{top:auto;max-height:none}
+}
+@media(max-width:820px){
+  .toolbar{padding:8px}
+  .toolbar-title{width:100%}
+  .toolbar-actions{width:100%;justify-content:flex-start}
+  .toolbar-separator{display:none}
+  .toolbar-btn{padding:7px 9px}
+}
 
 </style>
 </head>
 <body>
 <main class="app">
-<header class="top-toolbar">
-  <div class="toolbar-brand"><span class="tool-name">Teacher AI Studio｜指導案作成ツール</span><span class="tool-version">Ver.4.3</span></div>
-  <nav class="toolbar-actions" aria-label="ツール操作">
-    <a class="tool-btn" href="index.html" title="ホーム画面へ戻る">🏠 <span class="label">Home</span></a><span class="tool-separator">|</span>
-    <button id="saveWordTop" class="tool-btn" type="button" title="Word形式で保存">💾 <span class="label">Word</span></button><span class="tool-separator">|</span>
-    <button id="printPdfTop" class="tool-btn" type="button" title="印刷またはPDF保存">🖨️ <span class="label">Print</span></button><span class="tool-separator">|</span>
-    <button id="consultTop" class="tool-btn primary open-consult" type="button" title="AI相談を開く">🤖 <span class="label">AI相談</span></button>
+<header class="toolbar">
+  <div class="toolbar-title">
+    <span class="tool-name">Teacher AI Studio｜指導案作成ツール</span>
+    <span class="toolbar-version">Ver.4.4</span>
+  </div>
+  <nav class="toolbar-actions" aria-label="主要操作">
+    <a class="toolbar-btn" href="index.html">🏠 Home</a>
+    <button id="toolbarWord" class="toolbar-btn primary" type="button">💾 Word</button>
+    <button id="toolbarPrint" class="toolbar-btn blue" type="button">🖨 Print</button>
+    <button class="toolbar-btn purple open-consult" type="button">🤖 AI相談</button>
+    <button id="toolbarSheet" class="toolbar-btn orange" type="button">🟧 共有シート</button>
+    <span class="toolbar-separator" aria-hidden="true"></span>
+    <div class="zoom-controls" aria-label="プレビュー表示倍率">
+      <button id="zoomOut" class="zoom-btn" type="button" aria-label="縮小">−</button>
+      <span id="zoomLabel" class="zoom-label">100%</span>
+      <button id="zoomIn" class="zoom-btn" type="button" aria-label="拡大">＋</button>
+      <button id="fitPreview" class="fit-btn" type="button">画面に合わせる</button>
+    </div>
   </nav>
 </header>
-<div class="toolbar-notice">入力内容は保存されません。作業終了前に、上段の「Word」または「Print」で手元に保存してください。</div>
+<p class="compact-info">入力内容は自動保存されません。作業終了前に、上段の「Word」または「Print」から手元に保存してください。</p>
 <div class="workspace">
-<section class="panel"><div class="panel-header"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div><h2>入力フォーム</h2><p>入力した内容は、右側の同じ場所へ自動で反映されます。</p></div><span class="live-badge"><span class="live-dot"></span>リアルタイム反映</span></div></div><div class="panel-body"><p class="form-note">右側の完成原稿は全体が収まる倍率で表示されます。表内は直接編集して最終調整することもできます。</p>
+<section class="panel"><div class="panel-header"><h2>左側：入力フォーム</h2><p>入力した内容は、右側の同じ場所へリアルタイムで反映されます。</p></div><div class="panel-body">
 <div class="section"><div class="section-title"><h3>1．日時・場所</h3><span class="badge">基本情報</span></div><div class="grid-3"><div class="field"><label>日付</label><input id="date" type="date"></div><div class="field"><label>時間</label><input id="time" type="text" placeholder="例：第3時限、10:45～11:30"></div><div class="field"><label>場所</label><input id="place" type="text" placeholder="例：小学部3年教室"></div></div></div>
 <div class="section"><div class="section-title"><h3>2．教科名</h3></div><input id="subject" type="text" placeholder="例：生活科、自立活動、国語"></div>
 <div class="section"><div class="section-title"><h3>3．単元・題材名</h3></div><input id="unit" type="text" placeholder="例：野菜の観察をしよう"></div>
 <div class="section"><div class="section-title"><h3>4．目標（各観点別）</h3></div><table class="goal-input-table"><tr><th>知識・技能</th><td><textarea id="goalKnowledge"></textarea></td></tr><tr><th>思考力・判断力・表現力</th><td><textarea id="goalThinking"></textarea></td></tr><tr><th>学びに向かう力</th><td><textarea id="goalAttitude"></textarea></td></tr></table></div>
 <div class="consult-box"><h3>💡 AIに相談する</h3><p>AI相談は必要な場合のみご利用ください。指導案はAIを使わずに作成できます。</p><button class="btn btn-purple open-consult" type="button">AIに相談する</button><p class="hint">教科・単元・目標が入力されていると、より具体的な相談文を作れます。</p></div>
 <div class="section"><div class="section-title"><h3>5．本時の流れ</h3><button id="addFlow" class="btn btn-secondary" type="button">＋ 活動を追加</button></div><p class="hint">1活動につき「学習内容」「指導上の留意点」「本時の目標及び評価」を入力します。</p><div id="flowContainer"></div></div>
-<div class="actions"><button id="fillSample" class="btn btn-secondary" type="button">入力例を入れる</button><button id="clearAll" class="btn btn-danger" type="button">すべて消去</button></div>
+<div class="actions"><button id="fillSample" class="btn btn-secondary" type="button">入力例を入れる</button><button id="clearAll" class="btn btn-danger" type="button">すべて消去</button></div><p class="hint">※右側の完成原稿も直接編集できます。左側を再編集した項目だけ、その内容で更新されます。</p>
 </div></section>
-<section class="panel sticky preview-panel"><div class="panel-header"><h2>右側：A4縦の完成原稿</h2><p>見本の枠組みを保ち、表内の文字を直接編集できます。</p></div><div class="preview-scroll"><p id="previewStatus" class="status">入力内容をリアルタイムで反映しています。表内は直接編集できます。</p><div class="paper-wrap"><div id="paper" class="paper"><div class="paper-title">学習指導案</div><table class="meta-table"><tr><th>日時</th><td><div id="draftDateTime" class="edit-cell single-line" contenteditable="true"></div></td><th>場所</th><td><div id="draftPlace" class="edit-cell single-line" contenteditable="true"></div></td></tr><tr><th>教科名</th><td colspan="3"><div id="draftSubject" class="edit-cell single-line" contenteditable="true"></div></td></tr><tr><th>単元・題材名</th><td colspan="3"><div id="draftUnit" class="edit-cell single-line" contenteditable="true"></div></td></tr></table><table class="goal-table"><tr><th class="goal-main" rowspan="3">目標</th><th class="goal-category">知識・技能</th><td class="goal-content"><div id="draftKnowledge" class="edit-cell" contenteditable="true"></div></td></tr><tr><th class="goal-category">思考力<br>判断力<br>表現力</th><td class="goal-content"><div id="draftThinking" class="edit-cell" contenteditable="true"></div></td></tr><tr><th class="goal-category">学びに向かう力</th><td class="goal-content"><div id="draftAttitude" class="edit-cell" contenteditable="true"></div></td></tr></table><table class="flow-table"><thead><tr><th>学習内容</th><th>指導上の留意点</th><th>本時の目標及び評価</th></tr></thead><tbody id="draftFlowBody"></tbody></table></div></div></div>
+<section class="panel sticky"><div class="panel-header"><h2>リアルタイムプレビュー</h2><p>上段の −／＋ または「画面に合わせる」で見やすい大きさに調整できます。</p></div><div class="preview-scroll"><p id="previewStatus" class="status">左側の入力内容を反映後、ここで最終調整してください。</p><div class="paper-wrap"><div id="paperScaleShell" class="paper-scale-shell"><div id="paper" class="paper"><div class="paper-title">学習指導案</div><table class="meta-table"><tr><th>日時</th><td><div id="draftDateTime" class="edit-cell single-line" contenteditable="true"></div></td><th>場所</th><td><div id="draftPlace" class="edit-cell single-line" contenteditable="true"></div></td></tr><tr><th>教科名</th><td colspan="3"><div id="draftSubject" class="edit-cell single-line" contenteditable="true"></div></td></tr><tr><th>単元・題材名</th><td colspan="3"><div id="draftUnit" class="edit-cell single-line" contenteditable="true"></div></td></tr></table><table class="goal-table"><tr><th class="goal-main" rowspan="3">目標</th><th class="goal-category">知識・技能</th><td class="goal-content"><div id="draftKnowledge" class="edit-cell" contenteditable="true"></div></td></tr><tr><th class="goal-category">思考力<br>判断力<br>表現力</th><td class="goal-content"><div id="draftThinking" class="edit-cell" contenteditable="true"></div></td></tr><tr><th class="goal-category">学びに向かう力</th><td class="goal-content"><div id="draftAttitude" class="edit-cell" contenteditable="true"></div></td></tr></table><table class="flow-table"><thead><tr><th>学習内容</th><th>指導上の留意点</th><th>本時の目標及び評価</th></tr></thead><tbody id="draftFlowBody"></tbody></table></div></div></div></div>
 <div class="preview-actions"><button id="addDraftRow" class="btn btn-secondary" type="button">＋ 完成原稿に行を追加</button><div class="save-group"><strong>完成した指導案を手元に保存</strong><button id="saveWord" class="btn btn-primary" type="button">Wordで保存</button><button id="printPdf" class="btn btn-blue" type="button">印刷・PDF保存</button><span class="hint">Wordファイルは端末へダウンロードされ、Wordで編集できます。</span></div><div class="completion-note">AIは先生の考えを支援するためのものです。完成した指導案を作成することが目的ではありません。最終的な判断・作成は先生自身が行ってください。</div><div class="optional-actions"><button class="btn btn-purple open-consult" type="button">AIに相談する</button><button id="openSheetBuilder" class="btn btn-orange" type="button">共有シート用プロンプトを作成</button></div></div>
 </section></div>
 <section id="sheetPanel" class="panel hidden"><div class="panel-header"><h2>教師の意図共有シート用プロンプト</h2><p>完成原稿の内容を引き継ぎ、Copilotへ貼り付ける文章を作成します。</p></div><div class="panel-body"><div class="field"><label>共有したいメイン活動や補足</label><textarea id="sheetExtra" placeholder="例：活動2と活動3を中心に、見守りと支援を分けて整理する"></textarea></div><button id="buildSheetPrompt" class="btn btn-orange" type="button">プロンプトを作成</button><div class="actions"><button id="copySheetPrompt" class="btn btn-secondary" type="button">コピー</button></div><textarea id="sheetPrompt" style="width:100%;min-height:340px;margin-top:12px;font-family:Consolas,monospace"></textarea></div></section>
@@ -63,72 +211,245 @@ body{padding:0;background:#eef3f0;overflow-x:hidden}
 <div id="toast" class="toast">コピーしました</div>
 <template id="flowTemplate"><article class="flow-card"><div class="flow-head"><strong class="flow-number">活動1</strong><button type="button" class="btn btn-danger remove-flow">削除</button></div><div class="field"><label>学習内容</label><textarea class="learning-content"></textarea></div><div class="field"><label>指導上の留意点</label><textarea class="teaching-points"></textarea></div><div class="field"><label>本時の目標及び評価</label><textarea class="lesson-goal-evaluation"></textarea></div></article></template>
 <script>
-const $=id=>document.getElementById(id),flowContainer=$('flowContainer'),flowTemplate=$('flowTemplate'),draftFlowBody=$('draftFlowBody'),toast=$('toast'),previewStatus=$('previewStatus');let dirty=false;
+const $=id=>document.getElementById(id),flowContainer=$('flowContainer'),flowTemplate=$('flowTemplate'),draftFlowBody=$('draftFlowBody'),toast=$('toast'),previewStatus=$('previewStatus'),paper=$('paper'),paperScaleShell=$('paperScaleShell'),previewScroll=document.querySelector('.preview-scroll'),zoomLabel=$('zoomLabel');let dirty=false;let previewZoom=1;let fitMode=true;
 function clean(v){return(v||'').replace(/\u00a0/g,' ').trim()}function esc(s){return(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}function showToast(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1700)}function formatDate(v){if(!v)return'';const d=new Date(v+'T00:00:00');return`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`}function setText(id,v){$(id).innerText=v||''}function markDirty(){dirty=true;previewStatus.textContent='完成原稿を編集中です。作業終了前にWordまたはPDFで保存してください。';previewStatus.classList.add('edited')}
-let fitTimer;
-function fitPaper(){
-  const scroll=document.querySelector('.preview-scroll'),paper=$('paper'),wrap=paper?.parentElement;
-  if(!scroll||!paper||!wrap)return;
-  paper.style.transform='none';
-  const naturalW=paper.offsetWidth;
-  const naturalH=Math.max(paper.scrollHeight,paper.offsetHeight);
-  const availableW=Math.max(280,scroll.clientWidth-20);
-  const availableH=Math.max(360,scroll.clientHeight-(previewStatus?.offsetHeight||0)-18);
-  let scale=Math.min(availableW/naturalW,availableH/naturalH,1);
-  if(window.innerWidth<=1180)scale=Math.min(availableW/naturalW,.88);
-  scale=Math.max(.35,scale);
-  paper.style.transform=`scale(${scale})`;
-  wrap.style.width=`${naturalW*scale}px`;
-  wrap.style.height=`${naturalH*scale}px`;
+function addFlow(data={}){
+  const f=flowTemplate.content.cloneNode(true),c=f.querySelector('.flow-card');
+  c.querySelector('.learning-content').value=data.learning||'';
+  c.querySelector('.teaching-points').value=data.points||'';
+  c.querySelector('.lesson-goal-evaluation').value=data.evaluation||'';
+  c.querySelector('.remove-flow').onclick=()=>{
+    if(flowContainer.children.length>1){
+      c.remove();
+      renumberFlows();
+      syncFlowPreview();
+      markDirty();
+    }
+  };
+  c.querySelectorAll('textarea').forEach(x=>x.addEventListener('input',()=>{
+    syncFlowPreview();
+    markDirty();
+  }));
+  flowContainer.appendChild(f);
+  renumberFlows();
+  syncFlowPreview();
 }
-function queueFit(){clearTimeout(fitTimer);fitTimer=setTimeout(fitPaper,40)}
-function liveSyncBase(){
-  setText('draftDateTime',[formatDate($('date').value),clean($('time').value)].filter(Boolean).join('　'));
-  setText('draftPlace',$('place').value);setText('draftSubject',$('subject').value);setText('draftUnit',$('unit').value);
-  setText('draftKnowledge',$('goalKnowledge').value);setText('draftThinking',$('goalThinking').value);setText('draftAttitude',$('goalAttitude').value);
-}
-function liveSyncFlows(){
-  const rows=inputFlows();
-  while(draftFlowBody.children.length<rows.length)addDraftRow();
-  while(draftFlowBody.children.length>Math.max(1,rows.length))draftFlowBody.lastElementChild.remove();
-  const targets=[...draftFlowBody.children];
-  (rows.length?rows:[{}]).forEach((data,i)=>{
-    const r=targets[i];if(!r)return;
-    r.querySelector('.draft-learning').innerText=data.learning||'';
-    r.querySelector('.draft-points').innerText=data.points||'';
-    r.querySelector('.draft-evaluation').innerText=data.evaluation||'';
-  });
-  renumberDraft();
-}
-function liveSyncAll(){liveSyncBase();liveSyncFlows();dirty=true;previewStatus.textContent='入力内容をリアルタイムで反映しています。表内は直接編集できます。';previewStatus.classList.remove('edited');queueFit()}
-
-function addFlow(data={}){const f=flowTemplate.content.cloneNode(true),c=f.querySelector('.flow-card');c.querySelector('.learning-content').value=data.learning||'';c.querySelector('.teaching-points').value=data.points||'';c.querySelector('.lesson-goal-evaluation').value=data.evaluation||'';c.querySelector('.remove-flow').onclick=()=>{if(flowContainer.children.length>1){c.remove();renumberFlows();liveSyncAll()}};c.querySelectorAll('textarea').forEach(x=>x.addEventListener('input',liveSyncAll));flowContainer.appendChild(f);renumberFlows();liveSyncAll()}
 function renumberFlows(){[...flowContainer.querySelectorAll('.flow-card')].forEach((c,i)=>{c.querySelector('.flow-number').textContent=`活動${i+1}`;c.querySelector('.remove-flow').disabled=flowContainer.children.length===1})}
 function inputFlows(){return[...flowContainer.querySelectorAll('.flow-card')].map((c,i)=>({no:i+1,learning:clean(c.querySelector('.learning-content').value),points:clean(c.querySelector('.teaching-points').value),evaluation:clean(c.querySelector('.lesson-goal-evaluation').value)}))}
+
+function syncBasicPreview(){
+  setText('draftDateTime',[formatDate($('date').value),clean($('time').value)].filter(Boolean).join('　'));
+  setText('draftPlace',$('place').value);
+  setText('draftSubject',$('subject').value);
+  setText('draftUnit',$('unit').value);
+  setText('draftKnowledge',$('goalKnowledge').value);
+  setText('draftThinking',$('goalThinking').value);
+  setText('draftAttitude',$('goalAttitude').value);
+  previewStatus.textContent='入力内容をリアルタイムで反映しています。右側も直接編集できます。';
+  previewStatus.classList.remove('edited');
+  scheduleFit();
+}
+function syncFlowPreview(){
+  const rows=inputFlows();
+  draftFlowBody.innerHTML='';
+  (rows.length?rows:[{}]).forEach(addDraftRow);
+  scheduleFit();
+}
+function realtimeSync(){
+  syncBasicPreview();
+  syncFlowPreview();
+  dirty=true;
+}
+function applyZoom(value,{keepFit=false}={}){
+  previewZoom=Math.max(.55,Math.min(1.6,value));
+  fitMode=keepFit;
+  paper.style.transform=`scale(${previewZoom})`;
+  const width=paper.offsetWidth*previewZoom;
+  const height=paper.offsetHeight*previewZoom;
+  paperScaleShell.style.width=`${width}px`;
+  paperScaleShell.style.height=`${height}px`;
+  zoomLabel.textContent=`${Math.round(previewZoom*100)}%`;
+}
+function fitPreview(){
+  if(!previewScroll||!paper)return;
+  const availableWidth=Math.max(280,previewScroll.clientWidth-28);
+  const availableHeight=Math.max(420,previewScroll.clientHeight-24);
+  const widthScale=availableWidth/paper.offsetWidth;
+  const heightScale=availableHeight/paper.offsetHeight;
+  const scale=Math.min(1.25,widthScale,heightScale);
+  applyZoom(Math.max(.55,scale),{keepFit:true});
+}
+let fitTimer;
+function scheduleFit(){
+  clearTimeout(fitTimer);
+  fitTimer=setTimeout(()=>{if(fitMode)fitPreview();else applyZoom(previewZoom)},40);
+}
 function addDraftRow(data={}){const r=document.createElement('tr');r.innerHTML=`<td><div class="flow-number"></div><div class="edit-cell draft-learning" contenteditable="true">${esc(data.learning||'')}</div><div class="row-tools"><button class="row-btn up" type="button">↑ 上へ</button><button class="row-btn down" type="button">↓ 下へ</button><button class="row-btn del" type="button">削除</button></div></td><td><div class="edit-cell draft-points" contenteditable="true">${esc(data.points||'')}</div></td><td><div class="edit-cell draft-evaluation" contenteditable="true">${esc(data.evaluation||'')}</div></td>`;r.querySelector('.up').onclick=()=>{const p=r.previousElementSibling;if(p){draftFlowBody.insertBefore(r,p);renumberDraft();markDirty()}};r.querySelector('.down').onclick=()=>{const n=r.nextElementSibling;if(n){draftFlowBody.insertBefore(n,r);renumberDraft();markDirty()}};r.querySelector('.del').onclick=()=>{if(draftFlowBody.children.length>1){r.remove();renumberDraft();markDirty()}};r.querySelectorAll('[contenteditable]').forEach(x=>x.addEventListener('input',markDirty));draftFlowBody.appendChild(r);renumberDraft()}
 function renumberDraft(){[...draftFlowBody.children].forEach((r,i)=>{r.querySelector('.flow-number').textContent=`活動${i+1}`;r.querySelector('.up').disabled=i===0;r.querySelector('.down').disabled=i===draftFlowBody.children.length-1;r.querySelector('.del').disabled=draftFlowBody.children.length===1})}
-function syncPreview(){setText('draftDateTime',[formatDate($('date').value),clean($('time').value)].filter(Boolean).join('　'));setText('draftPlace',$('place').value);setText('draftSubject',$('subject').value);setText('draftUnit',$('unit').value);setText('draftKnowledge',$('goalKnowledge').value);setText('draftThinking',$('goalThinking').value);setText('draftAttitude',$('goalAttitude').value);draftFlowBody.innerHTML='';const rows=inputFlows();(rows.length?rows:[{}]).forEach(addDraftRow);dirty=true;previewStatus.textContent='入力内容を完成原稿へ反映しました。右側で直接修正できます。';previewStatus.classList.remove('edited');showToast('完成原稿へ反映しました')}
+function syncPreview(){
+  syncBasicPreview();
+  syncFlowPreview();
+  dirty=true;
+  showToast('完成原稿へ反映しました');
+}
 function draftData(){return{datetime:clean($('draftDateTime').innerText),place:clean($('draftPlace').innerText),subject:clean($('draftSubject').innerText),unit:clean($('draftUnit').innerText),knowledge:clean($('draftKnowledge').innerText),thinking:clean($('draftThinking').innerText),attitude:clean($('draftAttitude').innerText),flows:[...draftFlowBody.children].map((r,i)=>({no:i+1,learning:clean(r.querySelector('.draft-learning').innerText),points:clean(r.querySelector('.draft-points').innerText),evaluation:clean(r.querySelector('.draft-evaluation').innerText)}))}}
 function safeName(){const d=draftData(),base=(d.unit||d.subject||'学習指導案').replace(/[\\/:*?"<>|]/g,'_').slice(0,45);return base||'学習指導案'}
 function wordHtml(){const d=draftData(),rows=d.flows.map(r=>`<tr><td>${esc(r.learning).replace(/\n/g,'<br>')}</td><td>${esc(r.points).replace(/\n/g,'<br>')}</td><td>${esc(r.evaluation).replace(/\n/g,'<br>')}</td></tr>`).join('');return`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>@page{size:A4 portrait;margin:12mm}body{font-family:'Yu Gothic','Meiryo',sans-serif;font-size:10.5pt;color:#111}.title{text-align:center;font-size:16pt;font-weight:bold;margin-bottom:5mm}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{border:1px solid #222;padding:6px;vertical-align:top}th{background:#f1f1f1}.meta th{width:15%}.goal-main{width:11%;text-align:center;vertical-align:middle}.goal-cat{width:24%;text-align:center;vertical-align:middle}.flow th:nth-child(1){width:31%}.flow th:nth-child(2){width:42%}.flow th:nth-child(3){width:27%}p{margin:0;white-space:pre-wrap}
-/* ===== Ver.4.3 compact app layout ===== */
-body{padding:0;background:#eef3f0;overflow-x:hidden}
-.app{max-width:none;margin:0}
-.top-toolbar{position:sticky;top:0;z-index:1000;min-height:52px;padding:7px 16px;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 3px 12px rgba(36,64,50,.08);display:flex;align-items:center;justify-content:space-between;gap:12px}
-.toolbar-brand{display:flex;align-items:baseline;gap:8px;min-width:0;font-weight:900;color:var(--gd);white-space:nowrap}.toolbar-brand .tool-name{font-size:1rem}.toolbar-brand .tool-version{font-size:.76rem;color:var(--muted);font-weight:800}
-.toolbar-actions{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-wrap:wrap}.tool-btn{display:inline-flex;align-items:center;gap:5px;border:1px solid #d4ddd8;background:#fff;color:var(--text);border-radius:9px;padding:6px 9px;font-size:.82rem;font-weight:800;text-decoration:none;cursor:pointer;line-height:1.25}.tool-btn:hover{background:var(--gs);border-color:#b8cfc1}.tool-btn.primary{background:var(--p);border-color:var(--p);color:#fff}.tool-separator{color:#bac5bf;font-size:.8rem}
-.toolbar-notice{padding:6px 16px;background:#fff9ea;border-bottom:1px solid #ead9ad;color:#6d5728;font-size:.76rem;text-align:center}
-.workspace{padding:12px;grid-template-columns:minmax(390px,.92fr) minmax(520px,1.08fr);gap:12px;align-items:start}
-.panel{border-radius:14px;margin-bottom:12px}.panel-header{padding:11px 14px}.panel-header h2{font-size:1rem}.panel-header p{font-size:.78rem;margin-top:2px}.panel-body{padding:13px}.section{padding:12px;margin-bottom:10px}.field{margin-bottom:9px}.consult-box{padding:12px;margin-bottom:10px}
-.panel.sticky{top:65px;max-height:calc(100vh - 77px)}
-.preview-panel>.panel-header{display:none}.preview-scroll{padding:10px;overflow:auto;display:flex;flex-direction:column;align-items:center}.status{width:100%;margin:0 0 8px;padding:7px 10px;font-size:.75rem}.paper-wrap{min-width:0;flex:0 0 auto;position:relative;margin:0 auto}.paper{position:absolute;left:0;top:0;transform-origin:top left}
-.preview-actions{padding:8px 10px;gap:6px}.preview-actions .save-group{display:none}.preview-actions>.completion-note{display:none}.preview-actions>.optional-actions{display:none}.preview-actions>#addDraftRow{font-size:.78rem;padding:6px 9px}
-.live-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:999px;background:var(--gs);color:var(--g);font-size:.72rem;font-weight:900}.live-dot{width:7px;height:7px;border-radius:50%;background:#2c9b62;box-shadow:0 0 0 3px rgba(44,155,98,.12)}
-#syncPreview{display:none!important}
-.form-note{padding:8px 10px;border-radius:10px;background:var(--bs);color:#315b7e;font-size:.78rem;margin:0 0 10px}
-@media(max-width:1180px){.workspace{padding:10px;grid-template-columns:1fr}.panel.sticky{position:relative;top:auto;max-height:none}.preview-panel>.panel-header{display:block}.preview-scroll{min-height:620px}.paper{position:absolute}}
-@media(max-width:700px){.top-toolbar{padding:7px 9px;align-items:flex-start}.toolbar-brand{flex-direction:column;gap:0}.toolbar-brand .tool-name{font-size:.9rem}.toolbar-actions{gap:3px}.tool-btn{padding:6px 7px;font-size:.76rem}.tool-btn .label{display:none}.tool-separator{display:none}.toolbar-notice{padding:5px 8px}.workspace{padding:7px}.preview-scroll{min-height:520px}}
-@media print{.top-toolbar,.toolbar-notice{display:none!important}.workspace{padding:0}.preview-panel>.panel-header{display:none!important}.paper{position:static!important;transform:none!important}.paper-wrap{width:auto!important;height:auto!important}}
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:900;
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:8px 14px;
+  margin-bottom:12px;
+  background:rgba(255,255,255,.96);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(10px);
+}
+.toolbar-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  font-weight:900;
+  color:var(--gd);
+  white-space:nowrap;
+}
+.toolbar-title .tool-name{
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.toolbar-title .toolbar-version{
+  flex:none;
+  padding:3px 8px;
+  border-radius:999px;
+  background:var(--gs);
+  color:var(--g);
+  font-size:.76rem;
+}
+.toolbar-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.toolbar-btn{
+  appearance:none;
+  border:1px solid #d2ddd7;
+  background:#fff;
+  color:var(--text);
+  border-radius:9px;
+  padding:7px 10px;
+  min-height:36px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.toolbar-btn:hover{
+  transform:translateY(-1px);
+  border-color:#aebeb5;
+  background:#f8fbf9;
+}
+.toolbar-btn.primary{background:var(--g);border-color:var(--g);color:#fff}
+.toolbar-btn.blue{background:var(--b);border-color:var(--b);color:#fff}
+.toolbar-btn.purple{background:var(--p);border-color:var(--p);color:#fff}
+.toolbar-btn.orange{background:var(--o);border-color:var(--o);color:#fff}
+.toolbar-separator{width:1px;height:28px;background:var(--line);margin:0 2px}
+.zoom-controls{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  padding:3px;
+  border:1px solid #d2ddd7;
+  border-radius:10px;
+  background:#f8faf9;
+}
+.zoom-btn{
+  width:32px;
+  height:30px;
+  border:0;
+  border-radius:7px;
+  background:#fff;
+  color:var(--text);
+  font-weight:900;
+  cursor:pointer;
+}
+.zoom-btn:hover{background:#edf3ef}
+.zoom-label{
+  min-width:52px;
+  text-align:center;
+  font-weight:900;
+  font-size:.84rem;
+  color:var(--gd);
+}
+.fit-btn{
+  border:0;
+  border-radius:7px;
+  padding:6px 9px;
+  background:#edf3ef;
+  color:var(--gd);
+  font-weight:850;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.compact-info{
+  margin:0 0 12px;
+  padding:9px 12px;
+  border:1px solid #dbe4df;
+  border-radius:11px;
+  background:#fbfcfb;
+  color:var(--muted);
+  font-size:.82rem;
+}
+.workspace{
+  grid-template-columns:minmax(420px,.9fr) minmax(620px,1.1fr);
+}
+.preview-scroll{
+  position:relative;
+  overflow:auto;
+  padding:12px;
+}
+.paper-wrap{
+  min-width:0;
+  align-items:flex-start;
+  padding:6px 0 24px;
+}
+.paper-scale-shell{
+  position:relative;
+  margin:0 auto;
+}
+.paper{
+  transform-origin:top left;
+  will-change:transform;
+}
+.preview-actions{
+  display:none;
+}
+.panel.sticky{
+  top:66px;
+  max-height:calc(100vh - 78px);
+}
+@media(max-width:1180px){
+  .toolbar{position:relative;top:auto;align-items:flex-start}
+  .toolbar-title{white-space:normal}
+  .panel.sticky{top:auto;max-height:none}
+}
+@media(max-width:820px){
+  .toolbar{padding:8px}
+  .toolbar-title{width:100%}
+  .toolbar-actions{width:100%;justify-content:flex-start}
+  .toolbar-separator{display:none}
+  .toolbar-btn{padding:7px 9px}
+}
 
 </style></head><body><div class="title">学習指導案</div><table class="meta"><tr><th>日時</th><td>${esc(d.datetime)}</td><th>場所</th><td>${esc(d.place)}</td></tr><tr><th>教科名</th><td colspan="3">${esc(d.subject)}</td></tr><tr><th>単元・題材名</th><td colspan="3">${esc(d.unit)}</td></tr></table><table><tr><th class="goal-main" rowspan="3">目標</th><th class="goal-cat">知識・技能</th><td><p>${esc(d.knowledge)}</p></td></tr><tr><th class="goal-cat">思考力<br>判断力<br>表現力</th><td><p>${esc(d.thinking)}</p></td></tr><tr><th class="goal-cat">学びに向かう力</th><td><p>${esc(d.attitude)}</p></td></tr></table><table class="flow"><tr><th>学習内容</th><th>指導上の留意点</th><th>本時の目標及び評価</th></tr>${rows}</table></body></html>`}
 function saveWord(){const blob=new Blob(['\ufeff',wordHtml()],{type:'application/msword'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${safeName()}.doc`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);dirty=false;showToast('Wordファイルを保存しました')}
@@ -137,6 +458,86 @@ function planText(d){return`【日時】${d.datetime||'未入力'}\n【場所】
 function openConsult(){const d=draftData();$('consultSubject').textContent=d.subject||clean($('subject').value)||'未入力';$('consultUnit').textContent=d.unit||clean($('unit').value)||'未入力';$('consultGoals').textContent=[d.knowledge,d.thinking,d.attitude].filter(Boolean).join('\n')||'未入力';$('consultModal').classList.remove('hidden')}
 function buildConsult(){const d=draftData(),curr=[...document.querySelectorAll('input[name=curriculum]:checked')].map(x=>x.value),stage=document.querySelector('input[name=consultStage]:checked')?.value||'その他',detail=clean($('consultDetail').value);$('consultPrompt').value=`あなたは、特別支援教育における授業づくりを支援するAIです。\n以下の指導案について、教師が自分で考え、判断し、書き直すための検討材料を提示してください。\n\n【対象となる教育課程（学習指導要領）】\n${curr.length?curr.map(x=>'・'+x).join('\n'):'・未選択（必要に応じて確認してください）'}\n\n【どの段階で迷っているか】\n${stage}\n\n【相談したいこと・確認したいこと】\n${detail||'未入力'}\n\n【現在の指導案】\n${planText(d)}\n\n【必ず守ること】\n・特別支援学校学習指導要領を参照し、選択された教育課程の段階を踏まえて助言する。\n・学習指導要領との関連が明確でない場合は、無理に結び付けず「確認が必要」と示す。\n・入力されていない障害種別、児童生徒の実態、学級編制などを勝手に推測しない。\n・不足情報が重要な場合は、推測せず「確認が必要」と示す。\n・教師が入力した目標、活動、意図を根拠なく追加・削除・変更しない。\n・完成した指導案や、そのまま貼り付ける完成文章を作らない。\n・一つの正解に決めず、異なる視点の案を3つ程度、簡潔に提示する。\n・各案について「どのような見方か」「教師が確認すべき点」を示す。\n・最終的な判断と記述は教師が行うことを前提とする。`;showToast('相談用プロンプトを作成しました')}
 function buildSheet(){const d=draftData(),extra=clean($('sheetExtra').value);$('sheetPrompt').value=`あなたは、特別支援学校の授業における教師の意図を、教員・支援員等へ短時間で共有するための「教師の意図共有シート」を作成します。\n\n【指導案】\n${planText(d)}\n\n【教師からの補足】\n${extra||'特になし'}\n\n【固定条件】\n・A4横1ページ。\n・メインとなる活動のみ3～5活動程度を掲載する。\n・各活動について「子供のこんな姿を見てください」を簡潔に1～2点示す。\n・関わり方は「👀見守り」と「🤝支援」を明確に区別する。\n・見守りの場合、支援欄には文章を書かず斜線のみとする。\n・支援は具体的かつ最小限にする。\n・教師の意図や指導案にない内容を勝手に追加しない。\n・不足情報は推測せず「要確認」とする。\n・下部に「先生方へのお願い」「関わり方のイメージ」「このシートについて」の3ブロックを置く。`;showToast('共有シート用プロンプトを作成しました')}
-$('addFlow').onclick=()=>addFlow();$('addDraftRow').onclick=()=>{addDraftRow();markDirty()};$('saveWord').onclick=saveWord;$('printPdf').onclick=()=>window.print();$('saveWordTop').onclick=saveWord;$('printPdfTop').onclick=()=>window.print();$('consultTop').onclick=openConsult;document.querySelectorAll('.open-consult').forEach(b=>b.onclick=openConsult);$('closeConsult').onclick=()=>$('consultModal').classList.add('hidden');$('consultModal').addEventListener('click',e=>{if(e.target===$('consultModal'))$('consultModal').classList.add('hidden')});$('buildConsultPrompt').onclick=buildConsult;$('copyConsultPrompt').onclick=()=>copyText($('consultPrompt').value);$('openSheetBuilder').onclick=()=>{$('sheetPanel').classList.remove('hidden');$('sheetPanel').scrollIntoView({behavior:'smooth'})};$('buildSheetPrompt').onclick=buildSheet;$('copySheetPrompt').onclick=()=>copyText($('sheetPrompt').value);$('clearAll').onclick=()=>{if(!confirm('入力内容と完成原稿をすべて消去しますか？'))return;document.querySelectorAll('input[type=text],input[type=date],textarea').forEach(x=>x.value='');flowContainer.innerHTML='';addFlow();draftFlowBody.innerHTML='';addDraftRow();['draftDateTime','draftPlace','draftSubject','draftUnit','draftKnowledge','draftThinking','draftAttitude'].forEach(id=>setText(id,''));dirty=false;liveSyncAll();dirty=false;showToast('すべて消去しました')};$('fillSample').onclick=()=>{$('date').value='2026-07-24';$('time').value='第3時限';$('place').value='小学部3年教室';$('subject').value='生活科';$('unit').value='夏を楽しもう';$('goalKnowledge').value='活動の流れや身近な人の存在に気付き、教師と一緒に活動することができる。';$('goalThinking').value='好きな活動を選び、自分なりの方法で気持ちや意思を表そうとする。';$('goalAttitude').value='教師や友達と一緒に活動することを楽しもうとする。';flowContainer.innerHTML='';addFlow({learning:'始まりの会で活動を知る。',points:'写真や実物を提示し、活動の見通しをもてるようにする。',evaluation:'提示されたものに気付き、活動へ意識を向けているか。'});addFlow({learning:'好きな活動を選んで取り組む。',points:'選択肢を分かりやすく示し、必要なときだけ支援する。',evaluation:'自分なりの方法で選択や意思表示をしているか。'});liveSyncAll()};document.querySelectorAll('.panel-body input,.panel-body textarea').forEach(x=>x.addEventListener('input',()=>{if(!x.closest('#consultModal')&&!x.closest('#sheetPanel'))liveSyncAll()}));document.querySelectorAll('#paper [contenteditable]').forEach(x=>x.addEventListener('input',markDirty));window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});window.addEventListener('resize',queueFit);addFlow();if(!draftFlowBody.children.length)addDraftRow();liveSyncAll();setTimeout(fitPaper,120);
+$('addFlow').onclick=()=>addFlow();
+$('addDraftRow').onclick=()=>{addDraftRow();markDirty();scheduleFit()};
+$('saveWord').onclick=saveWord;
+$('printPdf').onclick=()=>window.print();
+$('toolbarWord').onclick=saveWord;
+$('toolbarPrint').onclick=()=>window.print();
+
+document.querySelectorAll('.open-consult').forEach(b=>b.onclick=openConsult);
+$('closeConsult').onclick=()=>$('consultModal').classList.add('hidden');
+$('consultModal').addEventListener('click',e=>{if(e.target===$('consultModal'))$('consultModal').classList.add('hidden')});
+$('buildConsultPrompt').onclick=buildConsult;
+$('copyConsultPrompt').onclick=()=>copyText($('consultPrompt').value);
+
+function openSheetPanel(){
+  $('sheetPanel').classList.remove('hidden');
+  $('sheetPanel').scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('openSheetBuilder').onclick=openSheetPanel;
+$('toolbarSheet').onclick=openSheetPanel;
+$('buildSheetPrompt').onclick=buildSheet;
+$('copySheetPrompt').onclick=()=>copyText($('sheetPrompt').value);
+
+$('zoomOut').onclick=()=>applyZoom(previewZoom-.1);
+$('zoomIn').onclick=()=>applyZoom(previewZoom+.1);
+$('fitPreview').onclick=()=>fitPreview();
+window.addEventListener('resize',scheduleFit);
+
+$('clearAll').onclick=()=>{
+  if(!confirm('入力内容と完成原稿をすべて消去しますか？'))return;
+  document.querySelectorAll('input[type=text],input[type=date],textarea').forEach(x=>x.value='');
+  flowContainer.innerHTML='';
+  addFlow();
+  ['draftDateTime','draftPlace','draftSubject','draftUnit','draftKnowledge','draftThinking','draftAttitude'].forEach(id=>setText(id,''));
+  dirty=false;
+  realtimeSync();
+  showToast('すべて消去しました');
+};
+
+$('fillSample').onclick=()=>{
+  $('date').value='2026-07-24';
+  $('time').value='第3時限';
+  $('place').value='小学部3年教室';
+  $('subject').value='生活科';
+  $('unit').value='夏を楽しもう';
+  $('goalKnowledge').value='活動の流れや身近な人の存在に気付き、教師と一緒に活動することができる。';
+  $('goalThinking').value='好きな活動を選び、自分なりの方法で気持ちや意思を表そうとする。';
+  $('goalAttitude').value='教師や友達と一緒に活動することを楽しもうとする。';
+  flowContainer.innerHTML='';
+  addFlow({learning:'始まりの会で活動を知る。',points:'写真や実物を提示し、活動の見通しをもてるようにする。',evaluation:'提示されたものに気付き、活動へ意識を向けているか。'});
+  addFlow({learning:'好きな活動を選んで取り組む。',points:'選択肢を分かりやすく示し、必要なときだけ支援する。',evaluation:'自分なりの方法で選択や意思表示をしているか。'});
+  realtimeSync();
+  showToast('入力例を反映しました');
+};
+
+const realtimeIds=['date','time','place','subject','unit','goalKnowledge','goalThinking','goalAttitude'];
+realtimeIds.forEach(id=>{
+  $(id).addEventListener('input',()=>{
+    syncBasicPreview();
+    dirty=true;
+  });
+  $(id).addEventListener('change',()=>{
+    syncBasicPreview();
+    dirty=true;
+  });
+});
+
+document.querySelectorAll('#paper [contenteditable]').forEach(x=>x.addEventListener('input',()=>{
+  markDirty();
+  scheduleFit();
+}));
+
+window.addEventListener('beforeunload',e=>{
+  if(dirty){
+    e.preventDefault();
+    e.returnValue='';
+  }
+});
+
+addFlow();
+syncBasicPreview();
+requestAnimationFrame(()=>fitPreview());
 </script>
 </body></html>

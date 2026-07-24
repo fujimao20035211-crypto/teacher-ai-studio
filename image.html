@@ -3,103 +3,389 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>教材イメージ翻訳ツール</title>
+<title>Teacher AI Studio｜教材イメージ翻訳ツール</title>
 <style>
+:root{
+  --bg:#f7f3ea;
+  --panel:#ffffff;
+  --text:#2f3a35;
+  --muted:#66736d;
+  --line:#d7e0da;
+  --green:#2f6f4e;
+  --green-dark:#24583e;
+  --green-soft:#edf6f0;
+  --teal:#4f7f7b;
+  --orange:#f2b56b;
+  --orange-dark:#c9792e;
+  --shadow:0 4px 16px rgba(39,72,54,.09);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   margin:0;
-  font-family:"Yu Gothic","Hiragino Sans",sans-serif;
-  background:#f7f3ea;
-  color:#333;
+  font-family:"Yu Gothic","Hiragino Sans","Noto Sans JP",sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
-header{
-  background:#4f7f7b;
-  color:white;
-  padding:24px;
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+.app{
+  width:min(1120px,calc(100% - 24px));
+  margin:12px auto 36px;
+}
+
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  min-height:58px;
+  padding:9px 14px;
+  background:rgba(255,255,255,.96);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(10px);
+}
+
+.toolbar-title{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-width:0;
+  font-weight:900;
+  color:var(--green-dark);
+}
+
+.tool-name{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.version{
+  flex:none;
+  padding:4px 9px;
+  border-radius:999px;
+  background:var(--green-soft);
+  color:var(--green);
+  font-size:.78rem;
+}
+
+.toolbar-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.toolbar-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:38px;
+  padding:8px 13px;
+  border:1px solid #cfdad3;
+  border-radius:10px;
+  background:#fff;
+  color:var(--text);
+  text-decoration:none;
+  font-weight:900;
+  cursor:pointer;
+  transition:.18s;
+}
+
+.toolbar-btn:hover{
+  transform:translateY(-1px);
+  background:#f7faf8;
+  border-color:#aebfb4;
+}
+
+.toolbar-btn.primary{
+  background:var(--green);
+  border-color:var(--green);
+  color:#fff;
+}
+
+.toolbar-btn.orange{
+  background:var(--orange-dark);
+  border-color:var(--orange-dark);
+  color:#fff;
+}
+
+.notice{
+  margin:12px 0;
+  padding:11px 14px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  color:var(--muted);
+  font-size:.92rem;
+}
+
+.hero{
+  margin-bottom:16px;
+  padding:22px;
   text-align:center;
+  background:var(--teal);
+  color:white;
+  border-radius:16px;
+  box-shadow:var(--shadow);
 }
+
+.hero h1{
+  margin:0 0 8px;
+  font-size:clamp(1.45rem,2.8vw,2rem);
+}
+
+.hero p{
+  margin:0;
+  line-height:1.75;
+}
+
 main{
   max-width:900px;
   margin:auto;
-  padding:20px;
 }
+
 section{
-  background:white;
+  background:var(--panel);
+  border:1px solid var(--line);
   border-radius:14px;
-  padding:18px;
+  padding:20px;
   margin-bottom:16px;
-  box-shadow:0 3px 10px rgba(0,0,0,.08);
+  box-shadow:var(--shadow);
 }
+
 h2{
-  color:#4f7f7b;
-  border-left:8px solid #f2b56b;
+  margin:0 0 14px;
+  color:var(--teal);
+  border-left:8px solid var(--orange);
   padding-left:10px;
+  font-size:1.25rem;
 }
+
 label{
   display:block;
-  font-weight:bold;
-  margin-top:12px;
+  font-weight:900;
+  margin-top:14px;
 }
-input,textarea,select{
+
+input,
+textarea,
+select{
   width:100%;
-  padding:10px;
-  margin-top:6px;
-  border-radius:8px;
-  border:1px solid #ccc;
+  padding:12px;
+  margin-top:7px;
+  border-radius:9px;
+  border:1px solid #bdc9c2;
+  background:#fff;
+  color:var(--text);
   font-size:16px;
 }
-textarea{
-  min-height:80px;
+
+input:focus,
+textarea:focus,
+select:focus{
+  outline:3px solid rgba(79,127,123,.16);
+  border-color:var(--teal);
 }
-button{
-  padding:14px 24px;
+
+textarea{
+  min-height:92px;
+  resize:vertical;
+}
+
+.actions{
+  position:sticky;
+  bottom:10px;
+  z-index:50;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin:20px 0;
+  padding:12px;
+  background:rgba(247,243,234,.94);
+  border:1px solid var(--line);
+  border-radius:14px;
+  backdrop-filter:blur(8px);
+}
+
+.action-btn{
+  min-width:180px;
+  padding:13px 22px;
   border:none;
   border-radius:999px;
-  background:#4f7f7b;
+  background:var(--teal);
   color:white;
-  font-weight:bold;
+  font-weight:900;
   font-size:16px;
-  margin:8px 6px 8px 0;
   cursor:pointer;
+  box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
-button.copy{
-  background:#f2b56b;
+
+.action-btn.copy{
+  background:var(--orange);
   color:#333;
 }
-#output{
-  min-height:260px;
-  border:2px solid #4f7f7b;
+
+.action-btn:hover{
+  filter:brightness(.98);
+  transform:translateY(-1px);
 }
+
 .note{
   background:#fff8e5;
   border:2px solid #f2d38b;
+}
+
+.note p{
+  margin:0;
+  font-weight:700;
+  line-height:1.7;
+}
+
+#output{
+  min-height:300px;
+  border:2px solid var(--teal);
+  background:#fbfdfc;
+}
+
+.footer-note{
+  text-align:center;
+  color:var(--muted);
+  font-size:.85rem;
+  line-height:1.7;
+}
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:999;
+  padding:12px 16px;
+  border-radius:10px;
+  background:#263c31;
+  color:#fff;
+  box-shadow:0 6px 24px rgba(0,0,0,.2);
+  opacity:0;
+  transform:translateY(12px);
+  pointer-events:none;
+  transition:.2s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+@media(max-width:760px){
+  .app{
+    width:min(100% - 12px,1120px);
+    margin-top:6px;
+  }
+
+  .toolbar{
+    position:relative;
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .toolbar-actions{
+    width:100%;
+    justify-content:flex-start;
+  }
+
+  .tool-name{
+    white-space:normal;
+  }
+
+  .toolbar-btn{
+    flex:1 1 130px;
+  }
+
+  .hero{
+    padding:18px 14px;
+  }
+
+  section{
+    padding:16px;
+  }
+
+  .actions{
+    position:static;
+  }
+
+  .action-btn{
+    width:100%;
+  }
 }
 </style>
 </head>
 
 <body>
-<header>
+<div class="app">
+
+<header class="toolbar">
+  <div class="toolbar-title">
+    <span class="tool-name">Teacher AI Studio｜教材イメージ翻訳ツール</span>
+    <span class="version">Ver.1.1</span>
+  </div>
+
+  <nav class="toolbar-actions" aria-label="主要操作">
+    <a class="toolbar-btn" href="index.html">🏠 Home</a>
+    <button class="toolbar-btn primary" type="button" onclick="makePrompt()">✨ プロンプト作成</button>
+    <button class="toolbar-btn orange" type="button" onclick="copyPrompt()">📋 コピー</button>
+  </nav>
+</header>
+
+<p class="notice">
+  入力内容は保存されません。作成したプロンプトは、作業終了前にコピーして手元へ保存してください。
+</p>
+
+<section class="hero">
   <h1>教材イメージ翻訳ツール</h1>
   <p>先生のアイデアを、画像生成AIに伝わりやすい言葉へ変換します。</p>
-</header>
+</section>
 
 <main>
 
 <section class="note">
-  <p>児童生徒名、学校名、写真、個人情報は入力しないでください。</p>
+  <p>⚠️ 児童生徒名、学校名、写真、個人情報は入力しないでください。</p>
 </section>
 
 <section>
   <h2>1. 先生のアイデア</h2>
-  <label>教材画像のテーマ</label>
+
+  <label for="theme">教材画像のテーマ</label>
   <input id="theme" placeholder="例：宇宙のアイスクリーム屋さん">
 
-  <label>どんな場面にしたいですか？</label>
+  <label for="scene">どんな場面にしたいですか？</label>
   <textarea id="scene" placeholder="例：宇宙空間にかわいいアイスクリーム屋さんがあり、子どもたちがわくわくしている"></textarea>
 </section>
 
 <section>
   <h2>2. 画像の使い道</h2>
-  <label>用途</label>
+
+  <label for="purpose">用途</label>
   <select id="purpose">
     <option value="">選んでください</option>
     <option>教材の背景</option>
@@ -110,12 +396,14 @@ button.copy{
     <option>ごほうび画面</option>
   </select>
 
-  <label>その他の用途</label>
+  <label for="purposeOther">その他の用途</label>
   <input id="purposeOther" placeholder="例：朝の会で見せる画像">
 </section>
 
 <section>
   <h2>3. 雰囲気</h2>
+
+  <label for="mood">全体の雰囲気</label>
   <select id="mood">
     <option value="">選んでください</option>
     <option>わくわく</option>
@@ -126,12 +414,14 @@ button.copy{
     <option>達成感がある</option>
   </select>
 
-  <label>その他の雰囲気</label>
+  <label for="moodOther">その他の雰囲気</label>
   <input id="moodOther" placeholder="例：不思議、夢の中、冒険感">
 </section>
 
 <section>
   <h2>4. 絵柄</h2>
+
+  <label for="style">絵柄</label>
   <select id="style">
     <option value="">選んでください</option>
     <option>かわいいアニメ調</option>
@@ -141,12 +431,14 @@ button.copy{
     <option>小学生向けアニメ風</option>
   </select>
 
-  <label>その他の絵柄</label>
+  <label for="styleOther">その他の絵柄</label>
   <input id="styleOther" placeholder="例：絵本とアニメの中間、探検隊風">
 </section>
 
 <section>
   <h2>5. 色合い</h2>
+
+  <label for="color">色合い</label>
   <select id="color">
     <option value="">選んでください</option>
     <option>淡い水色</option>
@@ -157,12 +449,14 @@ button.copy{
     <option>少しコントラスト強め</option>
   </select>
 
-  <label>その他の色合い</label>
+  <label for="colorOther">その他の色合い</label>
   <input id="colorOther" placeholder="例：夜空だけど暗すぎない青紫">
 </section>
 
 <section>
   <h2>6. キャラクター・表情</h2>
+
+  <label for="face">顔や表情</label>
   <select id="face">
     <option value="">選んでください</option>
     <option>丸い顔、大きな目、笑顔</option>
@@ -172,32 +466,54 @@ button.copy{
     <option>少しアニメ化した顔</option>
   </select>
 
-  <label>その他の表情</label>
+  <label for="faceOther">その他の表情</label>
   <input id="faceOther" placeholder="例：リアルすぎない、目を大きく">
 </section>
 
 <section>
   <h2>7. 入れてほしい物・避けたい物</h2>
-  <label>入れてほしい物</label>
+
+  <label for="include">入れてほしい物</label>
   <textarea id="include" placeholder="例：星、宇宙船、アイスクリーム屋台"></textarea>
 
-  <label>入れてほしくない物</label>
+  <label for="exclude">入れてほしくない物</label>
   <textarea id="exclude" placeholder="例：文字、看板、ロゴ、暗すぎる背景"></textarea>
 </section>
 
-<button onclick="makePrompt()">プロンプトを作成</button>
-<button class="copy" onclick="copyPrompt()">コピー</button>
+<div class="actions">
+  <button class="action-btn" type="button" onclick="makePrompt()">✨ プロンプトを作成</button>
+  <button class="action-btn copy" type="button" onclick="copyPrompt()">📋 コピー</button>
+</div>
 
-<section>
+<section id="resultSection">
   <h2>完成したプロンプト</h2>
   <textarea id="output" placeholder="ここに完成したプロンプトが表示されます。"></textarea>
 </section>
 
+<p class="footer-note">
+  Teacher AI Studioは、先生の考えを整理し、AIへ伝えるための補助ツールです。<br>
+  教材の内容や授業での使用方法は、先生自身が確認して決定してください。
+</p>
+
 </main>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script>
 function v(id){
   return document.getElementById(id).value.trim();
+}
+
+function showToast(message){
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1800);
 }
 
 function makePrompt(){
@@ -235,13 +551,31 @@ function makePrompt(){
   prompt += "・過度にリアルにせず、やさしく楽しい印象にする。\\n";
 
   document.getElementById("output").value = prompt;
+  document.getElementById("resultSection").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+  showToast("プロンプトを作成しました");
 }
 
-function copyPrompt(){
+async function copyPrompt(){
   const output = document.getElementById("output");
-  output.select();
-  document.execCommand("copy");
-  alert("コピーしました");
+  const text = output.value.trim();
+
+  if(!text){
+    showToast("先にプロンプトを作成してください");
+    return;
+  }
+
+  try{
+    await navigator.clipboard.writeText(text);
+    showToast("コピーしました");
+  }catch(error){
+    output.focus();
+    output.select();
+    document.execCommand("copy");
+    showToast("コピーしました");
+  }
 }
 </script>
 
